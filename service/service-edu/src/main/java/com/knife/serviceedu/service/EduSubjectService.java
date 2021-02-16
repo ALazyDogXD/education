@@ -2,7 +2,10 @@ package com.knife.serviceedu.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.knife.serviceedu.domain.entity.EduSubjectDO;
+import com.knife.serviceedu.domain.vo.EduSubjectParentVO;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.util.List;
 
 /**
  * <p>
@@ -32,5 +35,11 @@ public interface EduSubjectService extends IService<EduSubjectDO> {
      * @return 最大的分类序号
      */
     int getMaxSort();
+
+    /**
+     * 获取科目树
+     * @return 科目树
+     */
+    List<EduSubjectParentVO> getTree();
 
 }

@@ -11,6 +11,8 @@ import com.knife.commonutil.util.SpringBeanUtil;
 import com.knife.servicebase.entity.ServiceException;
 import com.knife.serviceedu.domain.entity.EduSubjectDO;
 import com.knife.serviceedu.domain.entity.ExcelSubjectData;
+import com.knife.serviceedu.domain.vo.EduSubjectParentVO;
+import com.knife.serviceedu.domain.vo.EduSubjectVO;
 import com.knife.serviceedu.listener.ImportSubjectListener;
 import com.knife.serviceedu.mapper.EduSubjectMapper;
 import com.knife.serviceedu.service.EduSubjectService;
@@ -22,7 +24,9 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.ListIterator;
 import java.util.Objects;
 
 /**
@@ -100,5 +104,46 @@ public class EduSubjectServiceImpl extends ServiceImpl<EduSubjectMapper, EduSubj
     @Override
     public int getMaxSort() {
         return baseMapper.getMaxSort();
+    }
+
+    @Override
+    public List<EduSubjectParentVO> getTree() {
+        List<EduSubjectDO> allSubjects = list();
+        return getTree(allSubjects);
+    }
+
+    /**
+     * 构建树
+     * @param subjects 科目集合
+     * @return 构建树
+     */
+    private List<EduSubjectParentVO> getTree(List<EduSubjectDO> subjects) {
+        List<EduSubjectParentVO> subjectParents = new ArrayList<>(20);
+        ListIterator<EduSubjectDO> iterator = subjects.listIterator();
+        // 查询父节点
+        while (iterator.hasNext()) {
+            EduSubjectDO subject = iterator.next();
+            if ("0".equals(subject.getParentId())) {
+                subjectParents.add(new EduSubjectParentVO() {{
+                    setId(subject.getId());
+                    setSort(subject.getSort());
+                    setTitle(subject.getTitle());
+                }});
+                iterator.remove();
+            }
+        }
+        // 匹配子节点
+        subjects.forEach(subject -> {
+            subjectParents.forEach(pSubject -> {
+                if (pSubject.getId().equals(subject.getParentId())) {
+                    pSubject.getSubjects().add(new EduSubjectVO() {{
+                        setId(subject.getId());
+                        setSort(subject.getSort());
+                        setTitle(subject.getTitle());
+                    }});
+                }
+            });
+        });
+        return subjectParents;
     }
 }
