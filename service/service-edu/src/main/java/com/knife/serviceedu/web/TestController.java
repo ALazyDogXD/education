@@ -16,8 +16,8 @@ import org.springframework.web.bind.annotation.RestController;
 @Api("测试")
 public class TestController {
 
-    @ApiOperation("测试接口")
     @GetMapping
+    @ApiOperation("测试接口")
     public String test() {
         return "test";
     }

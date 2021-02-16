@@ -12,6 +12,12 @@
     <artifactId>service-base</artifactId>
 
     <dependencies>
+        <dependency>
+            <groupId>com.knife</groupId>
+            <artifactId>common-util</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
+
         <!-- web -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
