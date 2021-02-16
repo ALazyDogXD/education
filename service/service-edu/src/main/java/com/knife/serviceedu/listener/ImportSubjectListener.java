@@ -52,6 +52,12 @@ public class ImportSubjectListener extends AnalysisEventListener<ExcelSubjectDat
 
             if (StringUtils.isNotBlank(excelSubjectData.getLevelTwoSubjectName())) {
                 // 插入二级学科
+                if (Objects.nonNull(eduSubjectService.getByTitle(excelSubjectData.getLevelTwoSubjectName()))) {
+                    throw new ServiceException("在" +
+                            excelSubjectData.getLevelOneSubjectName() +
+                            "下已存在" +
+                            excelSubjectData.getLevelTwoSubjectName());
+                }
                 EduSubjectDO finalParentEduSubject = parentEduSubject;
                 EduSubjectDO sonEduSubject = new EduSubjectDO() {{
                     setTitle(excelSubjectData.getLevelTwoSubjectName());
