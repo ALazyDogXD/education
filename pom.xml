@@ -27,6 +27,7 @@
         <commons-pool2.version>2.0</commons-pool2.version>
         <springfox.version>2.9.2</springfox.version>
         <knife4j.version>2.0.7</knife4j.version>
+        <validation.version>2.0.0.Final</validation.version>
         <hutool.version>5.3.10</hutool.version>
     </properties>
 
@@ -66,10 +67,18 @@
                 <version>${mysql.version}</version>
             </dependency>
 
+            <!-- druid -->
             <dependency>
                 <groupId>com.alibaba</groupId>
                 <artifactId>druid-spring-boot-starter</artifactId>
                 <version>${druid.version}</version>
+            </dependency>
+
+            <!-- validation -->
+            <dependency>
+                <groupId>javax.validation</groupId>
+                <artifactId>validation-api</artifactId>
+                <version>${validation.version}</version>
             </dependency>
 
             <!--mybatis-plus-->
