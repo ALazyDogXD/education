@@ -1,4 +1,4 @@
-package com.knife.servicebase.config;
+package com.knife.serviceedu.config;
 
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.cache.annotation.EnableCaching;
@@ -14,7 +14,7 @@ import com.baomidou.mybatisplus.extension.plugins.PaginationInterceptor;
 @EnableTransactionManagement
 @Configuration
 @EnableCaching(proxyTargetClass = true)
-@MapperScan("com.knife")
+@MapperScan("com.knife.serviceedu.mapper")
 public class MybatisPlusConfig {
 	
 	/**

@@ -27,7 +27,7 @@ public class TestController {
         return "test";
     }
 
-    @GetMapping
+    @GetMapping("params")
     @ApiOperation("测试接口")
     public String test(@RequestParam("test") @ApiParam("测试") @NotBlank String test) {
         return "test";
