@@ -3,6 +3,7 @@ package com.knife.serviceedu.service;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.knife.serviceedu.domain.dto.EduTeacherDto;
 import com.knife.serviceedu.domain.entity.EduTeacherDO;
 
 import java.util.HashMap;
@@ -24,7 +25,7 @@ public interface EduTeacherService extends IService<EduTeacherDO> {
      * @Param * @param teacher:老师类
      * @return: int
      **/
-    int addTeacher(EduTeacherDO teacher);
+    boolean addTeacher(EduTeacherDto teacher);
 
     /**
      * @author 风烛
@@ -33,7 +34,7 @@ public interface EduTeacherService extends IService<EduTeacherDO> {
      * @Param * @param id:教师id
      * @return: int
      **/
-    int deleteTeacher(int id);
+    boolean deleteTeacher(String id);
 
     /**
      * @author 风烛
@@ -42,16 +43,7 @@ public interface EduTeacherService extends IService<EduTeacherDO> {
      * @Param * @param ids: 教师数组
      * @return: int
      **/
-    int deleteTeachers(List<String> ids);
-
-    /**
-     * @author 风烛
-     * @date 2021年2月16日 21:04
-     * @Description 根据特定条件进行删除(where)
-     * @Param * @param map:where条件键值对
-     * @return: int
-     **/
-    int deleteByMap(HashMap map);
+    boolean deleteTeachers(List<EduTeacherDto> ids);
 
     /**
      * @author 风烛
@@ -60,7 +52,7 @@ public interface EduTeacherService extends IService<EduTeacherDO> {
      * @Param * @param teacher:  教师类
      * @return: int
      **/
-    int updateTeacherById(EduTeacherDO teacher);
+    boolean updateTeacherById(EduTeacherDto teacher);
 
     /**
      * @author 风烛
@@ -69,7 +61,7 @@ public interface EduTeacherService extends IService<EduTeacherDO> {
      * @Param * @param id:  教师id
      * @return: com.knife.serviceedu.domain.entity.EduTeacherDO
      **/
-    EduTeacherDO selectByTeacher(int id);
+    EduTeacherDO selectByTeacher(String id);
 
     /**
      * @author 风烛
