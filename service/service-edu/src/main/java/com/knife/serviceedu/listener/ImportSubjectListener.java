@@ -62,7 +62,8 @@ public class ImportSubjectListener extends AnalysisEventListener<ExcelSubjectDat
                 EduSubjectDO sonEduSubject = new EduSubjectDO() {{
                     setTitle(excelSubjectData.getLevelTwoSubjectName());
                     setParentId(finalParentEduSubject.getId());
-                    setSort(finalParentEduSubject.getSort());
+                    // 顺序为该一级学科下二级学科数量 + 1
+                    setSort(finalParentEduSubject.getSort() + eduSubjectService.getLevelTwoCount(finalParentEduSubject.getId()));
                     setGmtCreate(LocalDateTime.now());
                     setGmtModified(LocalDateTime.now());
                 }};

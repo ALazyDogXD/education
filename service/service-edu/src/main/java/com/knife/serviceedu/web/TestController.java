@@ -18,7 +18,7 @@ import javax.validation.constraints.NotBlank;
  */
 @RestController
 @RequestMapping("test")
-@Api("测试")
+@Api(tags = "测试")
 public class TestController {
 
     @GetMapping

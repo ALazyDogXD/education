@@ -1,6 +1,5 @@
 package com.knife.serviceedu.service.impl;
 
-import cn.hutool.core.bean.BeanUtil;
 import com.alibaba.excel.EasyExcel;
 import com.alibaba.excel.ExcelReader;
 import com.alibaba.excel.exception.ExcelAnalysisException;
@@ -107,6 +106,11 @@ public class EduSubjectServiceImpl extends ServiceImpl<EduSubjectMapper, EduSubj
     }
 
     @Override
+    public int getLevelTwoCount(String id) {
+        return baseMapper.selectCount(new LambdaQueryWrapper<EduSubjectDO>().eq(EduSubjectDO::getParentId, id));
+    }
+
+    @Override
     public List<EduSubjectParentVO> getTree() {
         List<EduSubjectDO> allSubjects = list();
         return getTree(allSubjects);
@@ -124,7 +128,9 @@ public class EduSubjectServiceImpl extends ServiceImpl<EduSubjectMapper, EduSubj
         while (iterator.hasNext()) {
             EduSubjectDO subject = iterator.next();
             if ("0".equals(subject.getParentId())) {
-                subjectParents.add(new EduSubjectParentVO() {{
+                // 节点排序
+                int index = getSubjectSite(subjectParents, subject);
+                subjectParents.add(index, new EduSubjectParentVO() {{
                     setId(subject.getId());
                     setSort(subject.getSort());
                     setTitle(subject.getTitle());
@@ -133,17 +139,31 @@ public class EduSubjectServiceImpl extends ServiceImpl<EduSubjectMapper, EduSubj
             }
         }
         // 匹配子节点
-        subjects.forEach(subject -> {
-            subjectParents.forEach(pSubject -> {
-                if (pSubject.getId().equals(subject.getParentId())) {
-                    pSubject.getSubjects().add(new EduSubjectVO() {{
-                        setId(subject.getId());
-                        setSort(subject.getSort());
-                        setTitle(subject.getTitle());
-                    }});
-                }
-            });
-        });
+        subjects.forEach(subject -> subjectParents.forEach(pSubject -> {
+            if (pSubject.getId().equals(subject.getParentId())) {
+                int index = getSubjectSite(pSubject.getSubjects(), subject);
+                pSubject.getSubjects().add(index, new EduSubjectVO() {{
+                    setId(subject.getId());
+                    setSort(subject.getSort());
+                    setTitle(subject.getTitle());
+                }});
+            }
+        }));
         return subjectParents;
+    }
+
+    /**
+     * 获取科目的顺序位置
+     * @param subjects   科目集合
+     * @param subject    科目
+     * @return 位置
+     */
+    private int getSubjectSite(List<? extends EduSubjectVO> subjects, EduSubjectDO subject) {
+        for (int i = subjects.size() - 1; i >= 0; i--) {
+            if (subject.getSort() >= subjects.get(i).getSort()) {
+                return i + 1;
+            }
+        }
+        return 0;
     }
 }

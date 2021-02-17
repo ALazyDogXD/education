@@ -1,16 +1,23 @@
 package com.knife.serviceedu.domain.vo;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+
 /**
  * @author Mr_W
  * @date 2021/2/16 19:04
  * @description: 子节点类目 vo
  */
+@ApiModel(value = "二级科目")
 public class EduSubjectVO {
 
+    @ApiModelProperty(value = "ID")
     private String id;
 
+    @ApiModelProperty(value = "顺序")
     private Integer sort;
 
+    @ApiModelProperty(value = "科目标题")
     private String title;
 
     public String getId() {
