@@ -13,4 +13,10 @@ import com.knife.serviceedu.domain.entity.EduSubjectDO;
  */
 public interface EduSubjectMapper extends BaseMapper<EduSubjectDO> {
 
+    /**
+     * 获取最大的分类序号
+     * @return 最大的分类序号
+     */
+    int getMaxSort();
+
 }
