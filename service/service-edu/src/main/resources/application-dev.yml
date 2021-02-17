@@ -38,14 +38,16 @@ spring:
       connectionProperties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=5000
   #      stat-view-servlet:
   #        enabled: true
+  servlet:
+    multipart:
+      max-file-size: 100MB
+      max-request-size: 100MB
 
 mybatis-plus:
   type-aliases-package: "com.knife"
-#  type-handlers-package: "com.knife.handler.type"
   configuration:
     call-setters-on-nulls: true
     map-underscore-to-camel-case: true
-#    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
   mapper-locations: classpath*:/mapper/*.xml
   global-config:
     db-config:

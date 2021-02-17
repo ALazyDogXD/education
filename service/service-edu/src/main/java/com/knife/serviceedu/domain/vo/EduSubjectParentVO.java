@@ -1,6 +1,10 @@
 package com.knife.serviceedu.domain.vo;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -8,39 +12,11 @@ import java.util.List;
  * @date 2021/2/16 18:56
  * @description: 父节点类目 vo
  */
-public class EduSubjectParentVO {
+@ApiModel(value = "一级科目")
+public class EduSubjectParentVO extends EduSubjectVO {
 
-    private String id;
-
-    private Integer sort;
-
-    private String title;
-
+    @ApiModelProperty(value = "二级科目")
     private List<EduSubjectVO> subjects = new ArrayList<>();
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public Integer getSort() {
-        return sort;
-    }
-
-    public void setSort(Integer sort) {
-        this.sort = sort;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
 
     public List<EduSubjectVO> getSubjects() {
         return subjects;
@@ -53,10 +29,10 @@ public class EduSubjectParentVO {
     @Override
     public String toString() {
         return "EduSubjectParentVO{" +
-                "id='" + id + '\'' +
-                ", sort=" + sort +
-                ", title='" + title + '\'' +
-                ", subjects=" + subjects +
+                "id='" + getId() + '\'' +
+                ", sort=" + getSort() +
+                ", title='" + getTitle() + '\'' +
+                ", subjects=" + Arrays.toString(subjects.toArray()) +
                 '}';
     }
 }

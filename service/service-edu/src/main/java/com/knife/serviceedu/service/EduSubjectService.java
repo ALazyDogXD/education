@@ -37,6 +37,13 @@ public interface EduSubjectService extends IService<EduSubjectDO> {
     int getMaxSort();
 
     /**
+     * 获取二级学科数量
+     * @param id 一级学科 id
+     * @return 二级学科数量
+     */
+    int getLevelTwoCount(String id);
+
+    /**
      * 获取科目树
      * @return 科目树
      */
