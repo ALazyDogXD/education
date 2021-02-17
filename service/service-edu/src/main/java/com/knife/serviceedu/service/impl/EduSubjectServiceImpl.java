@@ -58,6 +58,7 @@ public class EduSubjectServiceImpl extends ServiceImpl<EduSubjectMapper, EduSubj
 
     /**
      * 检测 file 是否合法
+     *
      * @param file 文件
      * @return true 合法
      */
@@ -72,10 +73,11 @@ public class EduSubjectServiceImpl extends ServiceImpl<EduSubjectMapper, EduSubj
 
     /**
      * 导入 excel 文件
+     *
      * @param file excel 文件
      */
     private void importExcelFile(MultipartFile file) {
-        try(InputStream in = file.getInputStream()) {
+        try (InputStream in = file.getInputStream()) {
             ExcelReader excelReader = EasyExcel.read(in, ExcelSubjectData.class, SpringBeanUtil.getBean(ImportSubjectListener.class)).build();
             // 获取表单
             List<ReadSheet> readSheets = excelReader.excelExecutor().sheetList();
@@ -118,6 +120,7 @@ public class EduSubjectServiceImpl extends ServiceImpl<EduSubjectMapper, EduSubj
 
     /**
      * 构建树
+     *
      * @param subjects 科目集合
      * @return 构建树
      */
@@ -142,11 +145,7 @@ public class EduSubjectServiceImpl extends ServiceImpl<EduSubjectMapper, EduSubj
         subjects.forEach(subject -> subjectParents.forEach(pSubject -> {
             if (pSubject.getId().equals(subject.getParentId())) {
                 int index = getSubjectSite(pSubject.getSubjects(), subject);
-                pSubject.getSubjects().add(index, new EduSubjectVO() {{
-                    setId(subject.getId());
-                    setSort(subject.getSort());
-                    setTitle(subject.getTitle());
-                }});
+                pSubject.getSubjects().add(index, subject.convert());
             }
         }));
         return subjectParents;
@@ -154,8 +153,9 @@ public class EduSubjectServiceImpl extends ServiceImpl<EduSubjectMapper, EduSubj
 
     /**
      * 获取科目的顺序位置
-     * @param subjects   科目集合
-     * @param subject    科目
+     *
+     * @param subjects 科目集合
+     * @param subject  科目
      * @return 位置
      */
     private int getSubjectSite(List<? extends EduSubjectVO> subjects, EduSubjectDO subject) {

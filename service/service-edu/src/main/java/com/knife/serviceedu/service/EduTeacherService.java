@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.knife.serviceedu.domain.dto.EduTeacherDto;
 import com.knife.serviceedu.domain.entity.EduTeacherDO;
+import com.knife.serviceedu.domain.vo.EduTeacherVo;
 
 import java.util.HashMap;
 import java.util.List;
@@ -43,7 +44,7 @@ public interface EduTeacherService extends IService<EduTeacherDO> {
      * @Param * @param ids: 教师数组
      * @return: int
      **/
-    boolean deleteTeachers(List<EduTeacherDto> ids);
+    boolean deleteTeachers(List<String> ids);
 
     /**
      * @author 风烛
@@ -61,7 +62,7 @@ public interface EduTeacherService extends IService<EduTeacherDO> {
      * @Param * @param id:  教师id
      * @return: com.knife.serviceedu.domain.entity.EduTeacherDO
      **/
-    EduTeacherDO selectByTeacher(String id);
+    EduTeacherVo selectByTeacher(String id);
 
     /**
      * @author 风烛
@@ -70,16 +71,7 @@ public interface EduTeacherService extends IService<EduTeacherDO> {
      * @Param * @param ids:  教师id集合
      * @return: java.util.List<com.knife.serviceedu.domain.entity.EduTeacherDO>
      **/
-    List<EduTeacherDO> selectByTeachers(List<String> ids);
-
-    /**
-     * @author 风烛
-     * @date 2021年2月16日 21:37
-     * @Description 根据map条件进行查询
-     * @Param * @param map:  查询的map
-     * @return: java.util.List<com.knife.serviceedu.domain.entity.EduTeacherDO>
-     **/
-    List<EduTeacherDO> selectTeacherMap(HashMap map);
+    List<EduTeacherVo> selectByTeachers(List<String> ids);
 
     /**
      * @author 风烛
@@ -88,7 +80,7 @@ public interface EduTeacherService extends IService<EduTeacherDO> {
      * @Param * @param page:  分页数据
      * @return: com.baomidou.mybatisplus.core.metadata.IPage<com.knife.serviceedu.domain.entity.EduTeacherDO>
      **/
-    IPage<EduTeacherDO> selectTeacherPage(Page page);
+    IPage<EduTeacherVo> selectTeacherPage(Page page);
 
 
 }

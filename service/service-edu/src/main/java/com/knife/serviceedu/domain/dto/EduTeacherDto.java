@@ -3,6 +3,9 @@ package com.knife.serviceedu.domain.dto;
 import com.knife.servicebase.entity.ObjectConvert;
 import com.knife.serviceedu.domain.entity.EduTeacherDO;
 
+import javax.validation.constraints.NotBlank;
+import java.time.LocalDateTime;
+
 /**
  * @PackageName：com.knife.serviceedu.domain.dto
  * @ClassName：EduTeahcerDto
@@ -11,11 +14,40 @@ import com.knife.serviceedu.domain.entity.EduTeacherDO;
  * @date：2021-02-17 11:04
  */
 public class EduTeacherDto  extends ObjectConvert<EduTeacherDO> {
+    private String id;
+    @NotBlank(message = "教师姓名不可为空")
     private String name;
     private String intro;
     private String career;
     private Integer level;
     private String avatar;
+    private LocalDateTime gmtCreate;
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public LocalDateTime getGmtCreate() {
+        return gmtCreate;
+    }
+
+    public void setGmtCreate(LocalDateTime gmtCreate) {
+        this.gmtCreate = gmtCreate;
+    }
+
+    public LocalDateTime getGmtModified() {
+        return gmtModified;
+    }
+
+    public void setGmtModified(LocalDateTime gmtModified) {
+        this.gmtModified = gmtModified;
+    }
+
+    private LocalDateTime gmtModified;
 
 
     public String getName() {

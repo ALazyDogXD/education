@@ -8,6 +8,7 @@ import com.knife.commonutil.util.ResponseBean;
 import com.knife.servicebase.entity.ServiceException;
 import com.knife.serviceedu.domain.dto.EduTeacherDto;
 import com.knife.serviceedu.domain.entity.EduTeacherDO;
+import com.knife.serviceedu.domain.vo.EduTeacherVo;
 import com.knife.serviceedu.mapper.EduTeacherMapper;
 import com.knife.serviceedu.service.EduTeacherService;
 import org.slf4j.Logger;
@@ -65,11 +66,12 @@ public class EduTeacherServiceImpl extends ServiceImpl<EduTeacherMapper, EduTeac
     }
 
     @Override
-    public boolean deleteTeachers(List<EduTeacherDto> ids) {
+    public boolean deleteTeachers(List<String> ids) {
         List<EduTeacherDO> li = new ArrayList<EduTeacherDO>();
-        for(EduTeacherDto e : ids){
-            EduTeacherDO convert = e.convert();
-            convert.setDeleted(false);
+        for(String e : ids){
+            EduTeacherDO convert = new EduTeacherDO();
+            convert.setId(e);
+            convert.setDeleted(true);
             li.add(convert);
         }
         boolean result = saveOrUpdateBatch(li);
@@ -82,25 +84,26 @@ public class EduTeacherServiceImpl extends ServiceImpl<EduTeacherMapper, EduTeac
 
     @Override
     public boolean updateTeacherById(EduTeacherDto teacher) {
-        EduTeacherDO teachers = new EduTeacherDO();
-        teachers.setName(teacher.getName());
-        teachers.setIntro(teacher.getIntro());
-        teachers.setCareer(teacher.getCareer());
-        teachers.setLevel(teacher.getLevel());
-        teachers.setAvatar(teacher.getAvatar());
-        teachers.setDeleted(false);
-        teachers.setGmtModified(LocalDateTime.now());
-        int result = baseMapper.updateById(teachers);
+        int result = baseMapper.updateById(new EduTeacherDO() {{
+            setId(teacher.getId());
+            setName(teacher.getName());
+            setIntro(teacher.getIntro());
+            setCareer(teacher.getCareer());
+            setLevel(teacher.getLevel());
+            setAvatar(teacher.getAvatar());
+            setDeleted(false);
+            setGmtModified(LocalDateTime.now());
+        }});
         if(result < 0){
-            LOGGER.error("教师删除失败");
-            throw new ServiceException("删除教师失败");
+            LOGGER.error("教师信息修改失败");
+            throw new ServiceException("修改教师信息失败");
         }
         return true;
     }
 
     @Override
-    public EduTeacherDO selectByTeacher(String id) {
-        EduTeacherDO result =  baseMapper.selectById(id);
+    public EduTeacherVo selectByTeacher(String id) {
+        EduTeacherVo result =  baseMapper.selectById(id).convert();
         if (result != null) {
             return result;
         }
@@ -109,32 +112,34 @@ public class EduTeacherServiceImpl extends ServiceImpl<EduTeacherMapper, EduTeac
     }
 
     @Override
-    public List<EduTeacherDO> selectByTeachers(List<String> ids) {
+    public List<EduTeacherVo> selectByTeachers(List<String> ids) {
         List<EduTeacherDO> result = baseMapper.selectBatchIds(ids);
         if (result != null) {
-            return result;
+            List<EduTeacherVo> li = new ArrayList<EduTeacherVo>();
+            for(EduTeacherDO e : result){
+                EduTeacherVo convert = e.convert();
+                li.add(convert);
+            }
+            return li;
         }
         LOGGER.debug("查找一群教师--没有符合条件的教师");
         return null;
     }
 
     @Override
-    public List<EduTeacherDO> selectTeacherMap(HashMap map) {
-        List<EduTeacherDO> result = baseMapper.selectByMap(map);
-        if (result != null) {
-            return result;
-        }
-        LOGGER.debug("根据map查询教师--没有符合条件的教师");
-        return null;
-    }
-
-    @Override
-    public IPage<EduTeacherDO> selectTeacherPage(Page page) {
+    public IPage<EduTeacherVo> selectTeacherPage(Page page) {
         IPage<EduTeacherDO> result = baseMapper.selectPage(page, null);
+        IPage<EduTeacherVo> li = new Page<EduTeacherVo>();
+        List<EduTeacherVo> temp = new ArrayList<>();
         if (result != null) {
-            return result;
+            for(EduTeacherDO e : result.getRecords()){
+                EduTeacherVo convert = e.convert();
+                temp.add(convert);
+            }
+            li.setRecords(temp);
+            return li;
         }
-        LOGGER.debug("根据map查询教师--没有符合条件的教师");
+        LOGGER.debug("教师分页没有信息");
         return null;
     }
 
