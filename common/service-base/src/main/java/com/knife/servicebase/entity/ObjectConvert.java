@@ -6,6 +6,7 @@ import org.springframework.beans.BeanUtils;
 
 /**
  * @author Mr_W
+ * 对象转换
  */
 public class ObjectConvert<T> {
 	

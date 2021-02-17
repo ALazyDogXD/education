@@ -3,6 +3,12 @@ server:
     context-path: /edu
   port: 8001
 
+minio:
+  endpoint: 123.57.213.188
+  port: 9000
+  accessKey: AKIAIOSFODNN7EXAMPLE
+  secretKey: wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY
+
 spring:
   application:
     name: service-edu

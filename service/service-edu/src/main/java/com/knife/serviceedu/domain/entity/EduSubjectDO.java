@@ -1,8 +1,12 @@
 package com.knife.serviceedu.domain.entity;
 
 import com.baomidou.mybatisplus.annotation.TableName;
+
 import java.time.LocalDateTime;
 import java.io.Serializable;
+
+import com.knife.servicebase.entity.ObjectConvert;
+import com.knife.serviceedu.domain.vo.EduSubjectVO;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
@@ -15,8 +19,8 @@ import io.swagger.annotations.ApiModelProperty;
  * @since 2021-02-16
  */
 @TableName("edu_subject")
-@ApiModel(value="EduSubjectDO对象", description="课程科目")
-public class EduSubjectDO implements Serializable {
+@ApiModel(value = "EduSubjectDO对象", description = "课程科目")
+public class EduSubjectDO extends ObjectConvert<EduSubjectVO> implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -46,6 +50,7 @@ public class EduSubjectDO implements Serializable {
         this.id = id;
         return this;
     }
+
     public String getTitle() {
         return title;
     }
@@ -54,6 +59,7 @@ public class EduSubjectDO implements Serializable {
         this.title = title;
         return this;
     }
+
     public String getParentId() {
         return parentId;
     }
@@ -62,6 +68,7 @@ public class EduSubjectDO implements Serializable {
         this.parentId = parentId;
         return this;
     }
+
     public Integer getSort() {
         return sort;
     }
@@ -70,6 +77,7 @@ public class EduSubjectDO implements Serializable {
         this.sort = sort;
         return this;
     }
+
     public LocalDateTime getGmtCreate() {
         return gmtCreate;
     }
@@ -78,6 +86,7 @@ public class EduSubjectDO implements Serializable {
         this.gmtCreate = gmtCreate;
         return this;
     }
+
     public LocalDateTime getGmtModified() {
         return gmtModified;
     }
@@ -90,12 +99,12 @@ public class EduSubjectDO implements Serializable {
     @Override
     public String toString() {
         return "EduSubjectDO{" +
-            "id=" + id +
-            ", title=" + title +
-            ", parentId=" + parentId +
-            ", sort=" + sort +
-            ", gmtCreate=" + gmtCreate +
-            ", gmtModified=" + gmtModified +
-        "}";
+                "id=" + id +
+                ", title=" + title +
+                ", parentId=" + parentId +
+                ", sort=" + sort +
+                ", gmtCreate=" + gmtCreate +
+                ", gmtModified=" + gmtModified +
+                "}";
     }
 }
