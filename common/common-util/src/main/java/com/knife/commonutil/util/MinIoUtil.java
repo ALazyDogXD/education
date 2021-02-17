@@ -4,7 +4,9 @@ import io.minio.MinioClient;
 import io.minio.Result;
 import io.minio.errors.*;
 import io.minio.messages.Item;
+import org.apache.http.entity.ContentType;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 import org.xmlpull.v1.XmlPullParserException;
 
 import java.io.IOException;
@@ -18,34 +20,35 @@ import java.util.Objects;
  * @date 2021/2/17 15:05
  * @description: MinIo 工具类
  */
+@Component
 public class MinIoUtil {
 
     private static MinioClient MINIO_CLIENT;
 
     private static String endpoint;
 
-    private static String port;
+    private static int port;
 
     private static String accessKey;
 
     private static String secretKey;
 
-    @Value("minio.endpoint")
+    @Value("${minio.endpoint}")
     public void setEndpoint(String endpoint) {
         MinIoUtil.endpoint = endpoint;
     }
 
-    @Value("minio.port")
-    public void setPort(String port) {
+    @Value("${minio.port}")
+    public void setPort(int port) {
         MinIoUtil.port = port;
     }
 
-    @Value("minio.accessKey")
+    @Value("${minio.accessKey}")
     public void setAccessKey(String accessKey) {
         MinIoUtil.accessKey = accessKey;
     }
 
-    @Value("minio.secretKey")
+    @Value("${minio.secretKey}")
     public void setSecretKey(String secretKey) {
         MinIoUtil.secretKey = secretKey;
     }
@@ -70,7 +73,7 @@ public class MinIoUtil {
      * 上传
      *
      * @param bucketName 桶名称
-     * @param fileName   文件名称
+     * @param fileName   文件名称(含路径)
      * @param in         文件流
      * @throws IOException                连接异常
      * @throws InternalException          内部异常
@@ -88,10 +91,26 @@ public class MinIoUtil {
     }
 
     /**
+     * 上传
+     *
+     * @param bucketName  桶名称
+     * @param fileName    文件名称(含路径)
+     * @param in          文件流
+     * @param contentType 媒体格式
+     */
+    public static void upload(String bucketName, String fileName, InputStream in, String contentType) throws IOException, InvalidKeyException, NoSuchAlgorithmException, InsufficientDataException, InternalException, NoResponseException, InvalidBucketNameException, XmlPullParserException, ErrorResponseException, RegionConflictException, InvalidArgumentException, InvalidPortException, InvalidEndpointException {
+        MinioClient minioClient = getMinioClient();
+        if (!minioClient.bucketExists(bucketName)) {
+            minioClient.makeBucket(bucketName);
+        }
+        minioClient.putObject(bucketName, fileName, in, in.available(), contentType);
+    }
+
+    /**
      * 下载
      *
      * @param bucketName 桶名称
-     * @param fileName   文件名
+     * @param fileName   文件名称(含路径)
      * @return 文件流
      */
     public static InputStream download(String bucketName, String fileName) throws InvalidPortException, InvalidEndpointException, IOException, XmlPullParserException, NoSuchAlgorithmException, InvalidKeyException, ErrorResponseException, NoResponseException, InvalidBucketNameException, InsufficientDataException, InternalException, InvalidArgumentException {
@@ -107,7 +126,7 @@ public class MinIoUtil {
      * 文件是否存在
      *
      * @param bucketName 桶名称
-     * @param fileName   文件名
+     * @param fileName   文件名称(含路径)
      * @return true 存在
      */
     public static boolean fileIsExists(String bucketName, String fileName) throws IOException, InvalidKeyException, NoSuchAlgorithmException, InsufficientDataException, InternalException, NoResponseException, InvalidBucketNameException, XmlPullParserException, ErrorResponseException, InvalidPortException, InvalidEndpointException {

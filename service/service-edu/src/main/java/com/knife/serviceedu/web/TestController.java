@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 
 /**
@@ -29,7 +30,7 @@ public class TestController {
 
     @GetMapping("/t")
     @ApiOperation("测试接口")
-    public String test(@RequestParam("test") @ApiParam("测试") @NotBlank String test) {
+    public String test(@RequestParam("test") @ApiParam("测试") @NotBlank(message = "测试不能为空") @Validated String test) {
         return "test";
     }
 

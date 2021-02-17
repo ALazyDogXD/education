@@ -1,10 +1,8 @@
 package com.knife.serviceedu.service.impl;
 
-import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.knife.commonutil.util.ResponseBean;
 import com.knife.servicebase.entity.ServiceException;
 import com.knife.serviceedu.domain.dto.EduTeacherDto;
 import com.knife.serviceedu.domain.entity.EduTeacherDO;
@@ -17,7 +15,6 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -67,7 +64,7 @@ public class EduTeacherServiceImpl extends ServiceImpl<EduTeacherMapper, EduTeac
 
     @Override
     public boolean deleteTeachers(List<String> ids) {
-        List<EduTeacherDO> li = new ArrayList<EduTeacherDO>();
+        List<EduTeacherDO> li = new ArrayList<>();
         for(String e : ids){
             EduTeacherDO convert = new EduTeacherDO();
             convert.setId(e);
@@ -115,7 +112,7 @@ public class EduTeacherServiceImpl extends ServiceImpl<EduTeacherMapper, EduTeac
     public List<EduTeacherVo> selectByTeachers(List<String> ids) {
         List<EduTeacherDO> result = baseMapper.selectBatchIds(ids);
         if (result != null) {
-            List<EduTeacherVo> li = new ArrayList<EduTeacherVo>();
+            List<EduTeacherVo> li = new ArrayList<>();
             for(EduTeacherDO e : result){
                 EduTeacherVo convert = e.convert();
                 li.add(convert);
@@ -127,9 +124,9 @@ public class EduTeacherServiceImpl extends ServiceImpl<EduTeacherMapper, EduTeac
     }
 
     @Override
-    public IPage<EduTeacherVo> selectTeacherPage(Page page) {
+    public IPage<EduTeacherVo> selectTeacherPage(Page<EduTeacherDO> page) {
         IPage<EduTeacherDO> result = baseMapper.selectPage(page, null);
-        IPage<EduTeacherVo> li = new Page<EduTeacherVo>();
+        IPage<EduTeacherVo> li = new Page<>();
         List<EduTeacherVo> temp = new ArrayList<>();
         if (result != null) {
             for(EduTeacherDO e : result.getRecords()){

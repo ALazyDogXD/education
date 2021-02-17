@@ -1,6 +1,5 @@
-package com.knife.serviceedu.web.admin;
+package com.knife.serviceedu.web;
 
-import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.knife.commonutil.util.ResponseBean;
 import com.knife.serviceedu.domain.dto.EduTeacherDto;
@@ -15,15 +14,11 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
-import java.util.HashMap;
 import java.util.List;
 
 /**
- * @PackageName：com.knife.serviceedu.web.admin
- * @ClassName：TeacherAdminController
- * @Description：//TODO
- * @author：风烛
- * @date：2021-02-17 10:57
+ * @author 风烛
+ * @date 2021-02-17 10:57
  */
 @Api(tags = "教师管理接口")
 @RestController
@@ -88,7 +83,7 @@ public class TeacherAdminController {
     @ApiOperation("分页查看教师信息")
     public ResponseBean selectTeacherPage ( @RequestParam("pageCount") @ApiParam("当前页数") @NotBlank int pageCount,
                                             @RequestParam("pageNum") @ApiParam("页面数据量") @NotBlank int pageNum){
-        Page<EduTeacherDO> page = new Page(pageCount, pageNum);
+        Page<EduTeacherDO> page = new Page<>(pageCount, pageNum);
         return ResponseBean.succ("查找成功", eduTeacherService.selectTeacherPage(page));
     }
 }

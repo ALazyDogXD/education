@@ -1,4 +1,4 @@
-package com.knife.serviceedu.web.admin;
+package com.knife.serviceedu.web;
 
 import com.knife.commonutil.util.ResponseBean;
 import com.knife.serviceedu.service.EduSubjectService;
@@ -18,21 +18,21 @@ import javax.annotation.Resource;
 /**
  * @author Mr_W
  * @date 2021/2/16 15:48
- * @description: 课程管理接口
+ * @description: 学科管理接口
  */
-@Api(tags = "课程管理接口")
+@Api(tags = "学科管理接口")
 @RestController
 @RequestMapping("subject")
-public class SubjectAdminController {
+public class SubjectController {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(SubjectAdminController.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(SubjectController.class);
 
     @Resource
     private EduSubjectService eduSubjectService;
 
     @PostMapping
     @ApiOperation("导入科目")
-    public ResponseBean addSubject(@ApiParam("excel文件") MultipartFile file) {
+    public ResponseBean addSubject(MultipartFile file) {
         eduSubjectService.importSubjectFile(file);
         return ResponseBean.succ("科目导入成功");
     }

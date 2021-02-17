@@ -6,6 +6,8 @@ import com.knife.serviceedu.mapper.EduCourseDescriptionMapper;
 import com.knife.serviceedu.service.EduCourseDescriptionService;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+
 /**
  * <p>
  * 课程简介 服务实现类
@@ -16,5 +18,15 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class EduCourseDescriptionServiceImpl extends ServiceImpl<EduCourseDescriptionMapper, EduCourseDescriptionDO> implements EduCourseDescriptionService {
+
+    @Override
+    public void add(String courseId, String desc) {
+        save(new EduCourseDescriptionDO() {{
+            setId(courseId);
+            setDescription(desc);
+            setGmtCreate(LocalDateTime.now());
+            setGmtModified(LocalDateTime.now());
+        }});
+    }
 
 }
