@@ -1,5 +1,10 @@
 package com.knife.serviceedu.service.impl;
 
+import cn.hutool.core.bean.BeanUtil;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.knife.commonutil.exception.EmptyImageException;
 import com.knife.commonutil.exception.FileTypeException;
@@ -10,12 +15,14 @@ import com.knife.serviceedu.constant.EduConstant;
 import com.knife.serviceedu.domain.dto.EduCourseDTO;
 import com.knife.serviceedu.domain.entity.EduCourseDO;
 import com.knife.serviceedu.domain.entity.EduSubjectDO;
+import com.knife.serviceedu.domain.vo.EduCourseVO;
 import com.knife.serviceedu.mapper.EduCourseMapper;
 import com.knife.serviceedu.service.EduCourseDescriptionService;
 import com.knife.serviceedu.service.EduCourseService;
 import com.knife.serviceedu.service.EduSubjectService;
 import com.knife.serviceedu.service.EduTeacherService;
 import io.minio.errors.*;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -29,6 +36,7 @@ import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.time.LocalDateTime;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 import static org.slf4j.LoggerFactory.getLogger;
 
@@ -120,6 +128,7 @@ public class EduCourseServiceImpl extends ServiceImpl<EduCourseMapper, EduCourse
 
     /**
      * 获取图片文件媒体格式
+     *
      * @param cover 图片文件
      * @return 媒体格式
      */
@@ -139,6 +148,34 @@ public class EduCourseServiceImpl extends ServiceImpl<EduCourseMapper, EduCourse
             LOGGER.error("文件类型错误", e);
             throw new ServiceException("文件类型错误");
         }
+    }
+
+    @Override
+    public IPage<EduCourseVO> getList(int page, int size, String order) {
+        IPage<EduCourseDO> courses = baseMapper.selectPage(new Page<>(page, size), new QueryWrapper<EduCourseDO>()
+                .eq("status", EduConstant.COURSE_NORMAL)
+                .eq("is_deleted", false)
+                .orderByDesc(StringUtils.isNotBlank(order), order));
+        return buildPage(courses);
+    }
+
+    /**
+     * 获取 vo 分页数据
+     * @param courses do 分页数据
+     * @return vo 分页数据
+     */
+    private IPage<EduCourseVO> buildPage(IPage<EduCourseDO> courses) {
+        IPage<EduCourseVO> courseViews = new Page<>();
+
+        BeanUtil.copyProperties(courses, courseViews);
+
+        courseViews.setRecords(courses.getRecords().stream().map(course -> {
+            EduCourseVO convert = course.convert();
+            convert.setDescription(eduCourseDescriptionService.getById(course.getId()).getDescription());
+            return convert;
+        }).collect(Collectors.toList()));
+
+        return courseViews;
     }
 
 }
