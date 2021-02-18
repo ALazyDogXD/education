@@ -1,7 +1,6 @@
 package com.knife.serviceedu.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -11,17 +10,13 @@ import com.knife.commonutil.exception.FileTypeException;
 import com.knife.commonutil.exception.ImageSizeOutOfRangeException;
 import com.knife.commonutil.util.MinIoUtil;
 import com.knife.servicebase.entity.ServiceException;
-import com.knife.serviceedu.constant.EduConstant;
 import com.knife.serviceedu.domain.dto.EduCourseDTO;
 import com.knife.serviceedu.domain.entity.EduCourseDO;
 import com.knife.serviceedu.domain.entity.EduCourseDescriptionDO;
 import com.knife.serviceedu.domain.entity.EduSubjectDO;
 import com.knife.serviceedu.domain.vo.EduCourseVO;
 import com.knife.serviceedu.mapper.EduCourseMapper;
-import com.knife.serviceedu.service.EduCourseDescriptionService;
-import com.knife.serviceedu.service.EduCourseService;
-import com.knife.serviceedu.service.EduSubjectService;
-import com.knife.serviceedu.service.EduTeacherService;
+import com.knife.serviceedu.service.*;
 import io.minio.errors.*;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -77,6 +72,12 @@ public class EduCourseServiceImpl extends ServiceImpl<EduCourseMapper, EduCourse
 
     @Resource
     private EduTeacherService eduTeacherService;
+
+    @Resource
+    private EduVideoService eduVideoService;
+
+    @Resource
+    private EduChapterService eduChapterService;
 
     @Override
     @Transactional(rollbackFor = Exception.class)
@@ -165,6 +166,7 @@ public class EduCourseServiceImpl extends ServiceImpl<EduCourseMapper, EduCourse
 
     /**
      * 获取 vo 分页数据
+     *
      * @param courses do 分页数据
      * @return vo 分页数据
      */
@@ -207,8 +209,9 @@ public class EduCourseServiceImpl extends ServiceImpl<EduCourseMapper, EduCourse
 
     /**
      * 更新封面
-     * @param cover 封面文件
-     * @param path 新封面文件路径
+     *
+     * @param cover   封面文件
+     * @param path    新封面文件路径
      * @param oldPath 旧封面文件路径
      * @return 更新后的路径
      */
@@ -230,5 +233,21 @@ public class EduCourseServiceImpl extends ServiceImpl<EduCourseMapper, EduCourse
             setId(id);
             setStatus(status ? COURSE_NORMAL : COURSE_DRAFT);
         }}).collect(Collectors.toList()));
+    }
+
+    @Override
+    public void remove(List<String> ids) {
+        checkIdsBeforeRemove(ids);
+        baseMapper.deleteBatchIds(ids);
+    }
+
+    /**
+     * 检查 id 集合
+     * @param ids id 集合
+     */
+    private void checkIdsBeforeRemove(List<String> ids) {
+        if (!ids.stream().allMatch(id -> eduChapterService.getByChapterId(id).isEmpty() && eduVideoService.getByCourseId(id).isEmpty())) {
+            throw new ServiceException("不可删除含有章节或视频的课程");
+        }
     }
 }

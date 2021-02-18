@@ -52,7 +52,7 @@ public class CourseController {
         return ResponseBean.succ(eduCourseService.getList(page, size, order));
     }
 
-    @PutMapping()
+    @PutMapping
     @ApiOperation("修改课程")
     public ResponseBean update(@Validated(UpdateDataTransferObject.class) EduCourseDTO course) {
         LOGGER.debug("课程: [{}]", course);
@@ -62,10 +62,18 @@ public class CourseController {
 
     @PutMapping("status")
     @ApiOperation("修改课程状态")
-    public ResponseBean updateStatus(@RequestBody EduCourseStatusDTO course) {
+    public ResponseBean updateStatus(@RequestBody @Validated EduCourseStatusDTO course) {
         LOGGER.debug("课程 id: [{}], 状态: [{}]", Arrays.toString(course.getIds().toArray()), course.getStatus());
         eduCourseService.updateStatus(course.getIds(), course.getStatus());
         return ResponseBean.succ("修改成功");
+    }
+
+    @DeleteMapping
+    @ApiOperation("删除课程")
+    public ResponseBean updateStatus(@RequestParam("ids") List<String> ids) {
+        LOGGER.debug("课程 id: [{}]", Arrays.toString(ids.toArray()));
+        eduCourseService.remove(ids);
+        return ResponseBean.succ("删除成功");
     }
 
 }

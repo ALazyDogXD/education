@@ -39,15 +39,24 @@ public interface EduCourseService extends IService<EduCourseDO> {
 
     /**
      * 更新课程
+     *
      * @param course 课程入参
      */
     void update(EduCourseDTO course);
 
     /**
      * 修改课程状态
-     * @param ids 课程 id 集合
+     *
+     * @param ids    课程 id 集合
      * @param status 课程状态
      */
     void updateStatus(List<String> ids, Boolean status);
+
+    /**
+     * 删除课程
+     *
+     * @param ids 课程 id 集合
+     */
+    void remove(List<String> ids);
 
 }
