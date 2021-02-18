@@ -1,5 +1,6 @@
 package com.knife.serviceedu.domain.dto;
 
+import com.knife.servicebase.annotation.SetNull;
 import com.knife.servicebase.entity.ObjectConvert;
 import com.knife.serviceedu.domain.entity.EduCourseDO;
 import com.knife.serviceedu.strategy.CreateDataTransferObject;
@@ -21,7 +22,8 @@ import java.math.BigDecimal;
 @ApiModel("课程实体")
 public class EduCourseDTO extends ObjectConvert<EduCourseDO> {
 
-    @NotBlank(message = "课程讲师ID不可为空", groups = UpdateDataTransferObject.class)
+    @SetNull(group = CreateDataTransferObject.class)
+    @NotBlank(message = "课程ID不可为空", groups = UpdateDataTransferObject.class)
     @ApiModelProperty(value = "课程ID")
     private String id;
 
@@ -58,6 +60,14 @@ public class EduCourseDTO extends ObjectConvert<EduCourseDO> {
     @NotBlank(message = "课程简介不可为空", groups = CreateDataTransferObject.class)
     @ApiModelProperty("课程简介")
     private String description;
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
 
     public String getTeacherId() {
         return teacherId;

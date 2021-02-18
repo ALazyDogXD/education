@@ -174,7 +174,18 @@ public class MinIoUtil {
             throw new FileTypeException("上传的文件不是图片");
         }
         String suffix = Objects.requireNonNull(image.getOriginalFilename()).substring(image.getOriginalFilename().lastIndexOf(".") + 1);
-        return "image/" + ("jpg".equals(suffix) ? "jpeg" : suffix);
+        return "image/" + ("jpg".equals(suffix) || "jfif".equals(suffix) ? "jpeg" : suffix);
+    }
+
+    /**
+     * 删除文件
+     *
+     * @param bucketName 桶名称
+     * @param filePath   文件路径
+     */
+    public static void removeFile(String bucketName, String filePath) throws InvalidPortException, InvalidEndpointException, IOException, InvalidKeyException, NoSuchAlgorithmException, InsufficientDataException, InternalException, NoResponseException, InvalidBucketNameException, XmlPullParserException, ErrorResponseException {
+        MinioClient minioClient = getMinioClient();
+        minioClient.removeObject(bucketName, filePath);
     }
 
 }

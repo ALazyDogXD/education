@@ -4,6 +4,9 @@ import java.math.BigDecimal;
 import com.baomidou.mybatisplus.annotation.TableName;
 import java.time.LocalDateTime;
 import java.io.Serializable;
+
+import com.knife.servicebase.entity.ObjectConvert;
+import com.knife.serviceedu.domain.vo.EduCourseVO;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
@@ -17,7 +20,7 @@ import io.swagger.annotations.ApiModelProperty;
  */
 @TableName("edu_course")
 @ApiModel(value="EduCourseDO对象", description="课程")
-public class EduCourseDO implements Serializable {
+public class EduCourseDO extends ObjectConvert<EduCourseVO> implements Serializable {
 
     private static final long serialVersionUID = 1L;
 

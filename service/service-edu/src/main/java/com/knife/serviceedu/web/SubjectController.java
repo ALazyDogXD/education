@@ -32,7 +32,7 @@ public class SubjectController {
 
     @PostMapping
     @ApiOperation("导入科目")
-    public ResponseBean addSubject(MultipartFile file) {
+    public ResponseBean add(MultipartFile file) {
         eduSubjectService.importSubjectFile(file);
         return ResponseBean.succ("科目导入成功");
     }
