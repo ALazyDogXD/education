@@ -3,7 +3,6 @@ package com.knife.serviceedu.web;
 import com.knife.commonutil.util.ResponseBean;
 import com.knife.serviceedu.domain.dto.EduCourseDTO;
 import com.knife.serviceedu.domain.dto.EduCourseStatusDTO;
-import com.knife.serviceedu.domain.entity.EduSubjectDO;
 import com.knife.serviceedu.service.EduCourseService;
 import com.knife.serviceedu.strategy.CreateDataTransferObject;
 import com.knife.serviceedu.strategy.UpdateDataTransferObject;
@@ -14,7 +13,6 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
-
 import java.util.Arrays;
 import java.util.List;
 

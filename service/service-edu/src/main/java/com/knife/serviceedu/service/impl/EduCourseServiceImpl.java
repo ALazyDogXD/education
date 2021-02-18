@@ -243,6 +243,7 @@ public class EduCourseServiceImpl extends ServiceImpl<EduCourseMapper, EduCourse
 
     /**
      * 检查 id 集合
+     *
      * @param ids id 集合
      */
     private void checkIdsBeforeRemove(List<String> ids) {

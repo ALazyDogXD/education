@@ -9,7 +9,6 @@ import com.knife.commonutil.exception.ImageSizeOutOfRangeException;
 import com.knife.commonutil.util.MinIoUtil;
 import com.knife.servicebase.entity.ServiceException;
 import com.knife.serviceedu.domain.dto.EduTeacherDTO;
-import com.knife.serviceedu.domain.entity.EduCourseDO;
 import com.knife.serviceedu.domain.entity.EduTeacherDO;
 import com.knife.serviceedu.domain.vo.EduTeacherVO;
 import com.knife.serviceedu.mapper.EduTeacherMapper;
@@ -151,7 +150,6 @@ public class EduTeacherServiceImpl extends ServiceImpl<EduTeacherMapper, EduTeac
      * @param course 教师类
      * @param cover  图片信息
      * @param choice 判断是新增还是修改
-     * @return void
      */
     private void addCoverPath(EduTeacherDO course, MultipartFile cover, boolean choice) {
         try {

@@ -13,7 +13,7 @@ import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 @Configuration
 public class ThreadPoolConfiguration {
 
-	@Value("spring.application.name")
+	@Value("${spring.application.name}")
 	private String applicationName;
 
 	@Bean("threadPoolTaskExecutor")
