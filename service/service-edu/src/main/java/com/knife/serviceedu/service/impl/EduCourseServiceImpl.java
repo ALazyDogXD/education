@@ -14,6 +14,7 @@ import com.knife.servicebase.entity.ServiceException;
 import com.knife.serviceedu.constant.EduConstant;
 import com.knife.serviceedu.domain.dto.EduCourseDTO;
 import com.knife.serviceedu.domain.entity.EduCourseDO;
+import com.knife.serviceedu.domain.entity.EduCourseDescriptionDO;
 import com.knife.serviceedu.domain.entity.EduSubjectDO;
 import com.knife.serviceedu.domain.vo.EduCourseVO;
 import com.knife.serviceedu.mapper.EduCourseMapper;
@@ -35,9 +36,12 @@ import java.io.IOException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
+import static com.knife.serviceedu.constant.EduConstant.COURSE_DRAFT;
+import static com.knife.serviceedu.constant.EduConstant.COURSE_NORMAL;
 import static org.slf4j.LoggerFactory.getLogger;
 
 /**
@@ -76,7 +80,7 @@ public class EduCourseServiceImpl extends ServiceImpl<EduCourseMapper, EduCourse
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public void addCourse(MultipartFile cover, EduCourseDTO course) {
+    public void add(MultipartFile cover, EduCourseDTO course) {
         checkCourse(course);
         EduCourseDO courseConverted = course.convert();
         save(courseConverted
@@ -153,7 +157,7 @@ public class EduCourseServiceImpl extends ServiceImpl<EduCourseMapper, EduCourse
     @Override
     public IPage<EduCourseVO> getList(int page, int size, String order) {
         IPage<EduCourseDO> courses = baseMapper.selectPage(new Page<>(page, size), new QueryWrapper<EduCourseDO>()
-                .eq("status", EduConstant.COURSE_NORMAL)
+                .eq("status", COURSE_NORMAL)
                 .eq("is_deleted", false)
                 .orderByDesc(StringUtils.isNotBlank(order), order));
         return buildPage(courses);
@@ -178,4 +182,53 @@ public class EduCourseServiceImpl extends ServiceImpl<EduCourseMapper, EduCourse
         return courseViews;
     }
 
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public void update(EduCourseDTO course) {
+        checkCourse(course);
+        String cover = null;
+        // 更新封面
+        if (Objects.nonNull(course.getCover())) {
+            String oldCoverPath = getById(course.getId()).getCover();
+            oldCoverPath = getById(course.getId()).getCover().substring(oldCoverPath.indexOf(bucketName) + bucketName.length());
+            cover = updateCover(course.getCover(), coverPath + course.getId() + course.getCover().getOriginalFilename(), oldCoverPath);
+        }
+        // 更新课程描述
+        if (StringUtils.isNotBlank(course.getDescription())) {
+            eduCourseDescriptionService.updateById(new EduCourseDescriptionDO() {{
+                setId(course.getId());
+                setDescription(course.getDescription());
+                setGmtModified(LocalDateTime.now());
+            }});
+        }
+        // 更新课程信息
+        updateById(course.convert().setCover(cover));
+    }
+
+    /**
+     * 更新封面
+     * @param cover 封面文件
+     * @param path 新封面文件路径
+     * @param oldPath 旧封面文件路径
+     * @return 更新后的路径
+     */
+    private String updateCover(MultipartFile cover, String path, String oldPath) {
+        String contentType = getImageContentType(cover);
+        try {
+            MinIoUtil.removeFile(bucketName, oldPath);
+            MinIoUtil.upload(bucketName, path, cover.getInputStream(), contentType);
+            return endpoint + ":" + port + "/" + bucketName + path;
+        } catch (IOException | InvalidEndpointException | InvalidPortException | InvalidKeyException | NoSuchAlgorithmException | InsufficientDataException | InternalException | NoResponseException | InvalidBucketNameException | XmlPullParserException | ErrorResponseException | RegionConflictException | InvalidArgumentException e) {
+            LOGGER.error("图片更新失败", e);
+            throw new ServiceException("服务器异常, 请稍后再试");
+        }
+    }
+
+    @Override
+    public void updateStatus(List<String> ids, Boolean status) {
+        updateBatchById(ids.stream().map(id -> new EduCourseDO() {{
+            setId(id);
+            setStatus(status ? COURSE_NORMAL : COURSE_DRAFT);
+        }}).collect(Collectors.toList()));
+    }
 }

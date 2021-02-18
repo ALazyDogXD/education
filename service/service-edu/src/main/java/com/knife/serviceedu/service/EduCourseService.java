@@ -25,7 +25,7 @@ public interface EduCourseService extends IService<EduCourseDO> {
      * @param cover  课程封面
      * @param course 课程 dto
      */
-    void addCourse(MultipartFile cover, EduCourseDTO course);
+    void add(MultipartFile cover, EduCourseDTO course);
 
     /**
      * 获取分页数据
@@ -36,5 +36,18 @@ public interface EduCourseService extends IService<EduCourseDO> {
      * @return 分页数据
      */
     IPage<EduCourseVO> getList(int page, int size, String order);
+
+    /**
+     * 更新课程
+     * @param course 课程入参
+     */
+    void update(EduCourseDTO course);
+
+    /**
+     * 修改课程状态
+     * @param ids 课程 id 集合
+     * @param status 课程状态
+     */
+    void updateStatus(List<String> ids, Boolean status);
 
 }
