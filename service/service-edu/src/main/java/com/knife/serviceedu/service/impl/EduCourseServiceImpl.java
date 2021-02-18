@@ -1,6 +1,9 @@
 package com.knife.serviceedu.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.knife.commonutil.exception.EmptyImageException;
+import com.knife.commonutil.exception.FileTypeException;
+import com.knife.commonutil.exception.ImageSizeOutOfRangeException;
 import com.knife.commonutil.util.MinIoUtil;
 import com.knife.servicebase.entity.ServiceException;
 import com.knife.serviceedu.constant.EduConstant;
@@ -12,7 +15,6 @@ import com.knife.serviceedu.service.EduCourseDescriptionService;
 import com.knife.serviceedu.service.EduCourseService;
 import com.knife.serviceedu.service.EduSubjectService;
 import com.knife.serviceedu.service.EduTeacherService;
-import com.sun.xml.bind.v2.model.core.ID;
 import io.minio.errors.*;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Value;
@@ -22,7 +24,6 @@ import org.springframework.web.multipart.MultipartFile;
 import org.xmlpull.v1.XmlPullParserException;
 
 import javax.annotation.Resource;
-import javax.imageio.ImageIO;
 import java.io.IOException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
@@ -107,25 +108,36 @@ public class EduCourseServiceImpl extends ServiceImpl<EduCourseMapper, EduCourse
      */
     private void addCoverPath(EduCourseDO course, MultipartFile cover) {
         try {
-            //检查文件是否为空
-            if (Objects.isNull(cover) || cover.isEmpty()) {
-                throw new ServiceException("请选择图片");
-            }
-            //检查文件大小
-            if (cover.getSize() > EduConstant.M2_TO_BYTE) {
-                throw new ServiceException("请上传2M以内的图片");
-            }
-            //检查是否是图片
-            if (Objects.isNull(ImageIO.read(cover.getInputStream()))) {
-                throw new ServiceException("上传的文件不是图片");
-            }
-            String suffix = Objects.requireNonNull(cover.getOriginalFilename()).substring(cover.getOriginalFilename().lastIndexOf(".") + 1);
-            String contentType = "image/" + ("jpg".equals(suffix) ? "jpeg" : suffix);
+            String contentType = getImageContentType(cover);
+            // 上传图片文件
             MinIoUtil.upload(bucketName, coverPath + course.getId() + cover.getOriginalFilename(), cover.getInputStream(), contentType);
             updateById(course.setCover(endpoint + ":" + port + "/" + bucketName + coverPath + course.getId() + cover.getOriginalFilename()));
         } catch (IOException | InvalidKeyException | NoSuchAlgorithmException | InsufficientDataException | InternalException | NoResponseException | InvalidBucketNameException | XmlPullParserException | ErrorResponseException | RegionConflictException | InvalidArgumentException | InvalidPortException | InvalidEndpointException e) {
             LOGGER.error("课程添加失败", e);
             throw new ServiceException("课程添加失败");
+        }
+    }
+
+    /**
+     * 获取图片文件媒体格式
+     * @param cover 图片文件
+     * @return 媒体格式
+     */
+    private String getImageContentType(MultipartFile cover) {
+        try {
+            return MinIoUtil.getImageContentType(cover);
+        } catch (IOException e) {
+            LOGGER.error("文件读写异常", e);
+            throw new ServiceException("不支持的文件格式");
+        } catch (EmptyImageException e) {
+            LOGGER.error("图片为空", e);
+            throw new ServiceException("请选择要上传的图片");
+        } catch (ImageSizeOutOfRangeException e) {
+            LOGGER.error("图片大小超范围", e);
+            throw new ServiceException("图片文件不得大于 2 MB");
+        } catch (FileTypeException e) {
+            LOGGER.error("文件类型错误", e);
+            throw new ServiceException("文件类型错误");
         }
     }
 

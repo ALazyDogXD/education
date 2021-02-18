@@ -3,9 +3,9 @@ package com.knife.serviceedu.service;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.knife.serviceedu.domain.dto.EduTeacherDto;
+import com.knife.serviceedu.domain.dto.EduTeacherDTO;
 import com.knife.serviceedu.domain.entity.EduTeacherDO;
-import com.knife.serviceedu.domain.vo.EduTeacherVo;
+import com.knife.serviceedu.domain.vo.EduTeacherVO;
 
 import java.util.List;
 
@@ -26,7 +26,7 @@ public interface EduTeacherService extends IService<EduTeacherDO> {
      * @author 风烛
      * @date 2021年2月16日 16:12
      **/
-    boolean addTeacher(EduTeacherDto teacher);
+    boolean addTeacher(EduTeacherDTO teacher);
 
     /**
      * 删除一名教师
@@ -56,7 +56,7 @@ public interface EduTeacherService extends IService<EduTeacherDO> {
      * @author 风烛
      * @date 2021年2月16日 21:24
      **/
-    boolean updateTeacherById(EduTeacherDto teacher);
+    boolean updateTeacherById(EduTeacherDTO teacher);
 
     /**
      * 根据id查找教师
@@ -66,7 +66,7 @@ public interface EduTeacherService extends IService<EduTeacherDO> {
      * @author 风烛
      * @date 2021年2月16日 21:31
      **/
-    EduTeacherVo selectByTeacher(String id);
+    EduTeacherVO selectByTeacher(String id);
 
     /**
      * 根据id集合查找一组教师
@@ -76,17 +76,17 @@ public interface EduTeacherService extends IService<EduTeacherDO> {
      * @author 风烛
      * @date 2021年2月16日 21:33
      **/
-    List<EduTeacherVo> selectByTeachers(List<String> ids);
+    List<EduTeacherVO> selectByTeachers(List<String> ids);
 
     /**
      * 无条件分页查询
      *
      * @param page: 分页数据
-     * @return com.baomidou.mybatisplus.core.metadata.IPage<com.knife.serviceedu.domain.entity.EduTeacherDO>
+     * @return 分页数据
      * @author 风烛
      * @date 2021年2月16日 22:02
      **/
-    IPage<EduTeacherVo> selectTeacherPage(Page<EduTeacherDO> page);
+    IPage<EduTeacherVO> selectTeacherPage(Page<EduTeacherDO> page);
 
 
 }

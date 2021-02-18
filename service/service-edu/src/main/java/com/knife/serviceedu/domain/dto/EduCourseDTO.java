@@ -2,6 +2,8 @@ package com.knife.serviceedu.domain.dto;
 
 import com.knife.servicebase.entity.ObjectConvert;
 import com.knife.serviceedu.domain.entity.EduCourseDO;
+import com.knife.serviceedu.strategy.CreateDataTransferObject;
+import com.knife.serviceedu.strategy.UpdateDataTransferObject;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import org.springframework.web.multipart.MultipartFile;
@@ -19,37 +21,41 @@ import java.math.BigDecimal;
 @ApiModel("课程实体")
 public class EduCourseDTO extends ObjectConvert<EduCourseDO> {
 
-    @NotBlank(message = "课程讲师ID不可为空")
+    @NotBlank(message = "课程讲师ID不可为空", groups = UpdateDataTransferObject.class)
+    @ApiModelProperty(value = "课程ID")
+    private String id;
+
+    @NotBlank(message = "课程讲师ID不可为空", groups = CreateDataTransferObject.class)
     @ApiModelProperty(value = "课程讲师ID")
     private String teacherId;
 
-    @NotBlank(message = "课程专业ID不可为空")
+    @NotBlank(message = "课程专业ID不可为空", groups = CreateDataTransferObject.class)
     @ApiModelProperty(value = "课程专业ID")
     private String subjectId;
 
-    @NotBlank(message = "课程专业父级ID不可为空")
+    @NotBlank(message = "课程专业父级ID不可为空", groups = CreateDataTransferObject.class)
     @ApiModelProperty(value = "课程专业父级ID")
     private String subjectParentId;
 
-    @NotBlank(message = "课程名称不可为空")
+    @NotBlank(message = "课程名称不可为空", groups = CreateDataTransferObject.class)
     @ApiModelProperty("课程名称")
     private String title;
 
-    @NotNull(message = "课程封面不可为空")
+    @NotNull(message = "课程封面不可为空", groups = CreateDataTransferObject.class)
     @ApiModelProperty("课程封面")
     private MultipartFile cover;
 
-    @NotNull(message = "课程价格不可为空")
-    @Min(value = 0, message = "课程价格不可小于 0")
+    @NotNull(message = "课程价格不可为空", groups = CreateDataTransferObject.class)
+    @Min(value = 0, message = "课程价格不可小于 0", groups = CreateDataTransferObject.class)
     @ApiModelProperty("课程价格")
     private BigDecimal price;
 
-    @NotNull(message = "课程课时不可为空")
-    @Min(value = 0, message = "课程课时不可小于 0")
+    @NotNull(message = "课程课时不可为空", groups = CreateDataTransferObject.class)
+    @Min(value = 0, message = "课程课时不可小于 0", groups = CreateDataTransferObject.class)
     @ApiModelProperty("课程课时")
     private Integer lessonNum;
 
-    @NotBlank(message = "课程简介不可为空")
+    @NotBlank(message = "课程简介不可为空", groups = CreateDataTransferObject.class)
     @ApiModelProperty("课程简介")
     private String description;
 

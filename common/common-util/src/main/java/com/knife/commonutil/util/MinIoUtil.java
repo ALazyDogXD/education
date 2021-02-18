@@ -1,14 +1,18 @@
 package com.knife.commonutil.util;
 
+import com.knife.commonutil.exception.EmptyImageException;
+import com.knife.commonutil.exception.FileTypeException;
+import com.knife.commonutil.exception.ImageSizeOutOfRangeException;
 import io.minio.MinioClient;
 import io.minio.Result;
 import io.minio.errors.*;
 import io.minio.messages.Item;
-import org.apache.http.entity.ContentType;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+import org.springframework.web.multipart.MultipartFile;
 import org.xmlpull.v1.XmlPullParserException;
 
+import javax.imageio.ImageIO;
 import java.io.IOException;
 import java.io.InputStream;
 import java.security.InvalidKeyException;
@@ -22,6 +26,11 @@ import java.util.Objects;
  */
 @Component
 public class MinIoUtil {
+
+    /**
+     * 图片文件大小
+     */
+    private static final long M2_TO_BYTE = (1 << 20) * 2;
 
     private static MinioClient MINIO_CLIENT;
 
@@ -140,6 +149,32 @@ public class MinIoUtil {
 
         }
         return false;
+    }
+
+    /**
+     * 获取图片文件的媒体格式
+     *
+     * @param image 图片文件
+     * @return 媒体格式
+     * @throws EmptyImageException          图片为空
+     * @throws ImageSizeOutOfRangeException 图片大小超范围
+     * @throws FileTypeException            文件类型错误
+     */
+    public static String getImageContentType(MultipartFile image) throws IOException, EmptyImageException, ImageSizeOutOfRangeException, FileTypeException {
+        //检查文件是否为空
+        if (Objects.isNull(image) || image.isEmpty()) {
+            throw new EmptyImageException("请选择图片");
+        }
+        //检查文件大小
+        if (image.getSize() > M2_TO_BYTE) {
+            throw new ImageSizeOutOfRangeException("请上传2M以内的图片");
+        }
+        //检查是否是图片
+        if (Objects.isNull(ImageIO.read(image.getInputStream()))) {
+            throw new FileTypeException("上传的文件不是图片");
+        }
+        String suffix = Objects.requireNonNull(image.getOriginalFilename()).substring(image.getOriginalFilename().lastIndexOf(".") + 1);
+        return "image/" + ("jpg".equals(suffix) ? "jpeg" : suffix);
     }
 
 }

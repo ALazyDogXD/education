@@ -2,18 +2,20 @@ package com.knife.serviceedu.web;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.knife.commonutil.util.ResponseBean;
-import com.knife.serviceedu.domain.dto.EduTeacherDto;
+import com.knife.serviceedu.domain.dto.EduTeacherDTO;
 import com.knife.serviceedu.domain.entity.EduTeacherDO;
-import com.knife.serviceedu.domain.vo.EduTeacherVo;
+import com.knife.serviceedu.domain.vo.EduTeacherVO;
 import com.knife.serviceedu.service.EduTeacherService;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
+import com.knife.serviceedu.strategy.UpdateDataTransferObject;
+import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.Resource;
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
 /**
@@ -23,41 +25,39 @@ import java.util.List;
 @Api(tags = "教师管理接口")
 @RestController
 @RequestMapping("teacher")
-public class TeacherAdminController {
+public class TeacherController {
 
-    @Autowired
-    EduTeacherService eduTeacherService;
+    @Resource
+    private EduTeacherService eduTeacherService;
 
     @PostMapping
     @ApiOperation("新增接口")
     public ResponseBean addTeacher(
-            @Valid @ApiParam("老师类") @RequestBody EduTeacherDto teacher){
+            @Valid @ApiParam("老师类") @RequestBody EduTeacherDTO teacher){
         eduTeacherService.addTeacher(teacher);
         return ResponseBean.succ("添加成功");
     }
 
-    @DeleteMapping
+    @DeleteMapping("{id}")
     @ApiOperation("删除一名教师")
-    public ResponseBean deleteTeacher(@RequestParam("id")
-                                      @ApiParam("教师id")
-                                      @NotBlank String id){
+    public ResponseBean deleteTeacher(@PathVariable("id") String id){
         eduTeacherService.deleteTeacher(id);
         return ResponseBean.succ("删除成功");
     }
 
     @DeleteMapping("/list")
     @ApiOperation("删除一组教师")
-    public ResponseBean deleteTeachers(@RequestParam("ids")
-                                       @ApiParam("教师id集合")
-                                       @NotBlank List<String> ids){
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "ids", value = "教师id集合")
+    })
+    public ResponseBean deleteTeachers(@RequestParam(value = "ids") List<String> ids){
         eduTeacherService.deleteTeachers(ids);
         return ResponseBean.succ("删除成功");
     }
 
     @PutMapping
     @ApiOperation("根据id修改一名教师的信息")
-    public ResponseBean updateTeacherByid( @ApiParam("老师类")
-                                          @RequestBody EduTeacherDto teacher) {
+    public ResponseBean updateTeacherById(@RequestBody @Validated(UpdateDataTransferObject.class) EduTeacherDTO teacher) {
         eduTeacherService.updateTeacherById(teacher);
         return ResponseBean.succ("修改成功");
     }
@@ -67,7 +67,7 @@ public class TeacherAdminController {
     public ResponseBean selectByTeacher(@RequestParam("id")
                                         @ApiParam("教师id")
                                         @NotBlank   String id) {
-        EduTeacherVo teacher = eduTeacherService.selectByTeacher(id);
+        EduTeacherVO teacher = eduTeacherService.selectByTeacher(id);
         return ResponseBean.succ("查找成功", teacher);
     }
 

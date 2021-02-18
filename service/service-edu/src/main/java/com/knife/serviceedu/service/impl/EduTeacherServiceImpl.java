@@ -4,9 +4,9 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.knife.servicebase.entity.ServiceException;
-import com.knife.serviceedu.domain.dto.EduTeacherDto;
+import com.knife.serviceedu.domain.dto.EduTeacherDTO;
 import com.knife.serviceedu.domain.entity.EduTeacherDO;
-import com.knife.serviceedu.domain.vo.EduTeacherVo;
+import com.knife.serviceedu.domain.vo.EduTeacherVO;
 import com.knife.serviceedu.mapper.EduTeacherMapper;
 import com.knife.serviceedu.service.EduTeacherService;
 import org.slf4j.Logger;
@@ -31,17 +31,21 @@ public class EduTeacherServiceImpl extends ServiceImpl<EduTeacherMapper, EduTeac
     private static final Logger LOGGER = LoggerFactory.getLogger(EduSubjectServiceImpl.class);
 
     @Override
-    public boolean addTeacher(EduTeacherDto teacher){
-        EduTeacherDO teachers = new EduTeacherDO();
-        teachers.setName(teacher.getName());
-        teachers.setIntro(teacher.getIntro());
-        teachers.setCareer(teacher.getCareer());
-        teachers.setLevel(teacher.getLevel());
-        teachers.setAvatar(teacher.getAvatar());
-        teachers.setDeleted(false);
-        teachers.setGmtCreate(LocalDateTime.now());
-        teachers.setGmtModified(LocalDateTime.now());
-        int result = baseMapper.insert(teachers);
+    public boolean addTeacher(EduTeacherDTO teacher){
+//        EduTeacherDO teachers = new EduTeacherDO();
+//        teachers.setName(teacher.getName());
+//        teachers.setIntro(teacher.getIntro());
+//        teachers.setCareer(teacher.getCareer());
+//        teachers.setLevel(teacher.getLevel());
+//        teachers.setAvatar(teacher.getAvatar());
+//        teachers.setDeleted(false);
+//        teachers.setGmtCreate(LocalDateTime.now());
+//        teachers.setGmtModified(LocalDateTime.now());
+        LOGGER.debug("教师: [{}]", teacher.convert());
+        int result = baseMapper.insert(teacher.convert()
+                                        .setDeleted(false)
+                                        .setGmtCreate(LocalDateTime.now())
+                                        .setGmtModified(LocalDateTime.now()));
         if(result < 0){
             LOGGER.error("教师添加失败");
             throw new ServiceException("增加新教师失败");
@@ -80,7 +84,7 @@ public class EduTeacherServiceImpl extends ServiceImpl<EduTeacherMapper, EduTeac
     }
 
     @Override
-    public boolean updateTeacherById(EduTeacherDto teacher) {
+    public boolean updateTeacherById(EduTeacherDTO teacher) {
         int result = baseMapper.updateById(new EduTeacherDO() {{
             setId(teacher.getId());
             setName(teacher.getName());
@@ -99,8 +103,8 @@ public class EduTeacherServiceImpl extends ServiceImpl<EduTeacherMapper, EduTeac
     }
 
     @Override
-    public EduTeacherVo selectByTeacher(String id) {
-        EduTeacherVo result =  baseMapper.selectById(id).convert();
+    public EduTeacherVO selectByTeacher(String id) {
+        EduTeacherVO result =  baseMapper.selectById(id).convert();
         if (result != null) {
             return result;
         }
@@ -109,12 +113,12 @@ public class EduTeacherServiceImpl extends ServiceImpl<EduTeacherMapper, EduTeac
     }
 
     @Override
-    public List<EduTeacherVo> selectByTeachers(List<String> ids) {
+    public List<EduTeacherVO> selectByTeachers(List<String> ids) {
         List<EduTeacherDO> result = baseMapper.selectBatchIds(ids);
         if (result != null) {
-            List<EduTeacherVo> li = new ArrayList<>();
+            List<EduTeacherVO> li = new ArrayList<>();
             for(EduTeacherDO e : result){
-                EduTeacherVo convert = e.convert();
+                EduTeacherVO convert = e.convert();
                 li.add(convert);
             }
             return li;
@@ -124,13 +128,13 @@ public class EduTeacherServiceImpl extends ServiceImpl<EduTeacherMapper, EduTeac
     }
 
     @Override
-    public IPage<EduTeacherVo> selectTeacherPage(Page<EduTeacherDO> page) {
+    public IPage<EduTeacherVO> selectTeacherPage(Page<EduTeacherDO> page) {
         IPage<EduTeacherDO> result = baseMapper.selectPage(page, null);
-        IPage<EduTeacherVo> li = new Page<>();
-        List<EduTeacherVo> temp = new ArrayList<>();
+        IPage<EduTeacherVO> li = new Page<>();
+        List<EduTeacherVO> temp = new ArrayList<>();
         if (result != null) {
             for(EduTeacherDO e : result.getRecords()){
-                EduTeacherVo convert = e.convert();
+                EduTeacherVO convert = e.convert();
                 temp.add(convert);
             }
             li.setRecords(temp);

@@ -17,6 +17,4 @@ public interface EduConstant {
      */
     String COURSE_NORMAL = "Normal";
 
-    long M2_TO_BYTE = (1 << 20) * 2;
-
 }

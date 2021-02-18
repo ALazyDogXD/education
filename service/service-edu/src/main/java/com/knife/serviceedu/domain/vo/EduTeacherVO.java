@@ -1,34 +1,35 @@
-package com.knife.serviceedu.domain.dto;
+package com.knife.serviceedu.domain.vo;
 
-import com.knife.servicebase.entity.ObjectConvert;
-import com.knife.serviceedu.domain.entity.EduTeacherDO;
-
-import javax.validation.constraints.NotBlank;
 import java.time.LocalDateTime;
 
 /**
- * @PackageName：com.knife.serviceedu.domain.dto
- * @ClassName：EduTeahcerDto
- * @Description：//TODO
- * @author：风烛
- * @date：2021-02-17 11:04
+ * @description
+ * @author 风烛
+ * @date 2021-02-17 10:59
  */
-public class EduTeacherDto  extends ObjectConvert<EduTeacherDO> {
+public class EduTeacherVO {
     private String id;
-    @NotBlank(message = "教师姓名不可为空")
     private String name;
     private String intro;
     private String career;
     private Integer level;
     private String avatar;
-    private LocalDateTime gmtCreate;
+    private Boolean isDeleted;
 
-    public String getId() {
-        return id;
+    public String getAvatar() {
+        return avatar;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
+    }
+
+    public Boolean getDeleted() {
+        return isDeleted;
+    }
+
+    public void setDeleted(Boolean deleted) {
+        isDeleted = deleted;
     }
 
     public LocalDateTime getGmtCreate() {
@@ -47,8 +48,16 @@ public class EduTeacherDto  extends ObjectConvert<EduTeacherDO> {
         this.gmtModified = gmtModified;
     }
 
+    private LocalDateTime gmtCreate;
     private LocalDateTime gmtModified;
 
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
 
     public String getName() {
         return name;
@@ -82,11 +91,18 @@ public class EduTeacherDto  extends ObjectConvert<EduTeacherDO> {
         this.level = level;
     }
 
-    public String getAvatar() {
-        return avatar;
-    }
-
-    public void setAvatar(String avatar) {
-        this.avatar = avatar;
+    @Override
+    public String toString() {
+        return "EduTeacherVO{" +
+                "id='" + id + '\'' +
+                ", name='" + name + '\'' +
+                ", intro='" + intro + '\'' +
+                ", career='" + career + '\'' +
+                ", level=" + level +
+                ", avatar='" + avatar + '\'' +
+                ", isDeleted=" + isDeleted +
+                ", gmtCreate=" + gmtCreate +
+                ", gmtModified=" + gmtModified +
+                '}';
     }
 }

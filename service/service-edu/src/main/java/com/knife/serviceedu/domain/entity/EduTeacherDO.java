@@ -5,7 +5,7 @@ import java.time.LocalDateTime;
 import java.io.Serializable;
 
 import com.knife.servicebase.entity.ObjectConvert;
-import com.knife.serviceedu.domain.vo.EduTeacherVo;
+import com.knife.serviceedu.domain.vo.EduTeacherVO;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
@@ -19,7 +19,7 @@ import io.swagger.annotations.ApiModelProperty;
  */
 @TableName("edu_teacher")
 @ApiModel(value="EduTeacherDO对象", description="讲师")
-public class EduTeacherDO extends ObjectConvert<EduTeacherVo> implements Serializable {
+public class EduTeacherDO extends ObjectConvert<EduTeacherVO> implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
