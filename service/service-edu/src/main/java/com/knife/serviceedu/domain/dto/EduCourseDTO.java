@@ -16,7 +16,7 @@ import java.math.BigDecimal;
 /**
  * @author Mr_W
  * @date 2021/2/17 18:54
- * @description: 课程 dto
+ * @description 课程 dto
  */
 @ApiModel("课程实体")
 public class EduCourseDTO extends ObjectConvert<EduCourseDO> {

@@ -3,16 +3,28 @@ package com.knife.serviceedu.service.impl;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.knife.commonutil.exception.EmptyImageException;
+import com.knife.commonutil.exception.FileTypeException;
+import com.knife.commonutil.exception.ImageSizeOutOfRangeException;
+import com.knife.commonutil.util.MinIoUtil;
 import com.knife.servicebase.entity.ServiceException;
 import com.knife.serviceedu.domain.dto.EduTeacherDTO;
+import com.knife.serviceedu.domain.entity.EduCourseDO;
 import com.knife.serviceedu.domain.entity.EduTeacherDO;
 import com.knife.serviceedu.domain.vo.EduTeacherVO;
 import com.knife.serviceedu.mapper.EduTeacherMapper;
 import com.knife.serviceedu.service.EduTeacherService;
+import io.minio.errors.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
+import org.xmlpull.v1.XmlPullParserException;
 
+import java.io.IOException;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -30,26 +42,27 @@ public class EduTeacherServiceImpl extends ServiceImpl<EduTeacherMapper, EduTeac
 
     private static final Logger LOGGER = LoggerFactory.getLogger(EduSubjectServiceImpl.class);
 
+    @Value("${minio.endpoint}")
+    private String endpoint;
+
+    @Value("${minio.port}")
+    private String port;
+
+    @Value("${minio.bucketName}")
+    private String bucketName;
+
+    @Value("${minio.path.image.course-cover}")
+    private String coverPath;
+
+
     @Override
-    public boolean addTeacher(EduTeacherDTO teacher){
-//        EduTeacherDO teachers = new EduTeacherDO();
-//        teachers.setName(teacher.getName());
-//        teachers.setIntro(teacher.getIntro());
-//        teachers.setCareer(teacher.getCareer());
-//        teachers.setLevel(teacher.getLevel());
-//        teachers.setAvatar(teacher.getAvatar());
-//        teachers.setDeleted(false);
-//        teachers.setGmtCreate(LocalDateTime.now());
-//        teachers.setGmtModified(LocalDateTime.now());
+    public boolean addTeacher(EduTeacherDTO teacher, MultipartFile course) {
         LOGGER.debug("教师: [{}]", teacher.convert());
-        int result = baseMapper.insert(teacher.convert()
-                                        .setDeleted(false)
-                                        .setGmtCreate(LocalDateTime.now())
-                                        .setGmtModified(LocalDateTime.now()));
-        if(result < 0){
-            LOGGER.error("教师添加失败");
-            throw new ServiceException("增加新教师失败");
-        }
+        EduTeacherDO teacherDO = teacher.convert()
+                .setDeleted(false)
+                .setGmtCreate(LocalDateTime.now())
+                .setGmtModified(LocalDateTime.now());
+        addCoverPath(teacherDO, course, true);
         return true;
     }
 
@@ -59,7 +72,7 @@ public class EduTeacherServiceImpl extends ServiceImpl<EduTeacherMapper, EduTeac
         teachers.setId(id);
         teachers.setDeleted(true);
         int result = baseMapper.updateById(teachers);
-        if(result < 0){
+        if (result < 0) {
             LOGGER.error("教师删除失败");
             throw new ServiceException("删除教师失败");
         }
@@ -69,14 +82,14 @@ public class EduTeacherServiceImpl extends ServiceImpl<EduTeacherMapper, EduTeac
     @Override
     public boolean deleteTeachers(List<String> ids) {
         List<EduTeacherDO> li = new ArrayList<>();
-        for(String e : ids){
+        for (String e : ids) {
             EduTeacherDO convert = new EduTeacherDO();
             convert.setId(e);
             convert.setDeleted(true);
             li.add(convert);
         }
         boolean result = saveOrUpdateBatch(li);
-        if(result){
+        if (result) {
             return true;
         }
         LOGGER.error("教师删除失败");
@@ -85,26 +98,14 @@ public class EduTeacherServiceImpl extends ServiceImpl<EduTeacherMapper, EduTeac
 
     @Override
     public boolean updateTeacherById(EduTeacherDTO teacher) {
-        int result = baseMapper.updateById(new EduTeacherDO() {{
-            setId(teacher.getId());
-            setName(teacher.getName());
-            setIntro(teacher.getIntro());
-            setCareer(teacher.getCareer());
-            setLevel(teacher.getLevel());
-            setAvatar(teacher.getAvatar());
-            setDeleted(false);
-            setGmtModified(LocalDateTime.now());
-        }});
-        if(result < 0){
-            LOGGER.error("教师信息修改失败");
-            throw new ServiceException("修改教师信息失败");
-        }
+        EduTeacherDO teacherDO = teacher.convert().setGmtModified(LocalDateTime.now());
+        addCoverPath(teacherDO, teacher.getAvatar(), false);
         return true;
     }
 
     @Override
     public EduTeacherVO selectByTeacher(String id) {
-        EduTeacherVO result =  baseMapper.selectById(id).convert();
+        EduTeacherVO result = baseMapper.selectById(id).convert();
         if (result != null) {
             return result;
         }
@@ -117,7 +118,7 @@ public class EduTeacherServiceImpl extends ServiceImpl<EduTeacherMapper, EduTeac
         List<EduTeacherDO> result = baseMapper.selectBatchIds(ids);
         if (result != null) {
             List<EduTeacherVO> li = new ArrayList<>();
-            for(EduTeacherDO e : result){
+            for (EduTeacherDO e : result) {
                 EduTeacherVO convert = e.convert();
                 li.add(convert);
             }
@@ -133,7 +134,7 @@ public class EduTeacherServiceImpl extends ServiceImpl<EduTeacherMapper, EduTeac
         IPage<EduTeacherVO> li = new Page<>();
         List<EduTeacherVO> temp = new ArrayList<>();
         if (result != null) {
-            for(EduTeacherDO e : result.getRecords()){
+            for (EduTeacherDO e : result.getRecords()) {
                 EduTeacherVO convert = e.convert();
                 temp.add(convert);
             }
@@ -144,5 +145,51 @@ public class EduTeacherServiceImpl extends ServiceImpl<EduTeacherMapper, EduTeac
         return null;
     }
 
+    /**
+     * 教师图片信息处理
+     *
+     * @param course 教师类
+     * @param cover  图片信息
+     * @param choice 判断是新增还是修改
+     * @return void
+     */
+    private void addCoverPath(EduTeacherDO course, MultipartFile cover, boolean choice) {
+        try {
+            String contentType = getImageContentType(cover);
+            // 上传图片文件
+            MinIoUtil.upload(bucketName, coverPath + course.getId() + cover.getOriginalFilename(), cover.getInputStream(), contentType);
+            if (choice) {
+                save(course.setAvatar(endpoint + ":" + port + "/" + bucketName + coverPath + course.getId() + cover.getOriginalFilename()));
+            } else {
+                updateById(course.setAvatar(endpoint + ":" + port + "/" + bucketName + coverPath + course.getId() + cover.getOriginalFilename()));
+            }
+        } catch (IOException | InvalidKeyException | NoSuchAlgorithmException | InsufficientDataException | InternalException | NoResponseException | InvalidBucketNameException | XmlPullParserException | ErrorResponseException | RegionConflictException | InvalidArgumentException | InvalidPortException | InvalidEndpointException e) {
+            LOGGER.error("教师添加失败", e);
+            throw new ServiceException("课程添加失败");
+        }
+    }
 
+    /**
+     * 获取图片文件媒体格式
+     *
+     * @param cover 图片文件
+     * @return 媒体格式
+     */
+    private String getImageContentType(MultipartFile cover) {
+        try {
+            return MinIoUtil.getImageContentType(cover);
+        } catch (IOException e) {
+            LOGGER.error("文件读写异常", e);
+            throw new ServiceException("不支持的文件格式");
+        } catch (EmptyImageException e) {
+            LOGGER.error("图片为空", e);
+            throw new ServiceException("请选择要上传的图片");
+        } catch (ImageSizeOutOfRangeException e) {
+            LOGGER.error("图片大小超范围", e);
+            throw new ServiceException("图片文件不得大于 2 MB");
+        } catch (FileTypeException e) {
+            LOGGER.error("文件类型错误", e);
+            throw new ServiceException("文件类型错误");
+        }
+    }
 }

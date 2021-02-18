@@ -6,11 +6,13 @@ import com.knife.serviceedu.domain.dto.EduTeacherDTO;
 import com.knife.serviceedu.domain.entity.EduTeacherDO;
 import com.knife.serviceedu.domain.vo.EduTeacherVO;
 import com.knife.serviceedu.service.EduTeacherService;
+import com.knife.serviceedu.strategy.CreateDataTransferObject;
 import com.knife.serviceedu.strategy.UpdateDataTransferObject;
 import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
 import javax.validation.Valid;
@@ -31,10 +33,9 @@ public class TeacherController {
     private EduTeacherService eduTeacherService;
 
     @PostMapping
-    @ApiOperation("新增接口")
-    public ResponseBean addTeacher(
-            @Valid @ApiParam("老师类") @RequestBody EduTeacherDTO teacher){
-        eduTeacherService.addTeacher(teacher);
+    @ApiOperation("新增教师接口")
+    public ResponseBean addTeacher(@Validated(CreateDataTransferObject.class)  EduTeacherDTO teacher){
+        eduTeacherService.addTeacher(teacher, teacher.getAvatar());
         return ResponseBean.succ("添加成功");
     }
 
@@ -57,7 +58,7 @@ public class TeacherController {
 
     @PutMapping
     @ApiOperation("根据id修改一名教师的信息")
-    public ResponseBean updateTeacherById(@RequestBody @Validated(UpdateDataTransferObject.class) EduTeacherDTO teacher) {
+    public ResponseBean updateTeacherById(@Validated(UpdateDataTransferObject.class) EduTeacherDTO teacher) {
         eduTeacherService.updateTeacherById(teacher);
         return ResponseBean.succ("修改成功");
     }

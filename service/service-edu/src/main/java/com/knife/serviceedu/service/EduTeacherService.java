@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.knife.serviceedu.domain.dto.EduTeacherDTO;
 import com.knife.serviceedu.domain.entity.EduTeacherDO;
 import com.knife.serviceedu.domain.vo.EduTeacherVO;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -26,7 +27,7 @@ public interface EduTeacherService extends IService<EduTeacherDO> {
      * @author 风烛
      * @date 2021年2月16日 16:12
      **/
-    boolean addTeacher(EduTeacherDTO teacher);
+    boolean addTeacher(EduTeacherDTO teacher, MultipartFile File);
 
     /**
      * 删除一名教师

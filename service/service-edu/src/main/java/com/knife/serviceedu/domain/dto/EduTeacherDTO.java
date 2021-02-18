@@ -2,16 +2,18 @@ package com.knife.serviceedu.domain.dto;
 
 import com.knife.servicebase.entity.ObjectConvert;
 import com.knife.serviceedu.domain.entity.EduTeacherDO;
+import com.knife.serviceedu.strategy.CreateDataTransferObject;
 import com.knife.serviceedu.strategy.UpdateDataTransferObject;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 
 /**
- * @description:
+ * @description 教师dto
  * @author 风烛
  * @date 2021-02-17 11:04
  */
@@ -22,18 +24,23 @@ public class EduTeacherDTO extends ObjectConvert<EduTeacherDO> {
     @ApiModelProperty("教师 id")
     private String id;
 
-    @NotBlank(message = "教师姓名不可为空")
+    @NotBlank(message = "教师姓名不可为空", groups = CreateDataTransferObject.class)
+    @ApiModelProperty(value = "讲师姓名")
     private String name;
 
+    @NotBlank(message = "讲师简介不可为空", groups = CreateDataTransferObject.class)
+    @ApiModelProperty(value = "讲师简介")
     private String intro;
 
+    @ApiModelProperty(value = "讲师资历,一句话说明讲师")
     private String career;
 
+    @NotBlank(message = "教师头衔不可为空", groups = CreateDataTransferObject.class)
+    @ApiModelProperty(value = "头衔 1高级讲师 2首席讲师")
     private Integer level;
 
-    private String avatar;
-
-    private LocalDateTime gmtCreate;
+    @ApiModelProperty(value = "讲师头像")
+    private MultipartFile avatar;
 
     public String getId() {
         return id;
@@ -42,25 +49,6 @@ public class EduTeacherDTO extends ObjectConvert<EduTeacherDO> {
     public void setId(String id) {
         this.id = id;
     }
-
-    public LocalDateTime getGmtCreate() {
-        return gmtCreate;
-    }
-
-    public void setGmtCreate(LocalDateTime gmtCreate) {
-        this.gmtCreate = gmtCreate;
-    }
-
-    public LocalDateTime getGmtModified() {
-        return gmtModified;
-    }
-
-    public void setGmtModified(LocalDateTime gmtModified) {
-        this.gmtModified = gmtModified;
-    }
-
-    private LocalDateTime gmtModified;
-
 
     public String getName() {
         return name;
@@ -94,11 +82,11 @@ public class EduTeacherDTO extends ObjectConvert<EduTeacherDO> {
         this.level = level;
     }
 
-    public String getAvatar() {
+    public MultipartFile getAvatar() {
         return avatar;
     }
 
-    public void setAvatar(String avatar) {
+    public void setAvatar(MultipartFile avatar) {
         this.avatar = avatar;
     }
 
@@ -111,8 +99,6 @@ public class EduTeacherDTO extends ObjectConvert<EduTeacherDO> {
                 ", career='" + career + '\'' +
                 ", level=" + level +
                 ", avatar='" + avatar + '\'' +
-                ", gmtCreate=" + gmtCreate +
-                ", gmtModified=" + gmtModified +
                 '}';
     }
 }

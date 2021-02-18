@@ -1,5 +1,7 @@
 package com.knife.serviceedu.domain.vo;
 
+import io.swagger.annotations.ApiModelProperty;
+
 import java.time.LocalDateTime;
 
 /**
@@ -8,47 +10,28 @@ import java.time.LocalDateTime;
  * @date 2021-02-17 10:59
  */
 public class EduTeacherVO {
+    @ApiModelProperty(value = "讲师ID")
     private String id;
+
+    @ApiModelProperty(value = "讲师姓名")
     private String name;
+
+    @ApiModelProperty(value = "讲师简介")
     private String intro;
+
+    @ApiModelProperty(value = "讲师资历,一句话说明讲师")
     private String career;
+
+    @ApiModelProperty(value = "头衔 1高级讲师 2首席讲师")
     private Integer level;
+
+    @ApiModelProperty(value = "讲师头像")
     private String avatar;
-    private Boolean isDeleted;
 
-    public String getAvatar() {
-        return avatar;
-    }
-
-    public void setAvatar(String avatar) {
-        this.avatar = avatar;
-    }
-
-    public Boolean getDeleted() {
-        return isDeleted;
-    }
-
-    public void setDeleted(Boolean deleted) {
-        isDeleted = deleted;
-    }
-
-    public LocalDateTime getGmtCreate() {
-        return gmtCreate;
-    }
-
-    public void setGmtCreate(LocalDateTime gmtCreate) {
-        this.gmtCreate = gmtCreate;
-    }
-
-    public LocalDateTime getGmtModified() {
-        return gmtModified;
-    }
-
-    public void setGmtModified(LocalDateTime gmtModified) {
-        this.gmtModified = gmtModified;
-    }
-
+    @ApiModelProperty(value = "创建时间")
     private LocalDateTime gmtCreate;
+
+    @ApiModelProperty(value = "更新时间")
     private LocalDateTime gmtModified;
 
     public String getId() {
@@ -91,6 +74,30 @@ public class EduTeacherVO {
         this.level = level;
     }
 
+    public String getAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
+    }
+
+    public LocalDateTime getGmtCreate() {
+        return gmtCreate;
+    }
+
+    public void setGmtCreate(LocalDateTime gmtCreate) {
+        this.gmtCreate = gmtCreate;
+    }
+
+    public LocalDateTime getGmtModified() {
+        return gmtModified;
+    }
+
+    public void setGmtModified(LocalDateTime gmtModified) {
+        this.gmtModified = gmtModified;
+    }
+
     @Override
     public String toString() {
         return "EduTeacherVO{" +
@@ -100,9 +107,9 @@ public class EduTeacherVO {
                 ", career='" + career + '\'' +
                 ", level=" + level +
                 ", avatar='" + avatar + '\'' +
-                ", isDeleted=" + isDeleted +
                 ", gmtCreate=" + gmtCreate +
                 ", gmtModified=" + gmtModified +
                 '}';
     }
+    
 }
