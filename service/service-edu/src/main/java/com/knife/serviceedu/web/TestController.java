@@ -3,6 +3,8 @@ package com.knife.serviceedu.web;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,9 +24,12 @@ import javax.validation.constraints.NotBlank;
 @Api(tags = "测试")
 public class TestController {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(TestController.class);
+
     @GetMapping
     @ApiOperation("测试接口")
     public String test() {
+        LOGGER.info("asdf[{}]{}{}{}", "reqw", 1, 2, 2);
         return "test";
     }
 

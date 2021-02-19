@@ -8,6 +8,7 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.knife.commonutil.util.SpringBeanUtil;
 import com.knife.servicebase.entity.ServiceException;
+import com.knife.servicebase.util.ExceptionUtil;
 import com.knife.serviceedu.domain.entity.EduSubjectDO;
 import com.knife.serviceedu.domain.entity.ExcelSubjectData;
 import com.knife.serviceedu.domain.vo.EduSubjectParentVO;
@@ -45,14 +46,15 @@ public class EduSubjectServiceImpl extends ServiceImpl<EduSubjectMapper, EduSubj
     @Transactional(rollbackFor = Exception.class)
     public void importSubjectFile(MultipartFile file) {
         if (Objects.isNull(file)) {
-            throw new ServiceException("文件不能为空");
+            throw ExceptionUtil.buildServiceException("文件不能为空");
         }
         // 检测 file 是否合法
         if (checkFile(file)) {
             importExcelFile(file);
         } else {
-            LOGGER.error("文件格式错误, ContentType: [{}], OriginalFilename: [{}]", file.getContentType(), file.getOriginalFilename());
-            throw new ServiceException("文件格式错误");
+            throw ExceptionUtil.buildServiceException(
+                    "文件格式错误, ContentType: [{}], OriginalFilename: [{}]", file.getContentType(), file.getOriginalFilename())
+                    .setAlertMessage("文件格式错误");
         }
     }
 
@@ -66,8 +68,9 @@ public class EduSubjectServiceImpl extends ServiceImpl<EduSubjectMapper, EduSubj
         try {
             return !file.isEmpty() && (Objects.requireNonNull(file.getOriginalFilename()).endsWith(".xlsx") || Objects.requireNonNull(file.getOriginalFilename()).endsWith(".xls"));
         } catch (Exception e) {
-            LOGGER.error("文件格式错误, ContentType: [{}], OriginalFilename: [{}]", file.getContentType(), file.getOriginalFilename(), e);
-            throw new ServiceException("文件格式错误");
+            throw ExceptionUtil.buildServiceException(
+                    "文件格式错误, ContentType: [{}], OriginalFilename: [{}]", file.getContentType(), file.getOriginalFilename(),
+                    e).setAlertMessage("文件格式错误");
         }
     }
 
@@ -89,11 +92,11 @@ public class EduSubjectServiceImpl extends ServiceImpl<EduSubjectMapper, EduSubj
                 excelReader.read(sheet);
             }
         } catch (IOException e) {
-            LOGGER.error("数据导入失败", e);
-            throw new ServiceException("文件错误, 数据导入失败");
+            throw ExceptionUtil.buildServiceException("数据导入失败", e)
+                    .setAlertMessage("文件错误, 数据导入失败");
         } catch (ExcelAnalysisException e) {
-            LOGGER.error("excel 解析失败", e);
-            throw new ServiceException(e.getMessage());
+            throw ExceptionUtil.buildServiceException("excel 解析失败", e)
+                    .setAlertMessage("文件错误, 数据导入失败");
         }
     }
 

@@ -5,11 +5,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.knife.commonutil.exception.EmptyImageException;
-import com.knife.commonutil.exception.FileTypeException;
-import com.knife.commonutil.exception.ImageSizeOutOfRangeException;
-import com.knife.commonutil.util.MinIoUtil;
-import com.knife.servicebase.entity.ServiceException;
+import com.knife.servicebase.util.ExceptionUtil;
 import com.knife.serviceedu.domain.dto.EduCourseDTO;
 import com.knife.serviceedu.domain.entity.EduCourseDO;
 import com.knife.serviceedu.domain.entity.EduCourseDescriptionDO;
@@ -17,19 +13,14 @@ import com.knife.serviceedu.domain.entity.EduSubjectDO;
 import com.knife.serviceedu.domain.vo.EduCourseVO;
 import com.knife.serviceedu.mapper.EduCourseMapper;
 import com.knife.serviceedu.service.*;
-import io.minio.errors.*;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
-import org.xmlpull.v1.XmlPullParserException;
 
 import javax.annotation.Resource;
-import java.io.IOException;
-import java.security.InvalidKeyException;
-import java.security.NoSuchAlgorithmException;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
@@ -79,6 +70,9 @@ public class EduCourseServiceImpl extends ServiceImpl<EduCourseMapper, EduCourse
     @Resource
     private EduChapterService eduChapterService;
 
+    @Resource
+    private MinIoFileService minIoFileService;
+
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void add(MultipartFile cover, EduCourseDTO course) {
@@ -106,10 +100,10 @@ public class EduCourseServiceImpl extends ServiceImpl<EduCourseMapper, EduCourse
     private void checkCourse(EduCourseDTO course) {
         EduSubjectDO subject = eduSubjectService.getById(course.getSubjectId());
         if (Objects.isNull(subject) || !course.getSubjectParentId().equals(subject.getParentId()) || "0".equals(course.getSubjectParentId())) {
-            throw new ServiceException("无效的课程 id");
+            throw ExceptionUtil.serviceException("无效的课程 id", null).build();
         }
         if (Objects.isNull(eduTeacherService.getById(course.getTeacherId()))) {
-            throw new ServiceException("无效的教师 id");
+            throw ExceptionUtil.serviceException("无效的教师 id", null).build();
         }
     }
 
@@ -120,39 +114,8 @@ public class EduCourseServiceImpl extends ServiceImpl<EduCourseMapper, EduCourse
      * @param cover  封面
      */
     private void addCoverPath(EduCourseDO course, MultipartFile cover) {
-        try {
-            String contentType = getImageContentType(cover);
-            // 上传图片文件
-            MinIoUtil.upload(bucketName, coverPath + course.getId() + cover.getOriginalFilename(), cover.getInputStream(), contentType);
-            updateById(course.setCover(endpoint + ":" + port + "/" + bucketName + coverPath + course.getId() + cover.getOriginalFilename()));
-        } catch (IOException | InvalidKeyException | NoSuchAlgorithmException | InsufficientDataException | InternalException | NoResponseException | InvalidBucketNameException | XmlPullParserException | ErrorResponseException | RegionConflictException | InvalidArgumentException | InvalidPortException | InvalidEndpointException e) {
-            LOGGER.error("课程添加失败", e);
-            throw new ServiceException("课程添加失败");
-        }
-    }
-
-    /**
-     * 获取图片文件媒体格式
-     *
-     * @param cover 图片文件
-     * @return 媒体格式
-     */
-    private String getImageContentType(MultipartFile cover) {
-        try {
-            return MinIoUtil.getImageContentType(cover);
-        } catch (IOException e) {
-            LOGGER.error("文件读写异常", e);
-            throw new ServiceException("不支持的文件格式");
-        } catch (EmptyImageException e) {
-            LOGGER.error("图片为空", e);
-            throw new ServiceException("请选择要上传的图片");
-        } catch (ImageSizeOutOfRangeException e) {
-            LOGGER.error("图片大小超范围", e);
-            throw new ServiceException("图片文件不得大于 2 MB");
-        } catch (FileTypeException e) {
-            LOGGER.error("文件类型错误", e);
-            throw new ServiceException("文件类型错误");
-        }
+        minIoFileService.uploadThumbnail(bucketName, cover, coverPath, course.getId() + Objects.requireNonNull(cover.getOriginalFilename()).substring(cover.getOriginalFilename().lastIndexOf(".")));
+        updateById(course.setCover(endpoint + ":" + port + "/" + bucketName + coverPath + course.getId() + Objects.requireNonNull(cover.getOriginalFilename()).substring(cover.getOriginalFilename().lastIndexOf("."))));
     }
 
     @Override
@@ -188,12 +151,11 @@ public class EduCourseServiceImpl extends ServiceImpl<EduCourseMapper, EduCourse
     @Transactional(rollbackFor = Exception.class)
     public void update(EduCourseDTO course) {
         checkCourse(course);
-        String cover = null;
         // 更新封面
         if (Objects.nonNull(course.getCover())) {
-            String oldCoverPath = getById(course.getId()).getCover();
-            oldCoverPath = getById(course.getId()).getCover().substring(oldCoverPath.indexOf(bucketName) + bucketName.length());
-            cover = updateCover(course.getCover(), coverPath + course.getId() + course.getCover().getOriginalFilename(), oldCoverPath);
+            MultipartFile cover = course.getCover();
+            updateCover(cover, course.getId() + Objects.requireNonNull(cover.getOriginalFilename())
+                    .substring(cover.getOriginalFilename().lastIndexOf(".")));
         }
         // 更新课程描述
         if (StringUtils.isNotBlank(course.getDescription())) {
@@ -204,27 +166,16 @@ public class EduCourseServiceImpl extends ServiceImpl<EduCourseMapper, EduCourse
             }});
         }
         // 更新课程信息
-        updateById(course.convert().setCover(cover));
+        updateById(course.convert().setCover(null));
     }
 
     /**
      * 更新封面
      *
-     * @param cover   封面文件
-     * @param path    新封面文件路径
-     * @param oldPath 旧封面文件路径
-     * @return 更新后的路径
+     * @param cover 封面文件
      */
-    private String updateCover(MultipartFile cover, String path, String oldPath) {
-        String contentType = getImageContentType(cover);
-        try {
-            MinIoUtil.removeFile(bucketName, oldPath);
-            MinIoUtil.upload(bucketName, path, cover.getInputStream(), contentType);
-            return endpoint + ":" + port + "/" + bucketName + path;
-        } catch (IOException | InvalidEndpointException | InvalidPortException | InvalidKeyException | NoSuchAlgorithmException | InsufficientDataException | InternalException | NoResponseException | InvalidBucketNameException | XmlPullParserException | ErrorResponseException | RegionConflictException | InvalidArgumentException e) {
-            LOGGER.error("图片更新失败", e);
-            throw new ServiceException("服务器异常, 请稍后再试");
-        }
+    private void updateCover(MultipartFile cover, String coverName) {
+        minIoFileService.uploadThumbnail(bucketName, cover, coverPath, coverName);
     }
 
     @Override
@@ -248,7 +199,7 @@ public class EduCourseServiceImpl extends ServiceImpl<EduCourseMapper, EduCourse
      */
     private void checkIdsBeforeRemove(List<String> ids) {
         if (!ids.stream().allMatch(id -> eduChapterService.getByChapterId(id).isEmpty() && eduVideoService.getByCourseId(id).isEmpty())) {
-            throw new ServiceException("不可删除含有章节或视频的课程");
+            throw ExceptionUtil.serviceException("不可删除含有章节或视频的课程", null).build();
         }
     }
 }

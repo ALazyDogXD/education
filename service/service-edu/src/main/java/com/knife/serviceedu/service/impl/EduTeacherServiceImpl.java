@@ -175,7 +175,7 @@ public class EduTeacherServiceImpl extends ServiceImpl<EduTeacherMapper, EduTeac
      */
     private String getImageContentType(MultipartFile cover) {
         try {
-            return MinIoUtil.getImageContentType(cover);
+            return MinIoUtil.getThumbnailContentType(cover);
         } catch (IOException e) {
             LOGGER.error("文件读写异常", e);
             throw new ServiceException("不支持的文件格式");

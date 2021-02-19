@@ -62,6 +62,8 @@ public class MinIoUtil {
         MinIoUtil.secretKey = secretKey;
     }
 
+    private MinIoUtil() {}
+
     /**
      * 获取 MinIo 客户端
      *
@@ -154,26 +156,26 @@ public class MinIoUtil {
     /**
      * 获取图片文件的媒体格式
      *
-     * @param image 图片文件
+     * @param thumbnail 缩略图
      * @return 媒体格式
      * @throws EmptyImageException          图片为空
      * @throws ImageSizeOutOfRangeException 图片大小超范围
      * @throws FileTypeException            文件类型错误
      */
-    public static String getImageContentType(MultipartFile image) throws IOException, EmptyImageException, ImageSizeOutOfRangeException, FileTypeException {
+    public static String getThumbnailContentType(MultipartFile thumbnail) throws IOException, EmptyImageException, ImageSizeOutOfRangeException, FileTypeException {
         //检查文件是否为空
-        if (Objects.isNull(image) || image.isEmpty()) {
+        if (Objects.isNull(thumbnail) || thumbnail.isEmpty()) {
             throw new EmptyImageException("请选择图片");
         }
         //检查文件大小
-        if (image.getSize() > M2_TO_BYTE) {
+        if (thumbnail.getSize() > M2_TO_BYTE) {
             throw new ImageSizeOutOfRangeException("请上传2M以内的图片");
         }
         //检查是否是图片
-        if (Objects.isNull(ImageIO.read(image.getInputStream()))) {
+        if (Objects.isNull(ImageIO.read(thumbnail.getInputStream()))) {
             throw new FileTypeException("上传的文件不是图片");
         }
-        String suffix = Objects.requireNonNull(image.getOriginalFilename()).substring(image.getOriginalFilename().lastIndexOf(".") + 1);
+        String suffix = Objects.requireNonNull(thumbnail.getOriginalFilename()).substring(thumbnail.getOriginalFilename().lastIndexOf(".") + 1);
         return "image/" + ("jpg".equals(suffix) || "jfif".equals(suffix) ? "jpeg" : suffix);
     }
 
