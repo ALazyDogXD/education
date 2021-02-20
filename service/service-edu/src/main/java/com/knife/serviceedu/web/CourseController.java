@@ -1,12 +1,15 @@
 package com.knife.serviceedu.web;
 
-import com.knife.commonutil.util.ResponseBean;
+import com.knife.servicebase.entity.ResponseBean;
+import com.knife.servicebase.web.BaseController;
 import com.knife.serviceedu.domain.dto.EduCourseDTO;
 import com.knife.serviceedu.domain.dto.EduCourseStatusDTO;
 import com.knife.serviceedu.service.EduCourseService;
-import com.knife.serviceedu.strategy.CreateDataTransferObject;
-import com.knife.serviceedu.strategy.UpdateDataTransferObject;
+import com.knife.servicebase.strategy.CreateDataTransferObject;
+import com.knife.servicebase.strategy.UpdateDataTransferObject;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.slf4j.Logger;
 import org.springframework.validation.annotation.Validated;
@@ -26,7 +29,7 @@ import static org.slf4j.LoggerFactory.getLogger;
 @Api(tags = "课程管理接口")
 @RestController
 @RequestMapping("course")
-public class CourseController {
+public class CourseController extends BaseController {
 
     private static final Logger LOGGER = getLogger(CourseController.class);
 
@@ -43,11 +46,22 @@ public class CourseController {
 
     @GetMapping("list")
     @ApiOperation("获取课程列表")
-    public ResponseBean getList(@RequestParam(value = "page", defaultValue = "1") int page,
-                                @RequestParam(value = "size", defaultValue = "10") int size,
-                                @RequestParam(value = "order", required = false) String order) {
-        LOGGER.debug("当前页数: [{}], 每页数量: [{}], 排序字段: [{}]", page, size, order);
-        return ResponseBean.succ(eduCourseService.getList(page, size, order));
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "page", value = "当前页数", defaultValue = "1"),
+            @ApiImplicitParam(name = "size", value = "每页个数", defaultValue = "10"),
+            @ApiImplicitParam(name = "orderByColumn", value = "排序字段"),
+            @ApiImplicitParam(name = "isDesc", value = "是否降序"),
+            @ApiImplicitParam(name = "title", value = "课程名称"),
+            @ApiImplicitParam(name = "teacherId", value = "教师 id"),
+            @ApiImplicitParam(name = "subjectParentId", value = "一级学科 id"),
+            @ApiImplicitParam(name = "subjectId", value = "二级学科 id")
+    })
+    public ResponseBean getList(@RequestParam(value = "title", required = false) String title,
+                                @RequestParam(value = "teacherId", required = false) String teacherId,
+                                @RequestParam(value = "subjectParentId", required = false) String subjectParentId,
+                                @RequestParam(value = "subjectId", required = false) String subjectId) {
+        LOGGER.debug("课程名称: [{}], 教师 id: [{}], 一级学科 id: [{}], 二级学科 id: [{}]", title, teacherId, subjectParentId, subjectId);
+        return ResponseBean.succ(eduCourseService.getList(getPage(), title, teacherId, subjectParentId, subjectId));
     }
 
     @PutMapping
@@ -68,7 +82,10 @@ public class CourseController {
 
     @DeleteMapping
     @ApiOperation("删除课程")
-    public ResponseBean updateStatus(@RequestParam("ids") List<String> ids) {
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "ids", value = "id 数组", dataTypeClass = List.class)
+    })
+    public ResponseBean delete(@RequestParam("ids") List<String> ids) {
         LOGGER.debug("课程 id: [{}]", Arrays.toString(ids.toArray()));
         eduCourseService.remove(ids);
         return ResponseBean.succ("删除成功");

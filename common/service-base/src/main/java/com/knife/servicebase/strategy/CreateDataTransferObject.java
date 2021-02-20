@@ -1,4 +1,4 @@
-package com.knife.serviceedu.strategy;
+package com.knife.servicebase.strategy;
 
 /**
  * @author Mr_W

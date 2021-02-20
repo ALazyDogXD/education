@@ -1,23 +1,19 @@
 package com.knife.serviceedu.web;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.knife.commonutil.util.ResponseBean;
+import com.knife.servicebase.entity.ResponseBean;
 import com.knife.serviceedu.domain.dto.EduTeacherDTO;
 import com.knife.serviceedu.domain.entity.EduTeacherDO;
 import com.knife.serviceedu.domain.vo.EduTeacherVO;
 import com.knife.serviceedu.service.EduTeacherService;
-import com.knife.serviceedu.strategy.CreateDataTransferObject;
-import com.knife.serviceedu.strategy.UpdateDataTransferObject;
+import com.knife.servicebase.strategy.CreateDataTransferObject;
+import com.knife.servicebase.strategy.UpdateDataTransferObject;
 import io.swagger.annotations.*;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
-import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 import java.util.List;
 
 /**

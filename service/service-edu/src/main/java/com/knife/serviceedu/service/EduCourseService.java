@@ -28,14 +28,17 @@ public interface EduCourseService extends IService<EduCourseDO> {
     void add(MultipartFile cover, EduCourseDTO course);
 
     /**
+     *
      * 获取分页数据
      *
-     * @param page  当前页
-     * @param size  每页数量
-     * @param order 排序字段
+     * @param page 分页对象
+     * @param title 课程名称
+     * @param teacherId 教师 id
+     * @param subjectParentId 一级学科 id
+     * @param subjectId 二级学科 id
      * @return 分页数据
      */
-    IPage<EduCourseVO> getList(int page, int size, String order);
+    IPage<EduCourseVO> getList(IPage<EduCourseDO> page, String title, String teacherId, String subjectParentId, String subjectId);
 
     /**
      * 更新课程

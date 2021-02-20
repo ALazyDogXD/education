@@ -1,8 +1,10 @@
 package com.knife.serviceedu.web;
 
-import com.knife.commonutil.util.ResponseBean;
+import com.knife.servicebase.entity.ResponseBean;
 import com.knife.serviceedu.service.EduSubjectService;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,6 +33,9 @@ public class SubjectController {
 
     @PostMapping
     @ApiOperation("导入科目")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "file", value = "excel 文件", dataTypeClass = MultipartFile.class)
+    })
     public ResponseBean add(MultipartFile file) {
         eduSubjectService.importSubjectFile(file);
         return ResponseBean.succ("科目导入成功");

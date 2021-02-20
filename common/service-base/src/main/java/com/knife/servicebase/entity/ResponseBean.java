@@ -1,4 +1,4 @@
-package com.knife.commonutil.util;
+package com.knife.servicebase.entity;
 
 /**
  * @author Mr_W

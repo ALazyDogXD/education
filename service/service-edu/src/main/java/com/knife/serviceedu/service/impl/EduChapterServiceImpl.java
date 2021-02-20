@@ -5,9 +5,13 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.knife.serviceedu.domain.entity.EduChapterDO;
 import com.knife.serviceedu.mapper.EduChapterMapper;
 import com.knife.serviceedu.service.EduChapterService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+
+import static org.slf4j.LoggerFactory.getLogger;
 
 /**
  * <p>
@@ -20,6 +24,7 @@ import java.util.List;
 @Service
 public class EduChapterServiceImpl extends ServiceImpl<EduChapterMapper, EduChapterDO> implements EduChapterService {
 
+    private static final Logger LOGGER = getLogger(EduChapterServiceImpl.class);
 
     @Override
     public List<EduChapterDO> getByChapterId(String courseId) {

@@ -4,7 +4,7 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.List;
 
-import com.knife.commonutil.util.ResponseBean;
+import com.knife.servicebase.entity.ResponseBean;
 import com.knife.servicebase.entity.ServiceException;
 import com.knife.servicebase.enums.ServiceExceptionEnum;
 import org.apache.commons.lang3.StringUtils;
@@ -19,7 +19,6 @@ import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.multipart.MultipartException;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 /**
  * @author Mr_W

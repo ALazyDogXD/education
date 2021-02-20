@@ -1,6 +1,7 @@
 package com.knife.serviceedu.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -24,6 +25,7 @@ import javax.annotation.Resource;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static com.knife.serviceedu.constant.EduConstant.COURSE_DRAFT;
@@ -119,11 +121,14 @@ public class EduCourseServiceImpl extends ServiceImpl<EduCourseMapper, EduCourse
     }
 
     @Override
-    public IPage<EduCourseVO> getList(int page, int size, String order) {
-        IPage<EduCourseDO> courses = baseMapper.selectPage(new Page<>(page, size), new QueryWrapper<EduCourseDO>()
-                .eq("status", COURSE_NORMAL)
-                .eq("is_deleted", false)
-                .orderByDesc(StringUtils.isNotBlank(order), order));
+    public IPage<EduCourseVO> getList(IPage<EduCourseDO> page, String title, String teacherId, String subjectParentId, String subjectId) {
+        IPage<EduCourseDO> courses = baseMapper.selectPage(page, new LambdaQueryWrapper<EduCourseDO>()
+                .eq(EduCourseDO::getStatus, COURSE_NORMAL)
+                .eq(EduCourseDO::getIsDeleted, false)
+                .like(StringUtils.isNotBlank(title), EduCourseDO::getTitle, title)
+                .eq(StringUtils.isNotBlank(teacherId), EduCourseDO::getTeacherId, teacherId)
+                .eq(StringUtils.isNotBlank(subjectParentId), EduCourseDO::getSubjectParentId, subjectParentId)
+                .eq(StringUtils.isNotBlank(subjectId), EduCourseDO::getSubjectId, subjectId));
         return buildPage(courses);
     }
 
