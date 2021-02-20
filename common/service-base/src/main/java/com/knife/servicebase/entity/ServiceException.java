@@ -1,5 +1,6 @@
 package com.knife.servicebase.entity;
 
+import cn.hutool.core.util.StrUtil;
 import com.knife.servicebase.enums.ServiceExceptionEnum;
 import org.apache.commons.lang3.StringUtils;
 
@@ -60,11 +61,6 @@ public class ServiceException extends RuntimeException {
         return code;
     }
 
-    public ServiceException setAlertMessage(String alertMessage) {
-        this.alertMessage = alertMessage;
-        return this;
-    }
-
     public String getAlertMessage() {
         return alertMessage;
     }
@@ -73,14 +69,14 @@ public class ServiceException extends RuntimeException {
      * 获取业务异常构造器, code 默认 500
      *
      * @param message 异常信息
-     * @param cause   原始异常
+     * @param params  占位符参数
      * @return 业务异常构造器
      */
-    public static ServiceExceptionBuilder serviceException(String message, Throwable cause) {
+    public static ServiceExceptionBuilder serviceException(String message, Object... params) {
         if (StringUtils.isBlank(message)) {
             throw new RuntimeException("message of service exception can not be null");
         }
-        return new ServiceExceptionBuilder(message, cause);
+        return new ServiceExceptionBuilder(StrUtil.format(message, getParams(params)), getThrowable(params));
     }
 
     /**
@@ -95,5 +91,34 @@ public class ServiceException extends RuntimeException {
             throw new RuntimeException("enum of service exception can not be null");
         }
         return new ServiceExceptionBuilder(serviceExceptionEnum, cause);
+    }
+
+
+    /**
+     * 获取除异常外的参数
+     *
+     * @param params 参数
+     * @return 除异常外的参数
+     */
+    private static Object[] getParams(Object... params) {
+        if (params.length != 0 && params[params.length - 1] instanceof Throwable) {
+            Object[] paramsCopy = new Object[params.length - 1];
+            System.arraycopy(params, 0, paramsCopy, 0, params.length - 1);
+            return paramsCopy;
+        }
+        return params;
+    }
+
+    /**
+     * 获取异常
+     *
+     * @param params 参数
+     * @return 异常
+     */
+    private static Throwable getThrowable(Object... params) {
+        if (params.length != 0 && params[params.length - 1] instanceof Throwable) {
+            return (Throwable) params[params.length - 1];
+        }
+        return null;
     }
 }

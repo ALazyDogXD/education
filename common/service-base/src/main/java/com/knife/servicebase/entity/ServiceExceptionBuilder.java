@@ -54,6 +54,7 @@ public class ServiceExceptionBuilder {
     public ServiceExceptionBuilder(ServiceExceptionEnum serviceExceptionEnum, Throwable cause) {
         this.code = serviceExceptionEnum.getCode();
         this.message = serviceExceptionEnum.getMsg();
+        this.alertMessage = serviceExceptionEnum.getMsg();
         this.cause = cause;
     }
 
@@ -65,6 +66,17 @@ public class ServiceExceptionBuilder {
      */
     public ServiceExceptionBuilder alertMessage(String alertMessage) {
         this.alertMessage = alertMessage;
+        return this;
+    }
+
+    /**
+     * 设置客户端警告信息
+     *
+     * @param message 错误日志记录
+     * @return this
+     */
+    public ServiceExceptionBuilder message(String message) {
+        this.message = message;
         return this;
     }
 

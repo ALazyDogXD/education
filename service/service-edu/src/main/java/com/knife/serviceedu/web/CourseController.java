@@ -1,12 +1,12 @@
 package com.knife.serviceedu.web;
 
 import com.knife.servicebase.entity.ResponseBean;
+import com.knife.servicebase.strategy.CreateDataTransferObject;
+import com.knife.servicebase.strategy.UpdateDataTransferObject;
 import com.knife.servicebase.web.BaseController;
 import com.knife.serviceedu.domain.dto.EduCourseDTO;
 import com.knife.serviceedu.domain.dto.EduCourseStatusDTO;
 import com.knife.serviceedu.service.EduCourseService;
-import com.knife.servicebase.strategy.CreateDataTransferObject;
-import com.knife.servicebase.strategy.UpdateDataTransferObject;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;

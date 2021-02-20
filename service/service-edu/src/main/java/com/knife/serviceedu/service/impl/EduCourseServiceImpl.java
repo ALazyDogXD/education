@@ -2,11 +2,10 @@ package com.knife.serviceedu.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.knife.servicebase.util.ExceptionUtil;
+import com.knife.servicebase.entity.ServiceException;
 import com.knife.serviceedu.domain.dto.EduCourseDTO;
 import com.knife.serviceedu.domain.entity.EduCourseDO;
 import com.knife.serviceedu.domain.entity.EduCourseDescriptionDO;
@@ -25,7 +24,6 @@ import javax.annotation.Resource;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static com.knife.serviceedu.constant.EduConstant.COURSE_DRAFT;
@@ -102,10 +100,10 @@ public class EduCourseServiceImpl extends ServiceImpl<EduCourseMapper, EduCourse
     private void checkCourse(EduCourseDTO course) {
         EduSubjectDO subject = eduSubjectService.getById(course.getSubjectId());
         if (Objects.isNull(subject) || !course.getSubjectParentId().equals(subject.getParentId()) || "0".equals(course.getSubjectParentId())) {
-            throw ExceptionUtil.serviceException("无效的课程 id", null).build();
+            throw ServiceException.serviceException("无效的课程 id").build();
         }
         if (Objects.isNull(eduTeacherService.getById(course.getTeacherId()))) {
-            throw ExceptionUtil.serviceException("无效的教师 id", null).build();
+            throw ServiceException.serviceException("无效的教师 id").build();
         }
     }
 
@@ -204,7 +202,7 @@ public class EduCourseServiceImpl extends ServiceImpl<EduCourseMapper, EduCourse
      */
     private void checkIdsBeforeRemove(List<String> ids) {
         if (!ids.stream().allMatch(id -> eduChapterService.getByChapterId(id).isEmpty() && eduVideoService.getByCourseId(id).isEmpty())) {
-            throw ExceptionUtil.serviceException("不可删除含有章节或视频的课程", null).build();
+            throw ServiceException.serviceException("不可删除含有章节或视频的课程").build();
         }
     }
 }
