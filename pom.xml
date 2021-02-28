@@ -2,13 +2,13 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <groupId>com.knife</groupId>
+    <groupId>com.education</groupId>
     <artifactId>education</artifactId>
     <packaging>pom</packaging>
     <version>0.0.1-SNAPSHOT</version>
     <modules>
-        <module>service</module>
-        <module>common</module>
+        <module>education-service</module>
+        <module>education-common</module>
     </modules>
     <name>education</name>
     <description>Online Education</description>
@@ -22,7 +22,6 @@
         <spring-cloud.version>Hoxton.SR9</spring-cloud.version>
         <mysql.version>8.0.21</mysql.version>
         <mybatis-plus.version>3.2.0</mybatis-plus.version>
-        <page-helper.version>1.3.0</page-helper.version>
         <druid.version>1.1.22</druid.version>
         <commons-pool2.version>2.0</commons-pool2.version>
         <springfox.version>2.9.2</springfox.version>
@@ -68,6 +67,7 @@
                 <version>${mysql.version}</version>
             </dependency>
 
+            <!-- easy-excel -->
             <dependency>
                 <groupId>com.alibaba</groupId>
                 <artifactId>easyexcel</artifactId>
@@ -86,13 +86,6 @@
                 <groupId>com.baomidou</groupId>
                 <artifactId>mybatis-plus-boot-starter</artifactId>
                 <version>${mybatis-plus.version}</version>
-            </dependency>
-
-            <!-- page helper -->
-            <dependency>
-                <groupId>com.github.pagehelper</groupId>
-                <artifactId>pagehelper-spring-boot-starter</artifactId>
-                <version>${page-helper.version}</version>
             </dependency>
 
             <!-- knife4j -->
@@ -163,9 +156,6 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <version>2.3.7.RELEASE</version>
-                <configuration>
-                    <mainClass>com.knife.education.EducationApplication</mainClass>
-                </configuration>
                 <executions>
                     <execution>
                         <id>repackage</id>
