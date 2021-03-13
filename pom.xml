@@ -5,10 +5,11 @@
     <groupId>com.education</groupId>
     <artifactId>education</artifactId>
     <packaging>pom</packaging>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>${revision}</version>
     <modules>
         <module>education-service</module>
         <module>education-common</module>
+        <module>education-rpc</module>
     </modules>
     <name>education</name>
     <description>Online Education</description>
@@ -17,6 +18,7 @@
         <java.version>1.8</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <revision>0.0.1-SNAPSHOT</revision>
         <spring-boot.version>2.3.7.RELEASE</spring-boot.version>
         <spring-cloud-alibaba.version>2.2.2.RELEASE</spring-cloud-alibaba.version>
         <spring-cloud.version>Hoxton.SR9</spring-cloud.version>
@@ -29,6 +31,7 @@
         <hutool.version>5.3.10</hutool.version>
         <easyexcel.version>2.2.7</easyexcel.version>
         <minio.version>3.0.10</minio.version>
+        <dubbo.version>2.7.8</dubbo.version>
     </properties>
 
     <dependencyManagement>
@@ -58,6 +61,20 @@
                 <version>${spring-cloud-alibaba.version}</version>
                 <type>pom</type>
                 <scope>import</scope>
+            </dependency>
+
+<!--            &lt;!&ndash; dubbo-starter &ndash;&gt;-->
+<!--            <dependency>-->
+<!--                <groupId>org.apache.dubbo</groupId>-->
+<!--                <artifactId>dubbo-spring-boot-starter</artifactId>-->
+<!--                <version>${dubbo.starter.version}</version>-->
+<!--            </dependency>-->
+
+            <!-- dubbo-starter -->
+            <dependency>
+                <groupId>org.apache.dubbo</groupId>
+                <artifactId>dubbo-spring-boot-starter</artifactId>
+                <version>${dubbo.version}</version>
             </dependency>
 
             <!-- mysql-connector -->

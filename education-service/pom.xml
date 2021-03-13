@@ -5,7 +5,7 @@
     <parent>
         <artifactId>education</artifactId>
         <groupId>com.education</groupId>
-        <version>0.0.1-SNAPSHOT</version>
+        <version>${revision}</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -13,13 +13,14 @@
     <packaging>pom</packaging>
     <modules>
         <module>education-service-edu</module>
+        <module>education-service-minio</module>
     </modules>
 
     <dependencies>
         <dependency>
             <groupId>com.education</groupId>
             <artifactId>education-service-base</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
+            <version>${revision}</version>
         </dependency>
     </dependencies>
 

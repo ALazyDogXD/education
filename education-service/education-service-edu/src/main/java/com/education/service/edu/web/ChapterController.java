@@ -1,6 +1,7 @@
 package com.education.service.edu.web;
 
 import io.swagger.annotations.Api;
+import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 @Api(tags = "章节管理接口")
 @RestController
 @RequestMapping("chapter")
+@RefreshScope
 public class ChapterController {
 
 //    public ResponseBean get() {

@@ -1,22 +1,23 @@
 spring:
   application:
-    name: edu-service
+    name: minio-service
   cloud:
     nacos:
       server-addr: 192.168.1.166:8848
       discovery:
-        group: EDU_GROUP
+        group: MINIO_GROUP
         namespace: c5147a9f-5a24-484d-a40c-ef5e3ea0cad8
       config:
         file-extension: yml
-        group: EDU_GROUP
+        group: MINIO_GROUP
         namespace: c5147a9f-5a24-484d-a40c-ef5e3ea0cad8
 
 dubbo:
+  scan:
+    base-packages: com.education.service.minio.service
   protocol:
     name: dubbo
     port: -1
   registry:
     address: 192.168.1.166:8848
     protocol: nacos
-#logging.level.org.springframework.boot.autoconfigure: error

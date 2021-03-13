@@ -15,7 +15,6 @@ import org.slf4j.Logger;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import javax.annotation.Resource;
 import java.util.Arrays;
 import java.util.List;
 
@@ -33,8 +32,11 @@ public class CourseController extends BaseController {
 
     private static final Logger LOGGER = getLogger(CourseController.class);
 
-    @Resource
     private EduCourseService eduCourseService;
+
+    public CourseController(EduCourseService eduCourseService) {
+        this.eduCourseService = eduCourseService;
+    }
 
     @PostMapping
     @ApiOperation("添加课程")

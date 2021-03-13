@@ -14,8 +14,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.annotation.Resource;
-
 /**
  * @author Mr_W
  * @date 2021/2/16 15:48
@@ -28,8 +26,11 @@ public class SubjectController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(SubjectController.class);
 
-    @Resource
     private EduSubjectService eduSubjectService;
+
+    public SubjectController(EduSubjectService eduSubjectService) {
+        this.eduSubjectService = eduSubjectService;
+    }
 
     @PostMapping
     @ApiOperation("导入科目")

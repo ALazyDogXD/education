@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.education.rpc.minio.service.MinIoFileService;
 import com.education.service.base.entity.ServiceException;
 import com.education.service.edu.domain.dto.EduCourseDTO;
 import com.education.service.edu.domain.entity.EduCourseDO;
@@ -14,13 +15,13 @@ import com.education.service.edu.domain.vo.EduCourseVO;
 import com.education.service.edu.mapper.EduCourseMapper;
 import com.education.service.edu.service.*;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.dubbo.config.annotation.DubboReference;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.annotation.Resource;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
@@ -55,23 +56,30 @@ public class EduCourseServiceImpl extends ServiceImpl<EduCourseMapper, EduCourse
     @Value("${minio.path.image.course-cover}")
     private String coverPath;
 
-    @Resource
     private EduCourseDescriptionService eduCourseDescriptionService;
 
-    @Resource
     private EduSubjectService eduSubjectService;
 
-    @Resource
     private EduTeacherService eduTeacherService;
 
-    @Resource
     private EduVideoService eduVideoService;
 
-    @Resource
     private EduChapterService eduChapterService;
 
-    @Resource
+    @DubboReference(version = "1.0.0")
     private MinIoFileService minIoFileService;
+
+    public EduCourseServiceImpl(EduCourseDescriptionService eduCourseDescriptionService,
+                                EduSubjectService eduSubjectService,
+                                EduTeacherService eduTeacherService,
+                                EduVideoService eduVideoService,
+                                EduChapterService eduChapterService) {
+        this.eduCourseDescriptionService = eduCourseDescriptionService;
+        this.eduSubjectService = eduSubjectService;
+        this.eduTeacherService = eduTeacherService;
+        this.eduVideoService = eduVideoService;
+        this.eduChapterService = eduChapterService;
+    }
 
     @Override
     @Transactional(rollbackFor = Exception.class)
