@@ -1,24 +1,23 @@
 package com.education.common.util;
 
-import com.education.common.util.exception.minio.EmptyImageException;
-import com.education.common.util.exception.minio.FileTypeException;
-import com.education.common.util.exception.minio.ImageSizeOutOfRangeException;
 import com.education.common.util.exception.minio.NoSuchFileException;
 import io.minio.MinioClient;
 import io.minio.Result;
 import io.minio.errors.*;
 import io.minio.messages.Item;
+import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
-import org.springframework.web.multipart.MultipartFile;
 import org.xmlpull.v1.XmlPullParserException;
 
-import javax.imageio.ImageIO;
+import javax.annotation.PostConstruct;
 import java.io.IOException;
 import java.io.InputStream;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.util.Objects;
+
+import static org.slf4j.LoggerFactory.getLogger;
 
 /**
  * @author Mr_W
@@ -27,6 +26,8 @@ import java.util.Objects;
  */
 @Component
 public class MinIoUtil {
+
+    private static final Logger LOGGER = getLogger(MinIoUtil.class);
 
     /**
      * 图片文件大小
@@ -66,12 +67,21 @@ public class MinIoUtil {
     private MinIoUtil() {
     }
 
+    @PostConstruct
+    public void init() {
+        try {
+            MINIO_CLIENT = new MinioClient(endpoint, port, accessKey, secretKey);
+        } catch (InvalidEndpointException | InvalidPortException e) {
+            LOGGER.error("MinIoClient 初始化失败");
+        }
+    }
+
     /**
      * 获取 MinIo 客户端
      *
      * @return MinIo 客户端
      */
-    private static MinioClient getMinioClient() throws InvalidPortException, InvalidEndpointException {
+    private static MinioClient getMinIoClient() throws InvalidPortException, InvalidEndpointException {
         if (Objects.isNull(MINIO_CLIENT)) {
             synchronized (MinIoUtil.class) {
                 if (Objects.isNull(MINIO_CLIENT)) {
@@ -96,7 +106,7 @@ public class MinIoUtil {
      * @throws ErrorResponseException     执行失败
      */
     public static void upload(String bucketName, String fileName, InputStream in) throws IOException, InvalidKeyException, NoSuchAlgorithmException, InsufficientDataException, InternalException, NoResponseException, InvalidBucketNameException, XmlPullParserException, ErrorResponseException, RegionConflictException, InvalidArgumentException, InvalidPortException, InvalidEndpointException {
-        MinioClient minioClient = getMinioClient();
+        MinioClient minioClient = getMinIoClient();
         if (!minioClient.bucketExists(bucketName)) {
             minioClient.makeBucket(bucketName);
         }
@@ -112,7 +122,7 @@ public class MinIoUtil {
      * @param contentType 媒体格式
      */
     public static void upload(String bucketName, String fileName, InputStream in, String contentType) throws IOException, InvalidKeyException, NoSuchAlgorithmException, InsufficientDataException, InternalException, NoResponseException, InvalidBucketNameException, XmlPullParserException, ErrorResponseException, RegionConflictException, InvalidArgumentException, InvalidPortException, InvalidEndpointException {
-        MinioClient minioClient = getMinioClient();
+        MinioClient minioClient = getMinIoClient();
         if (!minioClient.bucketExists(bucketName)) {
             minioClient.makeBucket(bucketName);
         }
@@ -127,7 +137,7 @@ public class MinIoUtil {
      * @return 文件流
      */
     public static InputStream download(String bucketName, String fileName) throws NoSuchFileException, InvalidPortException, InvalidEndpointException, IOException, XmlPullParserException, NoSuchAlgorithmException, InvalidKeyException, ErrorResponseException, NoResponseException, InvalidBucketNameException, InsufficientDataException, InternalException, InvalidArgumentException {
-        MinioClient minioClient = getMinioClient();
+        MinioClient minioClient = getMinIoClient();
         if (fileIsExists(bucketName, fileName)) {
             return minioClient.getObject(bucketName, fileName);
         }
@@ -143,7 +153,7 @@ public class MinIoUtil {
      * @return true 存在
      */
     public static boolean fileIsExists(String bucketName, String fileName) throws IOException, InvalidKeyException, NoSuchAlgorithmException, InsufficientDataException, InternalException, NoResponseException, InvalidBucketNameException, XmlPullParserException, ErrorResponseException, InvalidPortException, InvalidEndpointException {
-        MinioClient minioClient = getMinioClient();
+        MinioClient minioClient = getMinIoClient();
         if (minioClient.bucketExists(bucketName)) {
             for (Result<Item> result : minioClient.listObjects(bucketName)) {
                 if (result.get().name.equals(fileName)) {
@@ -156,40 +166,55 @@ public class MinIoUtil {
     }
 
     /**
-     * 获取图片文件的媒体格式
-     *
-     * @param thumbnail 缩略图
-     * @return 媒体格式
-     * @throws EmptyImageException          图片为空
-     * @throws ImageSizeOutOfRangeException 图片大小超范围
-     * @throws FileTypeException            文件类型错误
-     */
-    public static String getThumbnailContentType(MultipartFile thumbnail) throws IOException, EmptyImageException, ImageSizeOutOfRangeException, FileTypeException {
-        //检查文件是否为空
-        if (thumbnail.isEmpty()) {
-            throw new EmptyImageException("请选择图片");
-        }
-        //检查文件大小
-        if (thumbnail.getSize() > M2_TO_BYTE) {
-            throw new ImageSizeOutOfRangeException("请上传2M以内的图片");
-        }
-        //检查是否是图片
-        if (Objects.isNull(ImageIO.read(thumbnail.getInputStream()))) {
-            throw new FileTypeException("上传的文件不是图片");
-        }
-        String suffix = Objects.requireNonNull(thumbnail.getOriginalFilename()).substring(thumbnail.getOriginalFilename().lastIndexOf(".") + 1);
-        return "image/" + ("jpg".equals(suffix) || "jfif".equals(suffix) ? "jpeg" : suffix);
-    }
-
-    /**
      * 删除文件
      *
      * @param bucketName 桶名称
      * @param filePath   文件路径
      */
     public static void removeFile(String bucketName, String filePath) throws InvalidPortException, InvalidEndpointException, IOException, InvalidKeyException, NoSuchAlgorithmException, InsufficientDataException, InternalException, NoResponseException, InvalidBucketNameException, XmlPullParserException, ErrorResponseException {
-        MinioClient minioClient = getMinioClient();
+        MinioClient minioClient = getMinIoClient();
         minioClient.removeObject(bucketName, filePath);
+    }
+
+    /**
+     * 判断 MinIo 服务文件上传时文件的类型contentType
+     *
+     * @param FilenameExtension 文件后缀
+     * @return 媒体类型
+     */
+    public static String getContentType(String FilenameExtension) {
+        if (".bmp".equalsIgnoreCase(FilenameExtension)) {
+            return "image/bmp";
+        }
+        if (".gif".equalsIgnoreCase(FilenameExtension)) {
+            return "image/gif";
+        }
+        if (".jpeg".equalsIgnoreCase(FilenameExtension) ||
+                ".jpg".equalsIgnoreCase(FilenameExtension) ||
+                ".png".equalsIgnoreCase(FilenameExtension)) {
+            return "image/jpeg";
+        }
+        if (".html".equalsIgnoreCase(FilenameExtension)) {
+            return "text/html";
+        }
+        if (".txt".equalsIgnoreCase(FilenameExtension)) {
+            return "text/plain";
+        }
+        if (".vsd".equalsIgnoreCase(FilenameExtension)) {
+            return "application/vnd.visio";
+        }
+        if (".pptx".equalsIgnoreCase(FilenameExtension) ||
+                ".ppt".equalsIgnoreCase(FilenameExtension)) {
+            return "application/vnd.ms-powerpoint";
+        }
+        if (".docx".equalsIgnoreCase(FilenameExtension) ||
+                ".doc".equalsIgnoreCase(FilenameExtension)) {
+            return "application/msword";
+        }
+        if (".xml".equalsIgnoreCase(FilenameExtension)) {
+            return "text/xml";
+        }
+        return "application/octet-stream";
     }
 
 }

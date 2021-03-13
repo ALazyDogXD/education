@@ -4,15 +4,13 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.education.common.util.MinIoUtil;
-import com.education.common.util.exception.minio.EmptyImageException;
-import com.education.common.util.exception.minio.FileTypeException;
-import com.education.common.util.exception.minio.ImageSizeOutOfRangeException;
 import com.education.service.base.entity.ServiceException;
 import com.education.service.edu.domain.dto.EduTeacherDTO;
 import com.education.service.edu.domain.entity.EduTeacherDO;
 import com.education.service.edu.domain.vo.EduTeacherVO;
 import com.education.service.edu.mapper.EduTeacherMapper;
 import com.education.service.edu.service.EduTeacherService;
+import com.education.service.edu.util.ImageUtil;
 import io.minio.errors.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -153,7 +151,7 @@ public class EduTeacherServiceImpl extends ServiceImpl<EduTeacherMapper, EduTeac
      */
     private void addCoverPath(EduTeacherDO course, MultipartFile cover, boolean choice) {
         try {
-            String contentType = getImageContentType(cover);
+            String contentType = ImageUtil.getThumbnailContentType(cover);
             // 上传图片文件
             MinIoUtil.upload(bucketName, coverPath + course.getId() + cover.getOriginalFilename(), cover.getInputStream(), contentType);
             if (choice) {
@@ -164,30 +162,6 @@ public class EduTeacherServiceImpl extends ServiceImpl<EduTeacherMapper, EduTeac
         } catch (IOException | InvalidKeyException | NoSuchAlgorithmException | InsufficientDataException | InternalException | NoResponseException | InvalidBucketNameException | XmlPullParserException | ErrorResponseException | RegionConflictException | InvalidArgumentException | InvalidPortException | InvalidEndpointException e) {
             LOGGER.error("教师添加失败", e);
             throw new ServiceException("课程添加失败");
-        }
-    }
-
-    /**
-     * 获取图片文件媒体格式
-     *
-     * @param cover 图片文件
-     * @return 媒体格式
-     */
-    private String getImageContentType(MultipartFile cover) {
-        try {
-            return MinIoUtil.getThumbnailContentType(cover);
-        } catch (IOException e) {
-            LOGGER.error("文件读写异常", e);
-            throw new ServiceException("不支持的文件格式");
-        } catch (EmptyImageException e) {
-            LOGGER.error("图片为空", e);
-            throw new ServiceException("请选择要上传的图片");
-        } catch (ImageSizeOutOfRangeException e) {
-            LOGGER.error("图片大小超范围", e);
-            throw new ServiceException("图片文件不得大于 2 MB");
-        } catch (FileTypeException e) {
-            LOGGER.error("文件类型错误", e);
-            throw new ServiceException("文件类型错误");
         }
     }
 }

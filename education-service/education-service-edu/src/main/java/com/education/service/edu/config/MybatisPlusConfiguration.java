@@ -15,7 +15,7 @@ import com.baomidou.mybatisplus.extension.plugins.PaginationInterceptor;
 @Configuration
 @EnableCaching(proxyTargetClass = true)
 @MapperScan("com.education.service.edu.mapper")
-public class MybatisPlusConfig {
+public class MybatisPlusConfiguration {
 	
 	/**
      * 分页插件

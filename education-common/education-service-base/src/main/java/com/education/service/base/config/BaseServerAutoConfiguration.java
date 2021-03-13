@@ -8,7 +8,7 @@ import org.springframework.context.annotation.Configuration;
  * @date 2021/2/27 19:44
  * @description 基础服务配置
  */
-@ComponentScan
+@ComponentScan({"com.education.service.base", "com.education.common.util"})
 @Configuration
 public class BaseServerAutoConfiguration {
 }

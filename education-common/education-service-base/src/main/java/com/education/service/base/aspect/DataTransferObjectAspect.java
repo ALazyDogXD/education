@@ -31,7 +31,7 @@ public class DataTransferObjectAspect {
 
     private static final Logger LOGGER = getLogger(DataTransferObjectAspect.class);
 
-    @Pointcut("execution(public * *.web.*.*(..))")
+    @Pointcut("execution(public * com.*.*.*.web.*.*(..))")
     public void pointcut() {}
 
     @Around("pointcut()")
