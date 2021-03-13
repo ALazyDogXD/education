@@ -37,12 +37,12 @@ import java.util.Objects;
  * @since 2021-02-16
  */
 @Service
+@Transactional(rollbackFor = Exception.class)
 public class EduSubjectServiceImpl extends ServiceImpl<EduSubjectMapper, EduSubjectDO> implements EduSubjectService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(EduSubjectServiceImpl.class);
 
     @Override
-    @Transactional(rollbackFor = Exception.class)
     public void importSubjectFile(MultipartFile file) {
         if (Objects.isNull(file)) {
             throw ServiceException.serviceException("文件不能为空").build();

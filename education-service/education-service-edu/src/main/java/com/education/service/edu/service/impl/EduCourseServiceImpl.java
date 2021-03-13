@@ -44,6 +44,7 @@ import static org.slf4j.LoggerFactory.getLogger;
  * @since 2021-02-16
  */
 @Service
+@Transactional(rollbackFor = Exception.class)
 public class EduCourseServiceImpl extends ServiceImpl<EduCourseMapper, EduCourseDO> implements EduCourseService {
 
     private static final Logger LOGGER = getLogger(EduCourseServiceImpl.class);
@@ -64,7 +65,7 @@ public class EduCourseServiceImpl extends ServiceImpl<EduCourseMapper, EduCourse
 
     private EduChapterService eduChapterService;
 
-    @DubboReference
+    @DubboReference(mock = "com.education.service.edu.service.impl.EduCourseServiceImpl")
     private MinIoFileService minIoFileService;
 
     public EduCourseServiceImpl(EduCourseDescriptionService eduCourseDescriptionService,
@@ -80,7 +81,6 @@ public class EduCourseServiceImpl extends ServiceImpl<EduCourseMapper, EduCourse
     }
 
     @Override
-    @Transactional(rollbackFor = Exception.class)
     public void add(MultipartFile cover, EduCourseDTO course) {
         checkCourse(course);
         EduCourseDO courseConverted = course.convert();
@@ -181,7 +181,6 @@ public class EduCourseServiceImpl extends ServiceImpl<EduCourseMapper, EduCourse
     }
 
     @Override
-    @Transactional(rollbackFor = Exception.class)
     public void update(EduCourseDTO course) {
         checkCourse(course);
         // 更新封面
