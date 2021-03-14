@@ -3,7 +3,7 @@ package com.education.service.edu.service.impl;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.education.common.util.MinIoUtil;
+import com.education.rpc.minio.service.MinIoFileService;
 import com.education.service.base.entity.ServiceException;
 import com.education.service.edu.domain.dto.EduTeacherDTO;
 import com.education.service.edu.domain.entity.EduTeacherDO;
@@ -11,17 +11,16 @@ import com.education.service.edu.domain.vo.EduTeacherVO;
 import com.education.service.edu.mapper.EduTeacherMapper;
 import com.education.service.edu.service.EduTeacherService;
 import com.education.service.edu.util.ImageUtil;
-import io.minio.errors.*;
+import org.apache.commons.io.IOUtils;
+import org.apache.dubbo.config.annotation.DubboReference;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-import org.xmlpull.v1.XmlPullParserException;
 
 import java.io.IOException;
-import java.security.InvalidKeyException;
-import java.security.NoSuchAlgorithmException;
+import java.io.InputStream;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -39,18 +38,14 @@ public class EduTeacherServiceImpl extends ServiceImpl<EduTeacherMapper, EduTeac
 
     private static final Logger LOGGER = LoggerFactory.getLogger(EduSubjectServiceImpl.class);
 
-    @Value("${minio.endpoint}")
-    private String endpoint;
-
-    @Value("${minio.port}")
-    private String port;
-
     @Value("${minio.bucketName}")
     private String bucketName;
 
     @Value("${minio.path.image.course-cover}")
     private String coverPath;
 
+    @DubboReference(mock = "com.education.service.edu.mock.MinIoFileServiceMock")
+    private MinIoFileService minIoFileService;
 
     @Override
     public boolean addTeacher(EduTeacherDTO teacher, MultipartFile course) {
@@ -150,16 +145,20 @@ public class EduTeacherServiceImpl extends ServiceImpl<EduTeacherMapper, EduTeac
      * @param choice 判断是新增还是修改
      */
     private void addCoverPath(EduTeacherDO course, MultipartFile cover, boolean choice) {
-        try {
-            String contentType = ImageUtil.getThumbnailContentType(cover);
+        try(InputStream in = cover.getInputStream()) {
             // 上传图片文件
-            MinIoUtil.upload(bucketName, coverPath + course.getId() + cover.getOriginalFilename(), cover.getInputStream(), contentType);
+            String url = minIoFileService.uploadThumbnail(
+                    bucketName,
+                    ImageUtil.getThumbnailContentType(cover),
+                    coverPath,
+                    course.getId() + cover.getOriginalFilename(),
+                    IOUtils.toByteArray(in));
             if (choice) {
-                save(course.setAvatar(endpoint + ":" + port + "/" + bucketName + coverPath + course.getId() + cover.getOriginalFilename()));
+                save(course.setAvatar(url));
             } else {
-                updateById(course.setAvatar(endpoint + ":" + port + "/" + bucketName + coverPath + course.getId() + cover.getOriginalFilename()));
+                updateById(course.setAvatar(url));
             }
-        } catch (IOException | InvalidKeyException | NoSuchAlgorithmException | InsufficientDataException | InternalException | NoResponseException | InvalidBucketNameException | XmlPullParserException | ErrorResponseException | RegionConflictException | InvalidArgumentException | InvalidPortException | InvalidEndpointException e) {
+        } catch (IOException e) {
             LOGGER.error("教师添加失败", e);
             throw new ServiceException("课程添加失败");
         }

@@ -1,6 +1,6 @@
-package com.education.common.util;
+package com.education.service.minio.util;
 
-import com.education.common.util.exception.minio.NoSuchFileException;
+import com.education.service.base.entity.ServiceException;
 import io.minio.MinioClient;
 import io.minio.Result;
 import io.minio.errors.*;
@@ -28,11 +28,6 @@ import static org.slf4j.LoggerFactory.getLogger;
 public class MinIoUtil {
 
     private static final Logger LOGGER = getLogger(MinIoUtil.class);
-
-    /**
-     * 图片文件大小
-     */
-    private static final long M2_TO_BYTE = (1 << 20) * 2;
 
     private static MinioClient MINIO_CLIENT;
 
@@ -64,8 +59,7 @@ public class MinIoUtil {
         MinIoUtil.secretKey = secretKey;
     }
 
-    private MinIoUtil() {
-    }
+    private MinIoUtil() { }
 
     @PostConstruct
     public void init() {
@@ -136,13 +130,13 @@ public class MinIoUtil {
      * @param fileName   文件名称(含路径)
      * @return 文件流
      */
-    public static InputStream download(String bucketName, String fileName) throws NoSuchFileException, InvalidPortException, InvalidEndpointException, IOException, XmlPullParserException, NoSuchAlgorithmException, InvalidKeyException, ErrorResponseException, NoResponseException, InvalidBucketNameException, InsufficientDataException, InternalException, InvalidArgumentException {
+    public static InputStream download(String bucketName, String fileName) throws InvalidPortException, InvalidEndpointException, IOException, XmlPullParserException, NoSuchAlgorithmException, InvalidKeyException, ErrorResponseException, NoResponseException, InvalidBucketNameException, InsufficientDataException, InternalException, InvalidArgumentException {
         MinioClient minioClient = getMinIoClient();
         if (fileIsExists(bucketName, fileName)) {
             return minioClient.getObject(bucketName, fileName);
         }
         // 没有找到文件
-        throw new NoSuchFileException("未查询到文件: " + fileName);
+        throw ServiceException.serviceException("未查询到文件: " + fileName).alertMessage("文件下载失败").build();
     }
 
     /**

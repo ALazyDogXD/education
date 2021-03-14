@@ -19,7 +19,7 @@ public class ImageUtil {
      */
     private static final long M2_TO_BYTE = (1 << 20) * 2;
 
-    private ImageUtil() {}
+    private ImageUtil() { }
 
     /**
      * 获取图片文件的媒体格式

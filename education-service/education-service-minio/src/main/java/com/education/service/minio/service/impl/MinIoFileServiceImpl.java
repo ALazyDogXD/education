@@ -1,8 +1,8 @@
 package com.education.service.minio.service.impl;
 
-import com.education.common.util.MinIoUtil;
 import com.education.rpc.minio.service.MinIoFileService;
 import com.education.service.base.entity.ServiceException;
+import com.education.service.minio.util.MinIoUtil;
 import io.minio.errors.*;
 import org.apache.dubbo.config.annotation.DubboService;
 import org.slf4j.Logger;
@@ -43,7 +43,7 @@ public class MinIoFileServiceImpl implements MinIoFileService {
         } catch (IOException | InvalidKeyException | NoSuchAlgorithmException | InsufficientDataException | InternalException | NoResponseException | InvalidBucketNameException | XmlPullParserException | ErrorResponseException | RegionConflictException | InvalidArgumentException | InvalidPortException | InvalidEndpointException e) {
             throw ServiceException.serviceException("图片上传失败", e).build();
         }
-        return "http://" + endpoint + ":" + port + "/" + bucketName + "/" + path + fileName;
+        return endpoint + ":" + port + "/" + bucketName + "/" + path + fileName;
     }
 
     @Override

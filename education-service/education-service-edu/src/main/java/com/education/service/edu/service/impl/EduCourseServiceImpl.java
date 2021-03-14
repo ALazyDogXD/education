@@ -65,7 +65,7 @@ public class EduCourseServiceImpl extends ServiceImpl<EduCourseMapper, EduCourse
 
     private EduChapterService eduChapterService;
 
-    @DubboReference(mock = "com.education.service.edu.service.impl.EduCourseServiceImpl")
+    @DubboReference(mock = "com.education.service.edu.mock.MinIoFileServiceMock")
     private MinIoFileService minIoFileService;
 
     public EduCourseServiceImpl(EduCourseDescriptionService eduCourseDescriptionService,
