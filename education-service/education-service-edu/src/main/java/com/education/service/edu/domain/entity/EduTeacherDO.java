@@ -1,13 +1,14 @@
 package com.education.service.edu.domain.entity;
 
+import com.baomidou.mybatisplus.annotation.TableLogic;
 import com.baomidou.mybatisplus.annotation.TableName;
-import java.time.LocalDateTime;
-import java.io.Serializable;
-
 import com.education.service.base.entity.ObjectConvert;
 import com.education.service.edu.domain.vo.EduTeacherVO;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+
+import java.io.Serializable;
+import java.time.LocalDateTime;
 
 /**
  * <p>
@@ -44,6 +45,7 @@ public class EduTeacherDO extends ObjectConvert<EduTeacherVO> implements Seriali
     @ApiModelProperty(value = "排序")
     private Integer sort;
 
+    @TableLogic
     @ApiModelProperty(value = "逻辑删除 1（true）已删除， 0（false）未删除")
     private Boolean isDeleted;
 

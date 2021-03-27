@@ -40,13 +40,13 @@ public class CourseController extends BaseController {
 
     @PostMapping
     @ApiOperation("添加课程")
-    public ResponseBean add(@Validated(CreateDataTransferObject.class) EduCourseDTO course) {
+    public ResponseBean create(@Validated(CreateDataTransferObject.class) EduCourseDTO course) {
         LOGGER.debug("课程参数: [{}]", course);
         eduCourseService.add(course.getCover(), course);
         return ResponseBean.succ("课程添加成功");
     }
 
-    @GetMapping("list")
+    @GetMapping
     @ApiOperation("获取课程列表")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "page", value = "当前页数", defaultValue = "1"),
@@ -58,10 +58,10 @@ public class CourseController extends BaseController {
             @ApiImplicitParam(name = "subjectParentId", value = "一级学科 id"),
             @ApiImplicitParam(name = "subjectId", value = "二级学科 id")
     })
-    public ResponseBean getList(@RequestParam(value = "title", required = false) String title,
-                                @RequestParam(value = "teacherId", required = false) String teacherId,
-                                @RequestParam(value = "subjectParentId", required = false) String subjectParentId,
-                                @RequestParam(value = "subjectId", required = false) String subjectId) {
+    public ResponseBean read(@RequestParam(value = "title", required = false) String title,
+                            @RequestParam(value = "teacherId", required = false) String teacherId,
+                            @RequestParam(value = "subjectParentId", required = false) String subjectParentId,
+                            @RequestParam(value = "subjectId", required = false) String subjectId) {
         LOGGER.debug("课程名称: [{}], 教师 id: [{}], 一级学科 id: [{}], 二级学科 id: [{}]", title, teacherId, subjectParentId, subjectId);
         return ResponseBean.succ(eduCourseService.getList(getPage(), title, teacherId, subjectParentId, subjectId));
     }

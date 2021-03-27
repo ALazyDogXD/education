@@ -1,10 +1,12 @@
 package com.education.service.edu.domain.entity;
 
 import com.baomidou.mybatisplus.annotation.TableName;
-import java.time.LocalDateTime;
-import java.io.Serializable;
+import com.baomidou.mybatisplus.annotation.Version;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+
+import java.io.Serializable;
+import java.time.LocalDateTime;
 
 /**
  * <p>
@@ -56,6 +58,7 @@ public class EduVideoDO implements Serializable {
     @ApiModelProperty(value = "视频源文件大小（字节）")
     private Long size;
 
+    @Version
     @ApiModelProperty(value = "乐观锁")
     private Long version;
 

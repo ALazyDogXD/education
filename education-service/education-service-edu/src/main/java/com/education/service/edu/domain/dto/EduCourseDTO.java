@@ -2,9 +2,9 @@ package com.education.service.edu.domain.dto;
 
 import com.education.service.base.annotation.SetNull;
 import com.education.service.base.entity.ObjectConvert;
-import com.education.service.edu.domain.entity.EduCourseDO;
 import com.education.service.base.strategy.CreateDataTransferObject;
 import com.education.service.base.strategy.UpdateDataTransferObject;
+import com.education.service.edu.domain.entity.EduCourseDO;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import org.springframework.web.multipart.MultipartFile;
@@ -23,27 +23,26 @@ import java.math.BigDecimal;
 public class EduCourseDTO extends ObjectConvert<EduCourseDO> {
 
     @SetNull(group = CreateDataTransferObject.class)
-    @NotBlank(message = "课程ID不可为空", groups = UpdateDataTransferObject.class)
-    @ApiModelProperty(value = "课程ID")
+    @NotBlank(message = "课程 ID 不可为空", groups = UpdateDataTransferObject.class)
+    @ApiModelProperty(value = "课程 ID")
     private String id;
 
-    @NotBlank(message = "课程讲师ID不可为空", groups = CreateDataTransferObject.class)
-    @ApiModelProperty(value = "课程讲师ID")
+    @NotBlank(message = "课程讲师不可为空", groups = CreateDataTransferObject.class)
+    @ApiModelProperty(value = "课程讲师 ID")
     private String teacherId;
 
-    @NotBlank(message = "课程专业ID不可为空", groups = CreateDataTransferObject.class)
-    @ApiModelProperty(value = "课程专业ID")
+    @NotBlank(message = "课程专业不可为空", groups = CreateDataTransferObject.class)
+    @ApiModelProperty(value = "课程专业 ID")
     private String subjectId;
 
-    @NotBlank(message = "课程专业父级ID不可为空", groups = CreateDataTransferObject.class)
-    @ApiModelProperty(value = "课程专业父级ID")
+    @NotBlank(message = "课程专业父级 ID 不可为空", groups = CreateDataTransferObject.class)
+    @ApiModelProperty(value = "课程专业父级 ID")
     private String subjectParentId;
 
     @NotBlank(message = "课程名称不可为空", groups = CreateDataTransferObject.class)
     @ApiModelProperty("课程名称")
     private String title;
 
-    @NotNull(message = "课程封面不可为空", groups = CreateDataTransferObject.class)
     @ApiModelProperty("课程封面")
     private MultipartFile cover;
 
@@ -57,7 +56,6 @@ public class EduCourseDTO extends ObjectConvert<EduCourseDO> {
     @ApiModelProperty("课程课时")
     private Integer lessonNum;
 
-    @NotBlank(message = "课程简介不可为空", groups = CreateDataTransferObject.class)
     @ApiModelProperty("课程简介")
     private String description;
 

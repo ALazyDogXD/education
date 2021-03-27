@@ -39,11 +39,15 @@ public class BaseController {
      */
     protected <T> IPage<T> getPage() {
         HttpServletRequest request = getRequest();
+        LOGGER.debug("当前页数: [{}], 每页数量: [{}], 排序字段: [{}], 是否降序: [{}]",
+                request.getParameter(PAGE),
+                request.getParameter(SIZE),
+                request.getParameter(ORDER_BY_COLUMN),
+                request.getParameter(IS_DESC));
         Integer page = Convert.toInt(request.getParameter(PAGE));
         Integer size = Convert.toInt(request.getParameter(SIZE));
         String orderByColumn = Convert.toStr(request.getParameter(ORDER_BY_COLUMN));
         Boolean isDesc = Convert.toBool(request.getParameter(IS_DESC));
-        LOGGER.debug("当前页数: [{}], 每页数量: [{}], 排序字段: [{}], 是否降序: [{}]", page, size, orderByColumn, isDesc);
         if (Objects.isNull(page) || Objects.isNull(size)) {
             return new Page<>();
         }

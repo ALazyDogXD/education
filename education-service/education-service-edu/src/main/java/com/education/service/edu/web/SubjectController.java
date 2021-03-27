@@ -37,14 +37,14 @@ public class SubjectController {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "file", value = "excel 文件", dataTypeClass = MultipartFile.class)
     })
-    public ResponseBean add(MultipartFile file) {
+    public ResponseBean importSubject(MultipartFile file) {
         eduSubjectService.importSubjectFile(file);
         return ResponseBean.succ("科目导入成功");
     }
 
     @GetMapping
     @ApiOperation("获取科目树")
-    public ResponseBean getTree() {
+    public ResponseBean readTree() {
         return ResponseBean.succ(eduSubjectService.getTree());
     }
 

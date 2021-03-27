@@ -1,14 +1,16 @@
 package com.education.service.edu.domain.entity;
 
-import java.math.BigDecimal;
+import com.baomidou.mybatisplus.annotation.TableLogic;
 import com.baomidou.mybatisplus.annotation.TableName;
-import java.time.LocalDateTime;
-import java.io.Serializable;
-
+import com.baomidou.mybatisplus.annotation.Version;
 import com.education.service.base.entity.ObjectConvert;
 import com.education.service.edu.domain.vo.EduCourseVO;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+
+import java.io.Serializable;
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
 
 /**
  * <p>
@@ -54,12 +56,14 @@ public class EduCourseDO extends ObjectConvert<EduCourseVO> implements Serializa
     @ApiModelProperty(value = "浏览数量")
     private Long viewCount;
 
+    @Version
     @ApiModelProperty(value = "乐观锁")
     private Long version;
 
     @ApiModelProperty(value = "课程状态 Draft未发布  Normal已发布")
     private String status;
 
+    @TableLogic
     @ApiModelProperty(value = "逻辑删除 1（true）已删除， 0（false）未删除")
     private Integer isDeleted;
 

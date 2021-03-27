@@ -94,8 +94,11 @@ public class EduCourseServiceImpl extends ServiceImpl<EduCourseMapper, EduCourse
                 .setGmtModified(LocalDateTime.now()));
         // 添加课程简介
         eduCourseDescriptionService.add(courseConverted.getId(), course.getDescription());
-        // 添加课程封面
-        addCoverPath(courseConverted, cover);
+
+        if (Objects.nonNull(cover) && !cover.isEmpty()) {
+            // 添加课程封面
+            addCoverPath(courseConverted, cover);
+        }
     }
 
     /**
@@ -184,7 +187,7 @@ public class EduCourseServiceImpl extends ServiceImpl<EduCourseMapper, EduCourse
     public void update(EduCourseDTO course) {
         checkCourse(course);
         // 更新封面
-        if (Objects.nonNull(course.getCover())) {
+        if (Objects.nonNull(course.getCover()) && !course.getCover().isEmpty()) {
             MultipartFile cover = course.getCover();
             updateCover(cover, course.getId() + Objects.requireNonNull(cover.getOriginalFilename())
                     .substring(cover.getOriginalFilename().lastIndexOf(".")));
@@ -234,7 +237,8 @@ public class EduCourseServiceImpl extends ServiceImpl<EduCourseMapper, EduCourse
      * @param ids id 集合
      */
     private void checkIdsBeforeRemove(List<String> ids) {
-        if (!ids.stream().allMatch(id -> eduChapterService.getByChapterId(id).isEmpty() && eduVideoService.getByCourseId(id).isEmpty())) {
+        if (!ids.stream().allMatch(id ->
+                eduChapterService.getByChapterId(id).isEmpty() && eduVideoService.getByCourseId(id).isEmpty())) {
             throw ServiceException.serviceException("不可删除含有章节或视频的课程").build();
         }
     }

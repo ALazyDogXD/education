@@ -16,8 +16,4 @@ import org.springframework.web.bind.annotation.RestController;
 @RefreshScope
 public class ChapterController {
 
-//    public ResponseBean get() {
-//
-//    }
-
 }

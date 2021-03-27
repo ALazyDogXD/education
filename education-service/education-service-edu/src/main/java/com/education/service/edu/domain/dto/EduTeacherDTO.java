@@ -1,5 +1,6 @@
 package com.education.service.edu.domain.dto;
 
+import com.education.service.base.annotation.SetNull;
 import com.education.service.base.entity.ObjectConvert;
 import com.education.service.edu.domain.entity.EduTeacherDO;
 import com.education.service.base.strategy.CreateDataTransferObject;
@@ -19,6 +20,7 @@ import javax.validation.constraints.NotNull;
 @ApiModel("教师入参")
 public class EduTeacherDTO extends ObjectConvert<EduTeacherDO> {
 
+    @SetNull(group = CreateDataTransferObject.class)
     @NotNull(message = "教师 id 不可为空", groups = UpdateDataTransferObject.class)
     @ApiModelProperty("教师 id")
     private String id;
@@ -27,7 +29,6 @@ public class EduTeacherDTO extends ObjectConvert<EduTeacherDO> {
     @ApiModelProperty(value = "讲师姓名")
     private String name;
 
-    @NotBlank(message = "讲师简介不可为空", groups = CreateDataTransferObject.class)
     @ApiModelProperty(value = "讲师简介")
     private String intro;
 
