@@ -1,10 +1,14 @@
 package com.education.service.edu.domain.dto;
 
 import com.education.service.base.annotation.SetNull;
+import com.education.service.base.annotation.validate.FileNotEmpty;
+import com.education.service.base.annotation.validate.FileSize;
+import com.education.service.base.annotation.validate.Image;
 import com.education.service.base.entity.ObjectConvert;
 import com.education.service.base.strategy.CreateDataTransferObject;
 import com.education.service.base.strategy.UpdateDataTransferObject;
 import com.education.service.edu.domain.entity.EduCourseDO;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import org.springframework.web.multipart.MultipartFile;
@@ -13,6 +17,8 @@ import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
+
+import static com.education.service.edu.constant.EduConstant.M2_TO_BYTE;
 
 /**
  * @author Mr_W
@@ -25,6 +31,7 @@ public class EduCourseDTO extends ObjectConvert<EduCourseDO> {
     @SetNull(group = CreateDataTransferObject.class)
     @NotBlank(message = "课程 ID 不可为空", groups = UpdateDataTransferObject.class)
     @ApiModelProperty(value = "课程 ID")
+    @JsonIgnore
     private String id;
 
     @NotBlank(message = "课程讲师不可为空", groups = CreateDataTransferObject.class)
@@ -44,6 +51,10 @@ public class EduCourseDTO extends ObjectConvert<EduCourseDO> {
     private String title;
 
     @ApiModelProperty("课程封面")
+    @Image(groups = CreateDataTransferObject.class)
+    @FileSize(max = M2_TO_BYTE, message = "图片大小不可超过 2M",
+            groups = CreateDataTransferObject.class)
+    @FileNotEmpty(groups = CreateDataTransferObject.class)
     private MultipartFile cover;
 
     @NotNull(message = "课程价格不可为空", groups = CreateDataTransferObject.class)

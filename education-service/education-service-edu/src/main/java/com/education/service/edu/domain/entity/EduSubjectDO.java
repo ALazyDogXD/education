@@ -1,14 +1,13 @@
 package com.education.service.edu.domain.entity;
 
+import com.baomidou.mybatisplus.annotation.FieldFill;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
-
-import java.time.LocalDateTime;
-import java.io.Serializable;
-
 import com.education.service.base.entity.ObjectConvert;
 import com.education.service.edu.domain.vo.EduSubjectVO;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+
+import java.io.Serializable;
+import java.time.LocalDateTime;
 
 /**
  * <p>
@@ -19,27 +18,40 @@ import io.swagger.annotations.ApiModelProperty;
  * @since 2021-02-16
  */
 @TableName("edu_subject")
-@ApiModel(value = "EduSubjectDO对象", description = "课程科目")
 public class EduSubjectDO extends ObjectConvert<EduSubjectVO> implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    @ApiModelProperty(value = "课程类别ID")
+    /**
+     * 课程类别ID
+     */
     private String id;
 
-    @ApiModelProperty(value = "类别名称")
+    /**
+     * 类别名称
+     */
     private String title;
 
-    @ApiModelProperty(value = "父ID")
+    /**
+     * 父ID
+     */
     private String parentId;
 
-    @ApiModelProperty(value = "排序字段")
+    /**
+     * 排序字段
+     */
     private Integer sort;
 
-    @ApiModelProperty(value = "创建时间")
+    /**
+     * 创建时间
+     */
+    @TableField(value = "gmt_create", fill = FieldFill.INSERT)
     private LocalDateTime gmtCreate;
 
-    @ApiModelProperty(value = "更新时间")
+    /**
+     * 更新时间
+     */
+    @TableField(value = "gmt_modified", fill = FieldFill.INSERT_UPDATE)
     private LocalDateTime gmtModified;
 
     public String getId() {

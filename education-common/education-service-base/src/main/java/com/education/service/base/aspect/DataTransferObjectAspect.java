@@ -8,6 +8,7 @@ import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
 import org.aspectj.lang.reflect.MethodSignature;
 import org.slf4j.Logger;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.annotation.Validated;
 
@@ -27,6 +28,7 @@ import static org.slf4j.LoggerFactory.getLogger;
  */
 @Aspect
 @Component
+@ConditionalOnClass(Aspect.class)
 public class DataTransferObjectAspect {
 
     private static final Logger LOGGER = getLogger(DataTransferObjectAspect.class);

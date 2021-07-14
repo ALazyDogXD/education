@@ -1,9 +1,9 @@
 package com.education.service.edu.domain.entity;
 
+import com.baomidou.mybatisplus.annotation.FieldFill;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableLogic;
 import com.baomidou.mybatisplus.annotation.TableName;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
@@ -17,40 +17,61 @@ import java.time.LocalDateTime;
  * @since 2021-02-16
  */
 @TableName("edu_comment")
-@ApiModel(value="EduCommentDO对象", description="评论")
 public class EduCommentDO implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    @ApiModelProperty(value = "讲师ID")
+    /**
+     * 讲师ID
+     */
     private String id;
 
-    @ApiModelProperty(value = "课程id")
+    /**
+     * 课程ID
+     */
     private String courseId;
 
-    @ApiModelProperty(value = "讲师id")
+    /**
+     * 讲师ID
+     */
     private String teacherId;
 
-    @ApiModelProperty(value = "会员id")
+    /**
+     * 会员ID
+     */
     private String memberId;
 
-    @ApiModelProperty(value = "会员昵称")
+    /**
+     * 会员昵称
+     */
     private String nickname;
 
-    @ApiModelProperty(value = "会员头像")
+    /**
+     * 会员头像
+     */
     private String avatar;
 
-    @ApiModelProperty(value = "评论内容")
+    /**
+     * 评论内容
+     */
     private String content;
 
+    /**
+     * 逻辑删除 1（true）已删除， 0（false）未删除
+     */
     @TableLogic
-    @ApiModelProperty(value = "逻辑删除 1（true）已删除， 0（false）未删除")
     private Boolean isDeleted;
 
-    @ApiModelProperty(value = "创建时间")
+    /**
+     * 创建时间
+     */
+    @TableField(value = "gmt_create", fill = FieldFill.INSERT)
     private LocalDateTime gmtCreate;
 
-    @ApiModelProperty(value = "更新时间")
+    /**
+     * 更新时间
+     */
+    @TableField(value = "gmt_modified", fill = FieldFill.INSERT_UPDATE)
     private LocalDateTime gmtModified;
 
     public String getId() {

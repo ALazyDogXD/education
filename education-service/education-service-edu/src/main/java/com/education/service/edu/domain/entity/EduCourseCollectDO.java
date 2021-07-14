@@ -1,9 +1,9 @@
 package com.education.service.edu.domain.entity;
 
+import com.baomidou.mybatisplus.annotation.FieldFill;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableLogic;
 import com.baomidou.mybatisplus.annotation.TableName;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
@@ -17,28 +17,41 @@ import java.time.LocalDateTime;
  * @since 2021-02-16
  */
 @TableName("edu_course_collect")
-@ApiModel(value="EduCourseCollectDO对象", description="课程收藏")
 public class EduCourseCollectDO implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    @ApiModelProperty(value = "收藏ID")
+    /**
+     * 收藏ID
+     */
     private String id;
 
-    @ApiModelProperty(value = "课程讲师ID")
+    /**
+     * 课程讲师ID
+     */
     private String courseId;
 
-    @ApiModelProperty(value = "课程专业ID")
+    /**
+     * 课程专业ID
+     */
     private String memberId;
 
+    /**
+     * 逻辑删除 1（true）已删除， 0（false）未删除
+     */
     @TableLogic
-    @ApiModelProperty(value = "逻辑删除 1（true）已删除， 0（false）未删除")
     private Integer isDeleted;
 
-    @ApiModelProperty(value = "创建时间")
+    /**
+     * 创建时间
+     */
+    @TableField(value = "gmt_create", fill = FieldFill.INSERT)
     private LocalDateTime gmtCreate;
 
-    @ApiModelProperty(value = "更新时间")
+    /**
+     * 更新时间
+     */
+    @TableField(value = "gmt_modified", fill = FieldFill.INSERT_UPDATE)
     private LocalDateTime gmtModified;
 
     public String getId() {

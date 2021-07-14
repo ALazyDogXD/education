@@ -1,37 +1,27 @@
 package com.education.service.edu.config;
 
-import com.baomidou.mybatisplus.extension.plugins.inner.OptimisticLockerInnerInterceptor;
-import com.baomidou.mybatisplus.extension.plugins.inner.PaginationInnerInterceptor;
+import com.baomidou.mybatisplus.core.config.GlobalConfig;
 import org.mybatis.spring.annotation.MapperScan;
-import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 /**
  * @author Mr_W
  */
-@EnableTransactionManagement
-@Configuration
-@EnableCaching(proxyTargetClass = true)
+@Configuration("edu-mybatis-plus-configuration")
 @MapperScan("com.education.service.edu.mapper")
 public class MybatisPlusConfiguration {
 
-	/**
-     * 分页插件
-     */
     @Bean
-    public PaginationInnerInterceptor paginationInterceptor() {
-        return new PaginationInnerInterceptor();
+    public GlobalConfig globalConfig(MetaHandler metaHandler) {
+        GlobalConfig globalConfig = new GlobalConfig();
+        globalConfig.setMetaObjectHandler(metaHandler);
+        return globalConfig;
     }
 
-
-    /**
-     * 乐观锁插件
-     */
     @Bean
-    public OptimisticLockerInnerInterceptor optimisticLockerInnerInterceptor() {
-        return new OptimisticLockerInnerInterceptor();
+    public MetaHandler metaHandler() {
+        return new MetaHandler();
     }
 
 }

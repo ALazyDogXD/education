@@ -10,12 +10,17 @@ import com.education.service.base.entity.ServiceException;
  */
 public class MinIoFileServiceMock implements MinIoFileService {
     @Override
-    public String uploadThumbnail(String bucketName, String contentType, String path, String fileName, byte[] imageByte) {
+    public String upload(String bucketName, String contentType, String path, String fileName, byte[] fileByte) {
         throw ServiceException.serviceException("MinIoFileService.uploadThumbnail 调用失败").alertMessage("文件上传失败").build();
     }
 
     @Override
-    public void removeFile(String bucketName, String path) {
+    public String upload(String bucketName, String path, String fileName, byte[] fileByte) {
+        throw ServiceException.serviceException("MinIoFileService.uploadThumbnail 调用失败").alertMessage("文件上传失败").build();
+    }
+
+    @Override
+    public void remove(String bucketName, String path) {
         throw ServiceException.serviceException("MinIoFileService.removeFile 调用失败").alertMessage("文件删除失败").build();
     }
 }

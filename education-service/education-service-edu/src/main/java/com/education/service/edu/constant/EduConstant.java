@@ -17,4 +17,9 @@ public interface EduConstant {
      */
     String COURSE_NORMAL = "Normal";
 
+    /**
+     * 图片文件大小
+     */
+    long M2_TO_BYTE = (1 << 20) * 2;
+
 }

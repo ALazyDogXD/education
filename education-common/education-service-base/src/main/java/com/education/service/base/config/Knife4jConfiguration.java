@@ -1,5 +1,7 @@
 package com.education.service.base.config;
 
+import com.github.xiaoymin.knife4j.spring.configuration.Knife4jAutoConfiguration;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import springfox.documentation.builders.ApiInfoBuilder;
@@ -16,6 +18,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2WebMvc;
  */
 @Configuration
 @EnableSwagger2WebMvc
+@ConditionalOnClass(Knife4jAutoConfiguration.class)
 public class Knife4jConfiguration {
 
     @Bean(value = "defaultApi2")

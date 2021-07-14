@@ -20,6 +20,7 @@ import org.apache.dubbo.config.annotation.DubboReference;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -37,6 +38,7 @@ import java.util.stream.Collectors;
  * @since 2021-02-16
  */
 @Service
+@RefreshScope
 public class EduTeacherServiceImpl extends ServiceImpl<EduTeacherMapper, EduTeacherDO> implements EduTeacherService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(EduSubjectServiceImpl.class);
@@ -86,7 +88,7 @@ public class EduTeacherServiceImpl extends ServiceImpl<EduTeacherMapper, EduTeac
     private void addCoverPath(EduTeacherDO course, MultipartFile cover, boolean choice) {
         try(InputStream in = cover.getInputStream()) {
             // 上传图片文件
-            String url = minIoFileService.uploadThumbnail(
+            String url = minIoFileService.upload(
                     bucketName,
                     ImageUtil.getThumbnailContentType(cover),
                     coverPath,

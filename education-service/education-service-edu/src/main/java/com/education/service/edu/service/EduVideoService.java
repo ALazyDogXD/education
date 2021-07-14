@@ -2,6 +2,7 @@ package com.education.service.edu.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.education.service.edu.domain.entity.EduVideoDO;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -30,5 +31,11 @@ public interface EduVideoService extends IService<EduVideoDO> {
      * @return 视频集合
      */
     List<EduVideoDO> getByChapterId(String chapterId);
+
+    /**
+     * 上传视频
+     * @param video 上传视频
+     */
+    void uploadVideo(MultipartFile video);
 
 }

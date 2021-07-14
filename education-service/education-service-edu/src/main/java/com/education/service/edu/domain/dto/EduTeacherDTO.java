@@ -1,16 +1,20 @@
 package com.education.service.edu.domain.dto;
 
 import com.education.service.base.annotation.SetNull;
+import com.education.service.base.annotation.validate.FileNotEmpty;
+import com.education.service.base.annotation.validate.FileSize;
+import com.education.service.base.annotation.validate.Image;
 import com.education.service.base.entity.ObjectConvert;
-import com.education.service.edu.domain.entity.EduTeacherDO;
 import com.education.service.base.strategy.CreateDataTransferObject;
 import com.education.service.base.strategy.UpdateDataTransferObject;
+import com.education.service.edu.domain.entity.EduTeacherDO;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
+
+import static com.education.service.edu.constant.EduConstant.M2_TO_BYTE;
 
 /**
  * @description 教师dto
@@ -21,7 +25,7 @@ import javax.validation.constraints.NotNull;
 public class EduTeacherDTO extends ObjectConvert<EduTeacherDO> {
 
     @SetNull(group = CreateDataTransferObject.class)
-    @NotNull(message = "教师 id 不可为空", groups = UpdateDataTransferObject.class)
+    @NotBlank(message = "教师 id 不可为空", groups = UpdateDataTransferObject.class)
     @ApiModelProperty("教师 id")
     private String id;
 
@@ -40,6 +44,10 @@ public class EduTeacherDTO extends ObjectConvert<EduTeacherDO> {
     private Integer level;
 
     @ApiModelProperty(value = "讲师头像")
+    @Image(groups = CreateDataTransferObject.class)
+    @FileSize(max = M2_TO_BYTE, message = "图片大小不可超过 2M",
+            groups = CreateDataTransferObject.class)
+    @FileNotEmpty(groups = CreateDataTransferObject.class)
     private MultipartFile avatar;
 
     public String getId() {

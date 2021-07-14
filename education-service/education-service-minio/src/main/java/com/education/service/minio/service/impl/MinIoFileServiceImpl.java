@@ -33,21 +33,26 @@ public class MinIoFileServiceImpl implements MinIoFileService {
     private int port;
 
     @Override
-    public String uploadThumbnail(String bucketName, String contentType, String path, String fileName, byte[] imageByte) {
+    public String upload(String bucketName, String contentType, String path, String fileName, byte[] fileByte) {
         if (!path.endsWith("/")) {
             path = path + "/";
         }
-        try (InputStream in = new ByteArrayInputStream(imageByte)) {
-            // 上传图片文件
+        try (InputStream in = new ByteArrayInputStream(fileByte)) {
+            // 上传文件
             MinIoUtil.upload(bucketName, path + fileName, in, contentType);
         } catch (IOException | InvalidKeyException | NoSuchAlgorithmException | InsufficientDataException | InternalException | NoResponseException | InvalidBucketNameException | XmlPullParserException | ErrorResponseException | RegionConflictException | InvalidArgumentException | InvalidPortException | InvalidEndpointException e) {
-            throw ServiceException.serviceException("图片上传失败", e).build();
+            throw ServiceException.serviceException("文件上传失败", e).build();
         }
         return endpoint + ":" + port + "/" + bucketName + "/" + path + fileName;
     }
 
     @Override
-    public void removeFile(String bucketName, String path) {
+    public String upload(String bucketName, String path, String fileName, byte[] fileByte) {
+        return upload(bucketName, "application/octet-stream", path, fileName, fileByte);
+    }
+
+    @Override
+    public void remove(String bucketName, String path) {
         try {
             MinIoUtil.removeFile(bucketName, path);
         } catch (InvalidPortException | InvalidEndpointException | IOException | InvalidKeyException | NoSuchAlgorithmException | InsufficientDataException | InternalException | NoResponseException | InvalidBucketNameException | XmlPullParserException | ErrorResponseException e) {

@@ -13,6 +13,8 @@
     <packaging>pom</packaging>
     <modules>
         <module>education-rpc-minio</module>
+        <module>untitled</module>
+        <module>education-rpc-vod</module>
     </modules>
 
 

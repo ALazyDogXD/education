@@ -20,6 +20,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.dubbo.config.annotation.DubboReference;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -44,6 +45,7 @@ import static org.slf4j.LoggerFactory.getLogger;
  * @since 2021-02-16
  */
 @Service
+@RefreshScope
 @Transactional(rollbackFor = Exception.class)
 public class EduCourseServiceImpl extends ServiceImpl<EduCourseMapper, EduCourseDO> implements EduCourseService {
 
@@ -65,7 +67,7 @@ public class EduCourseServiceImpl extends ServiceImpl<EduCourseMapper, EduCourse
 
     private EduChapterService eduChapterService;
 
-    @DubboReference(mock = "com.education.service.edu.mock.MinIoFileServiceMock")
+    @DubboReference(mock = "com.education.service.edu.mock.MinIoFileServiceMock", timeout = 3000)
     private MinIoFileService minIoFileService;
 
     public EduCourseServiceImpl(EduCourseDescriptionService eduCourseDescriptionService,
@@ -124,17 +126,23 @@ public class EduCourseServiceImpl extends ServiceImpl<EduCourseMapper, EduCourse
      */
     private void addCoverPath(EduCourseDO course, MultipartFile cover) {
         String url;
+        String fileName = course.getId() + Objects.requireNonNull(cover.getOriginalFilename()).substring(cover.getOriginalFilename().lastIndexOf("."));
         try(InputStream in = cover.getInputStream()) {
-            url = minIoFileService.uploadThumbnail(
+            url = minIoFileService.upload(
                     bucketName,
                     getImageContentType(cover),
                     coverPath,
-                    course.getId() + Objects.requireNonNull(cover.getOriginalFilename()).substring(cover.getOriginalFilename().lastIndexOf(".")),
+                    fileName,
                     IOUtils.toByteArray(in));
         } catch (IOException e) {
             throw ServiceException.serviceException("文件读写异常", e).alertMessage("文件上传失败").build();
         }
-        updateById(course.setCover(url));
+        try {
+            updateById(course.setCover(url));
+        } catch (Exception e) {
+            minIoFileService.remove(bucketName, coverPath.endsWith("/") ? coverPath : (coverPath + "/") + fileName);
+            throw ServiceException.serviceException("url 添加失败", e).alertMessage("课程添加失败, 请稍后再试").build();
+        }
     }
 
     /**
@@ -211,7 +219,7 @@ public class EduCourseServiceImpl extends ServiceImpl<EduCourseMapper, EduCourse
      */
     private void updateCover(MultipartFile cover, String coverName) {
         try {
-            minIoFileService.uploadThumbnail(bucketName, getImageContentType(cover), coverPath, coverName, IOUtils.toByteArray(cover.getInputStream()));
+            minIoFileService.upload(bucketName, getImageContentType(cover), coverPath, coverName, IOUtils.toByteArray(cover.getInputStream()));
         } catch (IOException e) {
             throw ServiceException.serviceException("文件读写异常", e).alertMessage("文件上传失败").build();
         }

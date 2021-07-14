@@ -89,27 +89,6 @@ public class MinIoUtil {
     /**
      * 上传
      *
-     * @param bucketName 桶名称
-     * @param fileName   文件名称(含路径)
-     * @param in         文件流
-     * @throws IOException                连接异常
-     * @throws InternalException          内部异常
-     * @throws NoResponseException        服务器无响应
-     * @throws InvalidBucketNameException 非法的存储桶名称
-     * @throws XmlPullParserException     解析返回的XML异常
-     * @throws ErrorResponseException     执行失败
-     */
-    public static void upload(String bucketName, String fileName, InputStream in) throws IOException, InvalidKeyException, NoSuchAlgorithmException, InsufficientDataException, InternalException, NoResponseException, InvalidBucketNameException, XmlPullParserException, ErrorResponseException, RegionConflictException, InvalidArgumentException, InvalidPortException, InvalidEndpointException {
-        MinioClient minioClient = getMinIoClient();
-        if (!minioClient.bucketExists(bucketName)) {
-            minioClient.makeBucket(bucketName);
-        }
-        minioClient.putObject(bucketName, fileName, in, in.available(), "application/octet-stream");
-    }
-
-    /**
-     * 上传
-     *
      * @param bucketName  桶名称
      * @param fileName    文件名称(含路径)
      * @param in          文件流
