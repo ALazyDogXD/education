@@ -19,12 +19,13 @@ import java.lang.reflect.Method;
 import java.time.Duration;
 import java.time.Instant;
 
+import static com.education.service.base.entity.enums.ResponseEnum.FAIL;
 import static org.slf4j.LoggerFactory.getLogger;
 
 /**
  * @author Mr_W
  * @date 2021/2/18 9:22
- * @description: dto 参数切面
+ * @description dto 参数切面
  */
 @Aspect
 @Component
@@ -74,11 +75,11 @@ public class DataTransferObjectAspect {
                             field.setAccessible(false);
                         }
                     } catch (NoSuchMethodException e) {
-                        LOGGER.error("没有 groups 方法", e);
-                        throw new ServiceException("服务器异常");
+                        LOGGER.error("没有 groups 方法");
+                        throw new ServiceException(FAIL, e);
                     } catch (IllegalAccessException | InvocationTargetException e) {
-                        LOGGER.error("groups 方法执行失败", e);
-                        throw new ServiceException("服务器异常");
+                        LOGGER.error("groups 方法执行失败");
+                        throw new ServiceException(FAIL, e);
                     }
                 }
             }

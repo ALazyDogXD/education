@@ -8,6 +8,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.education.rpc.minio.service.MinIoFileService;
 import com.education.service.base.entity.ObjectConvert;
 import com.education.service.base.entity.ServiceException;
+import com.education.service.base.entity.enums.ResponseEnum;
 import com.education.service.edu.domain.dto.EduTeacherDTO;
 import com.education.service.edu.domain.entity.EduTeacherDO;
 import com.education.service.edu.domain.vo.EduTeacherVO;
@@ -100,8 +101,7 @@ public class EduTeacherServiceImpl extends ServiceImpl<EduTeacherMapper, EduTeac
                 updateById(course.setAvatar(url));
             }
         } catch (IOException e) {
-            LOGGER.error("教师添加失败", e);
-            throw new ServiceException("课程添加失败");
+            throw new ServiceException(ResponseEnum.IMAGE_UPLOAD_FAIL);
         }
     }
 }

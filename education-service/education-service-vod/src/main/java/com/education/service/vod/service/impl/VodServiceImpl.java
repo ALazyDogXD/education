@@ -19,6 +19,9 @@ import java.nio.file.Paths;
 import java.time.Duration;
 import java.time.Instant;
 
+import static com.education.service.base.entity.enums.ResponseEnum.FILE_DEL_FAIL;
+import static com.education.service.base.entity.enums.ResponseEnum.VIDEO_UPLOAD_FAIL;
+
 /**
  * @author Mr_W
  * @date 2021/4/4 15:23
@@ -59,25 +62,21 @@ public class VodServiceImpl implements VodService, CommandLineRunner {
     }
 
     private void deleteFile(Path rootPath) throws IOException {
-        Files.list(rootPath).forEach(path -> {
-            try {
-                if (Files.isDirectory(path)) {
-                    deleteFile(path);
-                } else {
-                    Files.delete(path);
-                }
-            } catch (IOException e) {
-                LOGGER.error("文件删除失败", e);
-                throw ServiceException.serviceException("文件删除失败", e).build();
+        Path[] paths = Files.list(rootPath).toArray(Path[]::new);
+        for (Path path : paths) {
+            if (Files.isDirectory(path)) {
+                deleteFile(path);
+            } else {
+                Files.delete(path);
             }
-        });
+        }
     }
 
     @Override
     public void uploadVideo(String bucketName, String path, String fileName, byte[] videoByte) {
         String filePath = (this.path.endsWith(File.separator) ? this.path : (this.path + File.separator)) + fileName;
         if (Files.exists(Paths.get(filePath))) {
-            throw ServiceException.serviceException("视频文件上传失败").build();
+            throw new ServiceException(VIDEO_UPLOAD_FAIL);
         }
 
         // 视频切片
@@ -87,7 +86,7 @@ public class VodServiceImpl implements VodService, CommandLineRunner {
             mpdPath = FfmpegUtil.convertVideoIntoMpd(filePath);
             Files.delete(Paths.get(filePath));
         } catch (IOException e) {
-            throw ServiceException.serviceException("视频文件写入失败", e).build();
+            throw new ServiceException(VIDEO_UPLOAD_FAIL, e);
         }
 
         // 上传视频
@@ -96,7 +95,7 @@ public class VodServiceImpl implements VodService, CommandLineRunner {
             Files.delete(Paths.get(mpdPath));
             uploadAndDeleteM4s(bucketName, path, fileName);
         } catch (IOException e) {
-            throw ServiceException.serviceException("视频文件读取失败", e).build();
+            throw new ServiceException(VIDEO_UPLOAD_FAIL, e);
         }
     }
 
@@ -123,13 +122,14 @@ public class VodServiceImpl implements VodService, CommandLineRunner {
 
     /**
      * 删除临时视频文件
+     *
      * @param filePath 文件路径
      */
     private void deleteTempVideo(Path filePath) {
         try {
             Files.delete(filePath);
         } catch (IOException e) {
-            throw ServiceException.serviceException("文件删除失败", e).build();
+            throw new ServiceException(FILE_DEL_FAIL, e);
         }
     }
 

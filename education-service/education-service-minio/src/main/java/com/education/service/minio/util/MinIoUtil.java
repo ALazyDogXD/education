@@ -17,12 +17,13 @@ import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.util.Objects;
 
+import static com.education.service.base.entity.enums.ResponseEnum.FILE_NOT_FIND_FAIL;
 import static org.slf4j.LoggerFactory.getLogger;
 
 /**
  * @author Mr_W
  * @date 2021/2/17 15:05
- * @description: MinIo 工具类
+ * @description MinIo 工具类
  */
 @Component
 public class MinIoUtil {
@@ -115,7 +116,7 @@ public class MinIoUtil {
             return minioClient.getObject(bucketName, fileName);
         }
         // 没有找到文件
-        throw ServiceException.serviceException("未查询到文件: " + fileName).alertMessage("文件下载失败").build();
+        throw new ServiceException(FILE_NOT_FIND_FAIL, "未查询到文件: " + fileName);
     }
 
     /**

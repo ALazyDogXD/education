@@ -28,6 +28,8 @@ import java.util.List;
 import java.util.ListIterator;
 import java.util.Objects;
 
+import static com.education.service.base.entity.enums.ResponseEnum.*;
+
 /**
  * <p>
  * 课程科目 服务实现类
@@ -45,15 +47,13 @@ public class EduSubjectServiceImpl extends ServiceImpl<EduSubjectMapper, EduSubj
     @Override
     public void importSubjectFile(MultipartFile file) {
         if (Objects.isNull(file)) {
-            throw ServiceException.serviceException("文件不能为空").build();
+            throw new ServiceException(EXCEL_IS_NULL);
         }
         // 检测 file 是否合法
         if (checkFile(file)) {
             importExcelFile(file);
         } else {
-            throw ServiceException.serviceException(
-                    "文件格式错误, ContentType: [{}], OriginalFilename: [{}]", file.getContentType(), file.getOriginalFilename())
-                    .alertMessage("文件格式错误").build();
+            throw new ServiceException(IS_NOT_EXCEL);
         }
     }
 
@@ -67,9 +67,7 @@ public class EduSubjectServiceImpl extends ServiceImpl<EduSubjectMapper, EduSubj
         try {
             return !file.isEmpty() && (Objects.requireNonNull(file.getOriginalFilename()).endsWith(".xlsx") || Objects.requireNonNull(file.getOriginalFilename()).endsWith(".xls"));
         } catch (Exception e) {
-            throw ServiceException.serviceException(
-                    "文件格式错误, ContentType: [{}], OriginalFilename: [{}]", file.getContentType(), file.getOriginalFilename(),
-                    e).alertMessage("文件格式错误").build();
+            throw new ServiceException(EXCEL_UPLOAD_FAIL, e);
         }
     }
 
@@ -90,12 +88,8 @@ public class EduSubjectServiceImpl extends ServiceImpl<EduSubjectMapper, EduSubj
                 sheet.setHeadRowNumber(0);
                 excelReader.read(sheet);
             }
-        } catch (IOException e) {
-            throw ServiceException.serviceException("数据导入失败", e)
-                    .alertMessage("文件错误, 数据导入失败").build();
-        } catch (ExcelAnalysisException e) {
-            throw ServiceException.serviceException("excel 解析失败", e)
-                    .alertMessage("文件错误, 数据导入失败").build();
+        } catch (IOException | ExcelAnalysisException e) {
+            throw new ServiceException(EXCEL_UPLOAD_FAIL, e);
         }
     }
 

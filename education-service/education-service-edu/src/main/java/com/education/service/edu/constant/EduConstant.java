@@ -3,7 +3,7 @@ package com.education.service.edu.constant;
 /**
  * @author Mr_W
  * @date 2021/2/17 21:45
- * @description: edu 常量
+ * @description edu 常量
  */
 public interface EduConstant {
 

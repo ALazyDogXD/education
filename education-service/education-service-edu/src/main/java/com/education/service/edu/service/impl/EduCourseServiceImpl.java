@@ -32,6 +32,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
+import static com.education.service.base.entity.enums.ResponseEnum.*;
 import static com.education.service.edu.constant.EduConstant.COURSE_DRAFT;
 import static com.education.service.edu.constant.EduConstant.COURSE_NORMAL;
 import static org.slf4j.LoggerFactory.getLogger;
@@ -57,15 +58,15 @@ public class EduCourseServiceImpl extends ServiceImpl<EduCourseMapper, EduCourse
     @Value("${minio.path.image.course-cover}")
     private String coverPath;
 
-    private EduCourseDescriptionService eduCourseDescriptionService;
+    private final EduCourseDescriptionService eduCourseDescriptionService;
 
-    private EduSubjectService eduSubjectService;
+    private final EduSubjectService eduSubjectService;
 
-    private EduTeacherService eduTeacherService;
+    private final EduTeacherService eduTeacherService;
 
-    private EduVideoService eduVideoService;
+    private final EduVideoService eduVideoService;
 
-    private EduChapterService eduChapterService;
+    private final EduChapterService eduChapterService;
 
     @DubboReference(mock = "com.education.service.edu.mock.MinIoFileServiceMock", timeout = 3000)
     private MinIoFileService minIoFileService;
@@ -111,10 +112,10 @@ public class EduCourseServiceImpl extends ServiceImpl<EduCourseMapper, EduCourse
     private void checkCourse(EduCourseDTO course) {
         EduSubjectDO subject = eduSubjectService.getById(course.getSubjectId());
         if (Objects.isNull(subject) || !course.getSubjectParentId().equals(subject.getParentId()) || "0".equals(course.getSubjectParentId())) {
-            throw ServiceException.serviceException("无效的课程 id").build();
+            throw new ServiceException(INVALID_COURSE_ID);
         }
         if (Objects.isNull(eduTeacherService.getById(course.getTeacherId()))) {
-            throw ServiceException.serviceException("无效的教师 id").build();
+            throw new ServiceException(INVALID_COURSE_ID);
         }
     }
 
@@ -135,13 +136,13 @@ public class EduCourseServiceImpl extends ServiceImpl<EduCourseMapper, EduCourse
                     fileName,
                     IOUtils.toByteArray(in));
         } catch (IOException e) {
-            throw ServiceException.serviceException("文件读写异常", e).alertMessage("文件上传失败").build();
+            throw new ServiceException(IMAGE_UPLOAD_FAIL);
         }
         try {
             updateById(course.setCover(url));
         } catch (Exception e) {
             minIoFileService.remove(bucketName, coverPath.endsWith("/") ? coverPath : (coverPath + "/") + fileName);
-            throw ServiceException.serviceException("url 添加失败", e).alertMessage("课程添加失败, 请稍后再试").build();
+            throw new ServiceException(COURSE_ADD_FAIL);
         }
     }
 
@@ -155,7 +156,7 @@ public class EduCourseServiceImpl extends ServiceImpl<EduCourseMapper, EduCourse
         try {
             return ImageUtil.getThumbnailContentType(cover);
         } catch (IOException e) {
-            throw ServiceException.serviceException("文件读写异常", e).alertMessage("文件上传失败").build();
+            throw new ServiceException(IMAGE_UPLOAD_FAIL);
         }
     }
 
@@ -221,7 +222,7 @@ public class EduCourseServiceImpl extends ServiceImpl<EduCourseMapper, EduCourse
         try {
             minIoFileService.upload(bucketName, getImageContentType(cover), coverPath, coverName, IOUtils.toByteArray(cover.getInputStream()));
         } catch (IOException e) {
-            throw ServiceException.serviceException("文件读写异常", e).alertMessage("文件上传失败").build();
+            throw new ServiceException(IMAGE_UPLOAD_FAIL);
         }
     }
 
@@ -247,7 +248,7 @@ public class EduCourseServiceImpl extends ServiceImpl<EduCourseMapper, EduCourse
     private void checkIdsBeforeRemove(List<String> ids) {
         if (!ids.stream().allMatch(id ->
                 eduChapterService.getByChapterId(id).isEmpty() && eduVideoService.getByCourseId(id).isEmpty())) {
-            throw ServiceException.serviceException("不可删除含有章节或视频的课程").build();
+            throw new ServiceException(COURSE_DEL_FAIL, "不可删除含有章节或视频的课程");
         }
     }
 }

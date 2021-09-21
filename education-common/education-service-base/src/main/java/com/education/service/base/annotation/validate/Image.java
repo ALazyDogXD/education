@@ -15,7 +15,7 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 /**
  * @author Mr_W
  * @date 2021/4/10 14:20
- * @description: 图片检查
+ * @description 图片检查
  */
 @Target({FIELD, PARAMETER})
 @Retention(RUNTIME)

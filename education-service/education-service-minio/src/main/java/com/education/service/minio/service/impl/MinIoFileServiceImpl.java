@@ -16,6 +16,9 @@ import java.io.InputStream;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 
+import static com.education.service.base.entity.enums.ResponseEnum.FILE_DEL_FAIL;
+import static com.education.service.base.entity.enums.ResponseEnum.FILE_UPLOAD_FAIL;
+
 /**
  * @author Mr_W
  * @date 2021/3/13 14:07
@@ -41,7 +44,7 @@ public class MinIoFileServiceImpl implements MinIoFileService {
             // 上传文件
             MinIoUtil.upload(bucketName, path + fileName, in, contentType);
         } catch (IOException | InvalidKeyException | NoSuchAlgorithmException | InsufficientDataException | InternalException | NoResponseException | InvalidBucketNameException | XmlPullParserException | ErrorResponseException | RegionConflictException | InvalidArgumentException | InvalidPortException | InvalidEndpointException e) {
-            throw ServiceException.serviceException("文件上传失败", e).build();
+            throw new ServiceException(FILE_UPLOAD_FAIL, e);
         }
         return endpoint + ":" + port + "/" + bucketName + "/" + path + fileName;
     }
@@ -56,7 +59,7 @@ public class MinIoFileServiceImpl implements MinIoFileService {
         try {
             MinIoUtil.removeFile(bucketName, path);
         } catch (InvalidPortException | InvalidEndpointException | IOException | InvalidKeyException | NoSuchAlgorithmException | InsufficientDataException | InternalException | NoResponseException | InvalidBucketNameException | XmlPullParserException | ErrorResponseException e) {
-            throw ServiceException.serviceException("文件删除失败", e).build();
+            throw new ServiceException(FILE_DEL_FAIL, e);
         }
     }
 }

@@ -1,10 +1,13 @@
 package com.education.service.edu.web;
 
-import com.education.service.base.entity.ResponseBean;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.education.service.base.entity.ResponseData;
+import com.education.service.base.entity.ResponseMsg;
 import com.education.service.base.strategy.CreateDataTransferObject;
 import com.education.service.base.strategy.UpdateDataTransferObject;
 import com.education.service.base.web.BaseController;
 import com.education.service.edu.domain.dto.EduTeacherDTO;
+import com.education.service.edu.domain.vo.EduTeacherVO;
 import com.education.service.edu.service.EduTeacherService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
@@ -36,10 +39,10 @@ public class TeacherController extends BaseController {
 
     @PostMapping
     @ApiOperation("新增教师接口")
-    public ResponseBean create(@Validated(CreateDataTransferObject.class) EduTeacherDTO teacher){
+    public ResponseMsg create(@Validated(CreateDataTransferObject.class) EduTeacherDTO teacher) {
         LOGGER.debug("教师入参: [{}]", teacher);
         eduTeacherService.insert(teacher, teacher.getAvatar());
-        return ResponseBean.succ("添加成功");
+        return ResponseMsg.success("添加成功");
     }
 
     @DeleteMapping
@@ -47,18 +50,18 @@ public class TeacherController extends BaseController {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "ids", value = "教师id集合")
     })
-    public ResponseBean delete(@Validated @RequestParam(value = "ids") @Size(min = 1, message = "请选择要删除的教师") List<String> ids){
+    public ResponseMsg delete(@Validated @RequestParam(value = "ids") @Size(min = 1, message = "请选择要删除的教师") List<String> ids) {
         LOGGER.debug("教师 id: [{}]", Arrays.toString(ids.toArray()));
         eduTeacherService.removeByIds(ids);
-        return ResponseBean.succ("删除成功");
+        return ResponseMsg.success("删除成功");
     }
 
     @PutMapping
     @ApiOperation("根据 id 修改一名教师的信息")
-    public ResponseBean update(@Validated(UpdateDataTransferObject.class) EduTeacherDTO teacher) {
+    public ResponseMsg update(@Validated(UpdateDataTransferObject.class) EduTeacherDTO teacher) {
         LOGGER.debug("教师入参: [{}]", teacher);
         eduTeacherService.update(teacher);
-        return ResponseBean.succ("修改成功");
+        return ResponseMsg.success("修改成功");
     }
 
     @GetMapping
@@ -70,8 +73,8 @@ public class TeacherController extends BaseController {
             @ApiImplicitParam(name = "isDesc", value = "是否降序"),
             @ApiImplicitParam(name = "name", value = "教师名称")
     })
-    public ResponseBean read(@RequestParam(value = "title", required = false) String name) {
+    public ResponseData<IPage<EduTeacherVO>> read(@RequestParam(value = "title", required = false) String name) {
         LOGGER.debug("教师姓名: [{}]", name);
-        return ResponseBean.succ("查找成功", eduTeacherService.select(getPage(), name));
+        return ResponseData.success(eduTeacherService.select(getPage(), name));
     }
 }

@@ -1,6 +1,6 @@
 package com.education.service.edu.web;
 
-import com.education.service.base.entity.ResponseBean;
+import com.education.service.base.entity.ResponseMsg;
 import com.education.service.base.strategy.CreateDataTransferObject;
 import com.education.service.edu.domain.dto.EduVideoDTO;
 import com.education.service.edu.service.EduVideoService;
@@ -33,10 +33,10 @@ public class VideoController {
 
     @PostMapping
     @ApiOperation("新增视频接口")
-    public ResponseBean create(@Validated(CreateDataTransferObject.class) EduVideoDTO video){
+    public ResponseMsg create(@Validated(CreateDataTransferObject.class) EduVideoDTO video) {
         LOGGER.debug("视频入参: [{}]", video);
         videoService.uploadVideo(video.getVideo());
-        return ResponseBean.succ("添加成功");
+        return ResponseMsg.success("添加成功");
     }
 
     @GetMapping

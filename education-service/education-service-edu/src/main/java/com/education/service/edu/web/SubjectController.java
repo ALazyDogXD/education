@@ -1,6 +1,8 @@
 package com.education.service.edu.web;
 
-import com.education.service.base.entity.ResponseBean;
+import com.education.service.base.entity.ResponseData;
+import com.education.service.base.entity.ResponseMsg;
+import com.education.service.edu.domain.vo.EduSubjectParentVO;
 import com.education.service.edu.service.EduSubjectService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
@@ -14,19 +16,19 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.List;
+
 /**
  * @author Mr_W
  * @date 2021/2/16 15:48
- * @description: 学科管理接口
+ * @description 学科管理接口
  */
 @Api(tags = "学科管理接口")
 @RestController
 @RequestMapping("subject")
 public class SubjectController {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(SubjectController.class);
-
-    private EduSubjectService eduSubjectService;
+    private final EduSubjectService eduSubjectService;
 
     public SubjectController(EduSubjectService eduSubjectService) {
         this.eduSubjectService = eduSubjectService;
@@ -37,15 +39,15 @@ public class SubjectController {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "file", value = "excel 文件", dataTypeClass = MultipartFile.class)
     })
-    public ResponseBean importSubject(MultipartFile file) {
+    public ResponseMsg importSubject(MultipartFile file) {
         eduSubjectService.importSubjectFile(file);
-        return ResponseBean.succ("科目导入成功");
+        return ResponseMsg.success("科目导入成功");
     }
 
     @GetMapping
     @ApiOperation("获取科目树")
-    public ResponseBean readTree() {
-        return ResponseBean.succ(eduSubjectService.getTree());
+    public ResponseData<List<EduSubjectParentVO>> readTree() {
+        return ResponseData.success(eduSubjectService.getTree());
     }
 
 }

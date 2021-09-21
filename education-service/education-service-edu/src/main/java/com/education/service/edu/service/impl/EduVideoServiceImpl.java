@@ -17,6 +17,9 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Objects;
 
+import static com.education.service.base.entity.enums.ResponseEnum.VIDEO_IS_NULL;
+import static com.education.service.base.entity.enums.ResponseEnum.VIDEO_UPLOAD_FAIL;
+
 /**
  * <p>
  * 课程视频 服务实现类
@@ -55,10 +58,10 @@ public class EduVideoServiceImpl extends ServiceImpl<EduVideoMapper, EduVideoDO>
             try {
                 vodService.uploadVideo(bucketName, path, video.getOriginalFilename(), video.getBytes());
             } catch (IOException e) {
-                throw ServiceException.serviceException("视频字节数组获取失败", e).alertMessage("视频上传失败").build();
+                throw new ServiceException(VIDEO_UPLOAD_FAIL);
             }
         } else {
-            throw ServiceException.serviceException("请选择上传的视频文件").build();
+            throw new ServiceException(VIDEO_IS_NULL);
         }
     }
 }

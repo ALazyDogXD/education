@@ -17,10 +17,12 @@ import javax.annotation.Resource;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
+import static com.education.service.base.entity.enums.ResponseEnum.EXCEL_UPLOAD_FAIL;
+
 /**
  * @author Mr_W
  * @date 2021/2/16 16:27
- * @description: 科目导入监听
+ * @description 科目导入监听
  */
 @Component
 @Scope(ConfigurableBeanFactory.SCOPE_SINGLETON)
@@ -53,7 +55,7 @@ public class ImportSubjectListener extends AnalysisEventListener<ExcelSubjectDat
             if (StringUtils.isNotBlank(excelSubjectData.getLevelTwoSubjectName())) {
                 // 插入二级学科
                 if (Objects.nonNull(eduSubjectService.getByTitle(excelSubjectData.getLevelTwoSubjectName()))) {
-                    throw new ServiceException("在" +
+                    throw new ServiceException(EXCEL_UPLOAD_FAIL, "在" +
                             excelSubjectData.getLevelOneSubjectName() +
                             "下已存在" +
                             excelSubjectData.getLevelTwoSubjectName());
@@ -74,7 +76,7 @@ public class ImportSubjectListener extends AnalysisEventListener<ExcelSubjectDat
 
         } else if (StringUtils.isBlank(excelSubjectData.getLevelOneSubjectName()) &&
                 StringUtils.isNotBlank(excelSubjectData.getLevelTwoSubjectName())) {
-            throw new ServiceException("一级学科名称不能为空");
+            throw new ServiceException(EXCEL_UPLOAD_FAIL, "一级学科名称不能为空");
         }
     }
 

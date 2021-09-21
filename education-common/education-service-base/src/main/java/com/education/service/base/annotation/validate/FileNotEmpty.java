@@ -15,7 +15,7 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 /**
  * @author Mr_W
  * @date 2021/4/10 15:38
- * @description: 文件不可为空
+ * @description 文件不可为空
  */
 @Target({FIELD, PARAMETER})
 @Retention(RUNTIME)

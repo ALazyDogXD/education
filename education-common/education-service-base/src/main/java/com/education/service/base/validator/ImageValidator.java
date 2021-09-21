@@ -11,6 +11,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Objects;
 
+import static com.education.service.base.entity.enums.ResponseEnum.IS_NOT_IMAGE;
+
 /**
  * @author Mr_W
  * @date 2021/4/10 14:22
@@ -20,13 +22,13 @@ public class ImageValidator implements ConstraintValidator<Image, MultipartFile>
 
     @Override
     public boolean isValid(MultipartFile value, ConstraintValidatorContext context) {
-        //检查是否是图片
-        try (InputStream in = value.getInputStream();) {
+        // 检查是否是图片
+        try (InputStream in = value.getInputStream()) {
             if (Objects.isNull(ImageIO.read(in))) {
                 return false;
             }
         } catch (IOException e) {
-            throw ServiceException.serviceException("文件读取失败").alertMessage("文件错误").build();
+            throw new ServiceException(IS_NOT_IMAGE);
         }
         return true;
     }

@@ -4,10 +4,8 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.List;
 
-import com.education.service.base.entity.ResponseBean;
+import com.education.service.base.entity.ResponseMsg;
 import com.education.service.base.entity.ServiceException;
-import com.education.service.base.enums.ServiceExceptionEnum;
-import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.validation.BindException;
@@ -20,6 +18,8 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.multipart.MultipartException;
 
+import static com.education.service.base.entity.enums.ResponseEnum.ERROR;
+
 /**
  * @author Mr_W
  */
@@ -29,23 +29,20 @@ public class GlobalExceptionHandler {
 	private static final Logger LOGGER = LoggerFactory.getLogger(GlobalExceptionHandler.class);
 	
 	@ExceptionHandler(value = Exception.class)
-	public ResponseBean internalErrorHandler(Exception e) {
-		ResponseBean r;
+	public ResponseMsg internalErrorHandler(Exception e) {
+		ResponseMsg resp;
 		if (e instanceof ServiceException) {
 			LOGGER.error("happened serviceException, Caused by " + getMessage(e), e);
-			r = ResponseBean.fail(
-					StringUtils.isBlank(((ServiceException) e).getAlertMessage()) ? e.getMessage() : ((ServiceException) e).getAlertMessage(),
-					((ServiceException) e).getCode());
+			resp = ResponseMsg.resp(((ServiceException) e).getCode(), ((ServiceException) e).getMsg());
 		} else {
 			LOGGER.error("happened systemException, Caused by " + getMessage(e), e);
-			r = ResponseBean.fail();
+			resp = ResponseMsg.fail();
 		}
-		e.printStackTrace();
-		return r;
+		return resp;
 	}
 	
 	@ExceptionHandler(value = MethodArgumentNotValidException.class)
-	public ResponseBean paramErrorHandler(MethodArgumentNotValidException e) {
+	public ResponseMsg paramErrorHandler(MethodArgumentNotValidException e) {
 		BindingResult exceptions = e.getBindingResult();
         // 判断异常中是否有错误信息，如果存在就使用异常中的消息，否则使用默认消息
         if (exceptions.hasErrors()) {
@@ -54,10 +51,10 @@ public class GlobalExceptionHandler {
                 // 这里列出了全部错误参数，按正常逻辑，只需要第一条错误即可
                 FieldError fieldError = (FieldError) errors.get(0);
                 LOGGER.error("invalid parameter, Caused by " + fieldError.getDefaultMessage(), e);
-                return ResponseBean.fail(fieldError.getDefaultMessage(), ServiceExceptionEnum.INVALID_PARAMS.getCode());
+                return ResponseMsg.resp(ERROR.getCode(), fieldError.getDefaultMessage());
             }
         }
-		return ResponseBean.fail(ServiceExceptionEnum.INVALID_PARAMS.getMsg(), ServiceExceptionEnum.INVALID_PARAMS.getCode());
+		return ResponseMsg.resp(ERROR);
 	}
 	
 	private String getMessage(Exception e) {
@@ -71,21 +68,21 @@ public class GlobalExceptionHandler {
 	}
 
 	@ExceptionHandler(MissingServletRequestParameterException.class)
-	public ResponseBean handlerMissingServletRequestParameterException(MissingServletRequestParameterException e) {
-		LOGGER.debug(e.getParameterName() + "不能为空", e);
-		return ResponseBean.fail(e.getParameterName() + "不能为空");
+	public ResponseMsg handlerMissingServletRequestParameterException(MissingServletRequestParameterException e) {
+		LOGGER.error(e.getParameterName() + "不能为空", e);
+		return ResponseMsg.resp(ERROR, e.getParameterName() + "不能为空");
 	}
 
 	@ExceptionHandler(BindException.class)
-	public ResponseBean handlerBindException(BindException e) {
-		LOGGER.debug(e.getAllErrors().get(0).getDefaultMessage(), e);
-		return ResponseBean.fail(e.getAllErrors().get(0).getDefaultMessage());
+	public ResponseMsg handlerBindException(BindException e) {
+		LOGGER.error(e.getAllErrors().get(0).getDefaultMessage(), e);
+		return ResponseMsg.resp(ERROR, e.getAllErrors().get(0).getDefaultMessage());
 	}
 
 	@ExceptionHandler(MultipartException.class)
-	public ResponseBean handleError1(MultipartException e) {
+	public ResponseMsg handleMultipartException(MultipartException e) {
 		LOGGER.error("文件解析失败", e);
-		return ResponseBean.fail("文件解析失败");
+		return ResponseMsg.fail("文件解析失败");
 	}
 
 }
