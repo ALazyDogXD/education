@@ -153,39 +153,39 @@ public class MinIoUtil {
     /**
      * 判断 MinIo 服务文件上传时文件的类型contentType
      *
-     * @param FilenameExtension 文件后缀
+     * @param filenameExtension 文件后缀
      * @return 媒体类型
      */
-    public static String getContentType(String FilenameExtension) {
-        if (".bmp".equalsIgnoreCase(FilenameExtension)) {
+    public static String getContentType(String filenameExtension) {
+        if (".bmp".equalsIgnoreCase(filenameExtension)) {
             return "image/bmp";
         }
-        if (".gif".equalsIgnoreCase(FilenameExtension)) {
+        if (".gif".equalsIgnoreCase(filenameExtension)) {
             return "image/gif";
         }
-        if (".jpeg".equalsIgnoreCase(FilenameExtension) ||
-                ".jpg".equalsIgnoreCase(FilenameExtension) ||
-                ".png".equalsIgnoreCase(FilenameExtension)) {
+        if (".jpeg".equalsIgnoreCase(filenameExtension) ||
+                ".jpg".equalsIgnoreCase(filenameExtension) ||
+                ".png".equalsIgnoreCase(filenameExtension)) {
             return "image/jpeg";
         }
-        if (".html".equalsIgnoreCase(FilenameExtension)) {
+        if (".html".equalsIgnoreCase(filenameExtension)) {
             return "text/html";
         }
-        if (".txt".equalsIgnoreCase(FilenameExtension)) {
+        if (".txt".equalsIgnoreCase(filenameExtension)) {
             return "text/plain";
         }
-        if (".vsd".equalsIgnoreCase(FilenameExtension)) {
+        if (".vsd".equalsIgnoreCase(filenameExtension)) {
             return "application/vnd.visio";
         }
-        if (".pptx".equalsIgnoreCase(FilenameExtension) ||
-                ".ppt".equalsIgnoreCase(FilenameExtension)) {
+        if (".pptx".equalsIgnoreCase(filenameExtension) ||
+                ".ppt".equalsIgnoreCase(filenameExtension)) {
             return "application/vnd.ms-powerpoint";
         }
-        if (".docx".equalsIgnoreCase(FilenameExtension) ||
-                ".doc".equalsIgnoreCase(FilenameExtension)) {
+        if (".docx".equalsIgnoreCase(filenameExtension) ||
+                ".doc".equalsIgnoreCase(filenameExtension)) {
             return "application/msword";
         }
-        if (".xml".equalsIgnoreCase(FilenameExtension)) {
+        if (".xml".equalsIgnoreCase(filenameExtension)) {
             return "text/xml";
         }
         return "application/octet-stream";

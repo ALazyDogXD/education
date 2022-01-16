@@ -2,11 +2,12 @@ package com.education.service.vod.util;
 
 import com.education.common.util.ProcessUtil;
 import com.education.service.base.entity.ServiceException;
-import com.education.service.base.entity.enums.ResponseEnum;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.LinkedList;
+
+import static com.education.service.base.entity.enums.ResponseEnum.VIDEO_UPLOAD_FAIL;
 
 /**
  * @author Mr_W
@@ -77,7 +78,7 @@ public class FfmpegUtil {
             }
             ProcessUtil.process(workDir, convertIntoMpdCmd);
         } catch (IOException | InterruptedException e) {
-            throw new ServiceException(ResponseEnum.VIDEO_UPLOAD_FAIL, "转码失败");
+            throw new ServiceException(VIDEO_UPLOAD_FAIL, "转码失败");
         }
 
         return workDir + File.separator + fileNameWithoutSuffix + ".mpd";

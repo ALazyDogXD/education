@@ -1,4 +1,4 @@
-package com.education.service.base.entity.enums;
+package com.education.service.base.entity;
 
 /**
  * @author ALazyDogXD

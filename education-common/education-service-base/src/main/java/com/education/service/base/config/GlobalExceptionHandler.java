@@ -1,13 +1,10 @@
 package com.education.service.base.config;
 
-import java.io.PrintWriter;
-import java.io.StringWriter;
-import java.util.List;
-
 import com.education.service.base.entity.ResponseMsg;
 import com.education.service.base.entity.ServiceException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
 import org.springframework.validation.BindException;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
@@ -15,8 +12,13 @@ import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.multipart.MultipartException;
+
+import java.io.PrintWriter;
+import java.io.StringWriter;
+import java.util.List;
 
 import static com.education.service.base.entity.enums.ResponseEnum.ERROR;
 
@@ -27,7 +29,8 @@ import static com.education.service.base.entity.enums.ResponseEnum.ERROR;
 public class GlobalExceptionHandler {
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(GlobalExceptionHandler.class);
-	
+
+	@ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
 	@ExceptionHandler(value = Exception.class)
 	public ResponseMsg internalErrorHandler(Exception e) {
 		ResponseMsg resp;
@@ -40,7 +43,8 @@ public class GlobalExceptionHandler {
 		}
 		return resp;
 	}
-	
+
+	@ResponseStatus(HttpStatus.BAD_REQUEST)
 	@ExceptionHandler(value = MethodArgumentNotValidException.class)
 	public ResponseMsg paramErrorHandler(MethodArgumentNotValidException e) {
 		BindingResult exceptions = e.getBindingResult();
@@ -67,18 +71,21 @@ public class GlobalExceptionHandler {
 		return sw.toString();
 	}
 
+	@ResponseStatus(HttpStatus.BAD_REQUEST)
 	@ExceptionHandler(MissingServletRequestParameterException.class)
 	public ResponseMsg handlerMissingServletRequestParameterException(MissingServletRequestParameterException e) {
 		LOGGER.error(e.getParameterName() + "不能为空", e);
 		return ResponseMsg.resp(ERROR, e.getParameterName() + "不能为空");
 	}
 
+	@ResponseStatus(HttpStatus.BAD_REQUEST)
 	@ExceptionHandler(BindException.class)
 	public ResponseMsg handlerBindException(BindException e) {
 		LOGGER.error(e.getAllErrors().get(0).getDefaultMessage(), e);
 		return ResponseMsg.resp(ERROR, e.getAllErrors().get(0).getDefaultMessage());
 	}
 
+	@ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
 	@ExceptionHandler(MultipartException.class)
 	public ResponseMsg handleMultipartException(MultipartException e) {
 		LOGGER.error("文件解析失败", e);

@@ -1,5 +1,7 @@
 package com.education.service.base.entity.enums;
 
+import com.education.service.base.entity.Response;
+
 /**
  * @author ALazyDogXD
  * @date 2021/9/20 15:55

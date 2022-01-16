@@ -1,10 +1,11 @@
 package com.education.service.base.entity;
 
-import java.lang.reflect.ParameterizedType;
-
+import com.fasterxml.jackson.databind.util.ClassUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
+
+import java.lang.reflect.ParameterizedType;
 
 /**
  * @author Mr_W
@@ -47,9 +48,9 @@ public class ObjectConvert<T> {
 	}
 	
 	@SuppressWarnings("unchecked")
-	private T newInstance() throws Exception {
+	protected T newInstance() {
 		Class<T> clazz = (Class<T>) ((ParameterizedType)getClass().getGenericSuperclass()).getActualTypeArguments()[0];
-		return clazz.newInstance();
+		return ClassUtil.createInstance(clazz, false);
 	}
 
 }

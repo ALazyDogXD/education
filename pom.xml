@@ -28,7 +28,7 @@
         <commons-pool2.version>2.0</commons-pool2.version>
         <springfox.version>2.9.2</springfox.version>
         <knife4j.version>2.0.7</knife4j.version>
-        <hutool.version>5.3.10</hutool.version>
+        <hutool.version>5.7.19</hutool.version>
         <easyexcel.version>2.2.7</easyexcel.version>
         <minio.version>3.0.10</minio.version>
         <dubbo.version>2.7.8</dubbo.version>

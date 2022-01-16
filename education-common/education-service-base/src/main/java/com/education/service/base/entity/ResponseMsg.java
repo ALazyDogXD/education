@@ -1,6 +1,5 @@
 package com.education.service.base.entity;
 
-import com.education.service.base.entity.enums.Response;
 import org.apache.commons.lang3.StringUtils;
 
 import static com.education.service.base.entity.enums.ResponseEnum.FAIL;
@@ -14,7 +13,7 @@ import static com.education.service.base.entity.enums.ResponseEnum.SUCCESS;
 
 public class ResponseMsg extends ResponseBase {
 
-    private String msg;
+    private final String msg;
 
     public ResponseMsg(int code, String msg) {
         super.code = code;

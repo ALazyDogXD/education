@@ -3,7 +3,7 @@ package com.education.service.edu.domain.dto;
 import com.education.service.base.annotation.SetNull;
 import com.education.service.base.annotation.validate.FileNotEmpty;
 import com.education.service.base.annotation.validate.FileSize;
-import com.education.service.base.annotation.validate.Image;
+import com.education.service.base.annotation.validate.IsImage;
 import com.education.service.base.entity.ObjectConvert;
 import com.education.service.base.strategy.CreateDataTransferObject;
 import com.education.service.base.strategy.UpdateDataTransferObject;
@@ -51,7 +51,7 @@ public class EduCourseDTO extends ObjectConvert<EduCourseDO> {
     private String title;
 
     @ApiModelProperty("课程封面")
-    @Image(groups = CreateDataTransferObject.class)
+    @IsImage(groups = CreateDataTransferObject.class)
     @FileSize(max = M2_TO_BYTE, message = "图片大小不可超过 2M",
             groups = CreateDataTransferObject.class)
     @FileNotEmpty(groups = CreateDataTransferObject.class)

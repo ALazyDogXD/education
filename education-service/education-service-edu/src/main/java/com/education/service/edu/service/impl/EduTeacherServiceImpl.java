@@ -8,7 +8,6 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.education.rpc.minio.service.MinIoFileService;
 import com.education.service.base.entity.ObjectConvert;
 import com.education.service.base.entity.ServiceException;
-import com.education.service.base.entity.enums.ResponseEnum;
 import com.education.service.edu.domain.dto.EduTeacherDTO;
 import com.education.service.edu.domain.entity.EduTeacherDO;
 import com.education.service.edu.domain.vo.EduTeacherVO;
@@ -29,6 +28,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.time.LocalDateTime;
 import java.util.stream.Collectors;
+
+import static com.education.service.base.entity.enums.ResponseEnum.IMAGE_UPLOAD_FAIL;
 
 /**
  * <p>
@@ -101,7 +102,7 @@ public class EduTeacherServiceImpl extends ServiceImpl<EduTeacherMapper, EduTeac
                 updateById(course.setAvatar(url));
             }
         } catch (IOException e) {
-            throw new ServiceException(ResponseEnum.IMAGE_UPLOAD_FAIL);
+            throw new ServiceException(IMAGE_UPLOAD_FAIL);
         }
     }
 }

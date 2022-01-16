@@ -21,7 +21,7 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 @Retention(RUNTIME)
 @Documented
 @Constraint(validatedBy ={ImageValidator.class})
-public @interface Image {
+public @interface IsImage {
 
     // 当验证不通过时的提示信息
     String message() default "请上传合法的图片文件";

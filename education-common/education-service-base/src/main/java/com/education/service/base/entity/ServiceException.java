@@ -1,7 +1,5 @@
 package com.education.service.base.entity;
 
-import com.education.service.base.entity.enums.Response;
-import com.education.service.base.entity.enums.ResponseEnum;
 import org.apache.commons.lang3.StringUtils;
 
 /**
@@ -12,38 +10,38 @@ import org.apache.commons.lang3.StringUtils;
 
 public class ServiceException extends RuntimeException implements Response {
 
-    private final ResponseEnum responseEnum;
+    private final Response response;
 
     private String alert;
 
-    public ServiceException(ResponseEnum responseEnum, String message) {
+    public ServiceException(Response response, String message) {
         super(message);
-        this.responseEnum = responseEnum;
+        this.response = response;
         alert = message;
     }
 
-    public ServiceException(ResponseEnum responseEnum) {
-        this.responseEnum = responseEnum;
+    public ServiceException(Response response) {
+        this.response = response;
     }
 
-    public ServiceException(ResponseEnum responseEnum, String message, Throwable cause) {
+    public ServiceException(Response response, String message, Throwable cause) {
         super(message, cause);
-        this.responseEnum = responseEnum;
+        this.response = response;
         alert = message;
     }
 
-    public ServiceException(ResponseEnum responseEnum, Throwable cause) {
+    public ServiceException(Response response, Throwable cause) {
         super(cause);
-        this.responseEnum = responseEnum;
+        this.response = response;
     }
 
-    public ResponseEnum getResponseEnum() {
-        return responseEnum;
+    public Response getResponse() {
+        return response;
     }
 
     @Override
     public int getCode() {
-        return responseEnum.getCode();
+        return response.getCode();
     }
 
     @Override
@@ -51,7 +49,7 @@ public class ServiceException extends RuntimeException implements Response {
         if (StringUtils.isNotBlank(alert)) {
             return alert;
         } else {
-            return responseEnum.getMsg();
+            return response.getMsg();
         }
     }
 
