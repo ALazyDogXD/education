@@ -15,9 +15,9 @@ import com.education.service.edu.domain.vo.EduCourseVO;
 import com.education.service.edu.mapper.EduCourseMapper;
 import com.education.service.edu.service.*;
 import com.education.service.edu.util.ImageUtil;
-import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.dubbo.config.annotation.DubboReference;
+import org.apache.poi.util.IOUtils;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
@@ -68,7 +68,7 @@ public class EduCourseServiceImpl extends ServiceImpl<EduCourseMapper, EduCourse
 
     private final EduChapterService eduChapterService;
 
-    @DubboReference(mock = "com.education.service.edu.mock.MinIoFileServiceMock", timeout = 3000)
+    @DubboReference(mock = "com.education.service.edu.mock.MinIoFileServiceMockImpl", timeout = 3000)
     private MinIoFileService minIoFileService;
 
     public EduCourseServiceImpl(EduCourseDescriptionService eduCourseDescriptionService,

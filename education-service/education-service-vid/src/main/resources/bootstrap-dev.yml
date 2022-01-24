@@ -1,15 +1,15 @@
 spring:
   application:
-    name: vod-service
+    name: vid-service
   cloud:
     nacos:
       server-addr: 192.168.1.166:8848
       discovery:
-        group: VOD_GROUP
+        group: VID_GROUP
         namespace: c5147a9f-5a24-484d-a40c-ef5e3ea0cad8
       config:
         file-extension: yml
-        group: VOD_GROUP
+        group: VID_GROUP
         namespace: c5147a9f-5a24-484d-a40c-ef5e3ea0cad8
 
 dubbo:
@@ -22,6 +22,6 @@ dubbo:
   registry:
     address: 192.168.1.166:8848
     protocol: nacos
-    group: DUBBO_GROUP
+    group: VID_GROUP
     parameters:
       namespace: c5147a9f-5a24-484d-a40c-ef5e3ea0cad8

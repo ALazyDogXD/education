@@ -14,7 +14,7 @@
     <modules>
         <module>education-service-edu</module>
         <module>education-service-minio</module>
-        <module>education-service-vod</module>
+        <module>education-service-vid</module>
     </modules>
 
     <dependencies>

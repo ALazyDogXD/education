@@ -50,6 +50,20 @@ public class MinIoFileServiceImpl implements MinIoFileService {
     }
 
     @Override
+    public String upload(String bucketName, String contentType, String path, String fileName, InputStream in) {
+        if (!path.endsWith("/")) {
+            path = path + "/";
+        }
+        try {
+            // 上传文件
+            MinIoUtil.upload(bucketName, path + fileName, in, contentType);
+        } catch (IOException | InvalidKeyException | NoSuchAlgorithmException | InsufficientDataException | InternalException | NoResponseException | InvalidBucketNameException | XmlPullParserException | ErrorResponseException | RegionConflictException | InvalidArgumentException | InvalidPortException | InvalidEndpointException e) {
+            throw new ServiceException(FILE_UPLOAD_FAIL, e);
+        }
+        return endpoint + ":" + port + "/" + bucketName + "/" + path + fileName;
+    }
+
+    @Override
     public String upload(String bucketName, String path, String fileName, byte[] fileByte) {
         return upload(bucketName, "application/octet-stream", path, fileName, fileByte);
     }

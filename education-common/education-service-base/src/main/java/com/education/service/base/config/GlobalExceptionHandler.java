@@ -81,8 +81,13 @@ public class GlobalExceptionHandler {
 	@ResponseStatus(HttpStatus.BAD_REQUEST)
 	@ExceptionHandler(BindException.class)
 	public ResponseMsg handlerBindException(BindException e) {
-		LOGGER.error(e.getAllErrors().get(0).getDefaultMessage(), e);
-		return ResponseMsg.resp(ERROR, e.getAllErrors().get(0).getDefaultMessage());
+		if (e.getAllErrors().get(0) instanceof FieldError) {
+			LOGGER.error(((FieldError) e.getAllErrors().get(0)).getField() + " 字段类型错误", e);
+			return ResponseMsg.resp(ERROR, ((FieldError) e.getAllErrors().get(0)).getField() + " 字段类型错误");
+		} else {
+			LOGGER.error(e.getAllErrors().get(0).getDefaultMessage(), e);
+			return ResponseMsg.resp(ERROR, e.getAllErrors().get(0).getDefaultMessage());
+		}
 	}
 
 	@ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)

@@ -14,7 +14,6 @@ import com.education.service.edu.domain.vo.EduTeacherVO;
 import com.education.service.edu.mapper.EduTeacherMapper;
 import com.education.service.edu.service.EduTeacherService;
 import com.education.service.edu.util.ImageUtil;
-import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.dubbo.config.annotation.DubboReference;
 import org.slf4j.Logger;
@@ -51,7 +50,7 @@ public class EduTeacherServiceImpl extends ServiceImpl<EduTeacherMapper, EduTeac
     @Value("${minio.path.image.course-cover}")
     private String coverPath;
 
-    @DubboReference(mock = "com.education.service.edu.mock.MinIoFileServiceMock")
+    @DubboReference(mock = "com.education.service.edu.mock.MinIoFileServiceMockImpl")
     private MinIoFileService minIoFileService;
 
     @Override
@@ -95,7 +94,7 @@ public class EduTeacherServiceImpl extends ServiceImpl<EduTeacherMapper, EduTeac
                     ImageUtil.getThumbnailContentType(cover),
                     coverPath,
                     course.getId() + cover.getOriginalFilename(),
-                    IOUtils.toByteArray(in));
+                    in);
             if (choice) {
                 save(course.setAvatar(url));
             } else {

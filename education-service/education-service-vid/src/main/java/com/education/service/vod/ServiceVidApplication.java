@@ -11,10 +11,10 @@ import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
  */
 @SpringBootApplication
 @EnableDiscoveryClient
-public class ServiceVodApplication {
+public class ServiceVidApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(ServiceVodApplication.class, args);
+        SpringApplication.run(ServiceVidApplication.class, args);
     }
 
 }

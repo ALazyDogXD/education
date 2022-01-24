@@ -11,7 +11,6 @@ spring:
         file-extension: yml
         group: EDU_GROUP
         namespace: c5147a9f-5a24-484d-a40c-ef5e3ea0cad8
-
 dubbo:
   protocol:
     name: dubbo
@@ -20,7 +19,7 @@ dubbo:
   registry:
     address: 192.168.1.166:8848
     protocol: nacos
-    group: DUBBO_GROUP
+    group: EDU_GROUP
     parameters:
       namespace: c5147a9f-5a24-484d-a40c-ef5e3ea0cad8
 #logging.level.org.springframework.boot.autoconfigure: error

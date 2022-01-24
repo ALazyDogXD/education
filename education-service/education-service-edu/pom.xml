@@ -17,7 +17,7 @@
         <!-- vod 服务 -->
         <dependency>
             <groupId>com.education</groupId>
-            <artifactId>education-rpc-vod</artifactId>
+            <artifactId>education-rpc-vid</artifactId>
             <version>${revision}</version>
         </dependency>
 
@@ -93,12 +93,6 @@
         <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
-        </dependency>
-
-        <!-- druid -->
-        <dependency>
-            <groupId>com.alibaba</groupId>
-            <artifactId>druid-spring-boot-starter</artifactId>
         </dependency>
 
         <!-- mybatis-plus -->

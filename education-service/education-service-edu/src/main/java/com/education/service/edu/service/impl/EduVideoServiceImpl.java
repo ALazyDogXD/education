@@ -38,7 +38,7 @@ public class EduVideoServiceImpl extends ServiceImpl<EduVideoMapper, EduVideoDO>
     @Value("${minio.path.video.course-video}")
     private String path;
 
-    @DubboReference(mock = "com.education.service.edu.mock.VodServiceMock", timeout = 600000)
+    @DubboReference(mock = "com.education.service.edu.mock.VodServiceMockImpl", timeout = 600000)
     private VodService vodService;
 
     @Override
