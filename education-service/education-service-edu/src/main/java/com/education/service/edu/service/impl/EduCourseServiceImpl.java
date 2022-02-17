@@ -93,8 +93,8 @@ public class EduCourseServiceImpl extends ServiceImpl<EduCourseMapper, EduCourse
                 .setViewCount(0L)
                 .setVersion(0L)
                 .setIsDeleted(0)
-                .setGmtCreate(LocalDateTime.now())
-                .setGmtModified(LocalDateTime.now()));
+                .setCreateTime(LocalDateTime.now())
+                .setUpdateTime(LocalDateTime.now()));
         // 添加课程简介
         eduCourseDescriptionService.add(courseConverted.getId(), course.getDescription());
 

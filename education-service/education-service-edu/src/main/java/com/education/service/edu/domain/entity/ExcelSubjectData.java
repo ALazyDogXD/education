@@ -5,7 +5,7 @@ import com.alibaba.excel.annotation.ExcelProperty;
 /**
  * @author Mr_W
  * @date 2021/2/16 17:04
- * @description: 科目 excel 模板类
+ * @description 科目 excel 模板类
  */
 public class ExcelSubjectData {
 

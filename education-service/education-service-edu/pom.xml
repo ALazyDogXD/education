@@ -14,7 +14,7 @@
 
     <dependencies>
 
-        <!-- vod 服务 -->
+        <!-- vid 服务 -->
         <dependency>
             <groupId>com.education</groupId>
             <artifactId>education-rpc-vid</artifactId>

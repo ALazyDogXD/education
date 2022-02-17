@@ -11,7 +11,10 @@ spring:
         file-extension: yml
         group: EDU_GROUP
         namespace: c5147a9f-5a24-484d-a40c-ef5e3ea0cad8
+
 dubbo:
+  scan:
+    base-packages: com.education.service.edu.service
   protocol:
     name: dubbo
     port: -1
@@ -22,4 +25,28 @@ dubbo:
     group: EDU_GROUP
     parameters:
       namespace: c5147a9f-5a24-484d-a40c-ef5e3ea0cad8
-#logging.level.org.springframework.boot.autoconfigure: error
+#spring:
+#  application:
+#    name: edu-service
+#  cloud:
+#    nacos:
+#      server-addr: 192.168.1.166:8848
+#      discovery:
+#        group: EDU_GROUP
+#        namespace: c5147a9f-5a24-484d-a40c-ef5e3ea0cad8
+#      config:
+#        file-extension: yml
+#        group: EDU_GROUP
+#        namespace: c5147a9f-5a24-484d-a40c-ef5e3ea0cad8
+#dubbo:
+#  protocol:
+#    name: dubbo
+#    port: -1
+#    payload: 99999999
+#  registry:
+#    address: 192.168.1.166:8848
+#    protocol: nacos
+#    group: EDU_GROUP
+#    parameters:
+#      namespace: c5147a9f-5a24-484d-a40c-ef5e3ea0cad8
+##logging.level.org.springframework.boot.autoconfigure: error

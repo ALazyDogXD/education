@@ -21,12 +21,12 @@ public class EduChapterDO implements Serializable {
     private static final long serialVersionUID = 1L;
 
     /**
-     * 章节ID
+     * 章节 ID
      */
     private String id;
 
     /**
-     * 课程ID
+     * 课程 ID
      */
     private String courseId;
 
@@ -43,14 +43,14 @@ public class EduChapterDO implements Serializable {
     /**
      * 创建时间
      */
-    @TableField(value = "gmt_create", fill = FieldFill.INSERT)
-    private LocalDateTime gmtCreate;
+    @TableField(fill = FieldFill.INSERT)
+    private LocalDateTime createTime;
 
     /**
      * 更新时间
      */
-    @TableField(value = "gmt_modified", fill = FieldFill.INSERT_UPDATE)
-    private LocalDateTime gmtModified;
+    @TableField(fill = FieldFill.INSERT_UPDATE)
+    private LocalDateTime updateTime;
 
     public String getId() {
         return id;
@@ -84,20 +84,20 @@ public class EduChapterDO implements Serializable {
         this.sort = sort;
         return this;
     }
-    public LocalDateTime getGmtCreate() {
-        return gmtCreate;
+    public LocalDateTime getCreateTime() {
+        return createTime;
     }
 
-    public EduChapterDO setGmtCreate(LocalDateTime gmtCreate) {
-        this.gmtCreate = gmtCreate;
+    public EduChapterDO setCreateTime(LocalDateTime createTime) {
+        this.createTime = createTime;
         return this;
     }
-    public LocalDateTime getGmtModified() {
-        return gmtModified;
+    public LocalDateTime getUpdateTime() {
+        return updateTime;
     }
 
-    public EduChapterDO setGmtModified(LocalDateTime gmtModified) {
-        this.gmtModified = gmtModified;
+    public EduChapterDO setUpdateTime(LocalDateTime updateTime) {
+        this.updateTime = updateTime;
         return this;
     }
 
@@ -108,8 +108,8 @@ public class EduChapterDO implements Serializable {
             ", courseId=" + courseId +
             ", title=" + title +
             ", sort=" + sort +
-            ", gmtCreate=" + gmtCreate +
-            ", gmtModified=" + gmtModified +
+            ", gmtCreate=" + createTime +
+            ", gmtModified=" + updateTime +
         "}";
     }
 }

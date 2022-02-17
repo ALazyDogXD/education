@@ -58,14 +58,14 @@ public class EduTeacherServiceImpl extends ServiceImpl<EduTeacherMapper, EduTeac
         LOGGER.debug("教师: [{}]", teacher.convert());
         EduTeacherDO teacherDO = teacher.convert()
                 .setDeleted(false)
-                .setGmtCreate(LocalDateTime.now())
-                .setGmtModified(LocalDateTime.now());
+                .setCreateTime(LocalDateTime.now())
+                .setUpdateTime(LocalDateTime.now());
         addCoverPath(teacherDO, file, true);
     }
 
     @Override
     public void update(EduTeacherDTO teacher) {
-        EduTeacherDO teacherDO = teacher.convert().setGmtModified(LocalDateTime.now());
+        EduTeacherDO teacherDO = teacher.convert().setUpdateTime(LocalDateTime.now());
         addCoverPath(teacherDO, teacher.getAvatar(), false);
     }
 

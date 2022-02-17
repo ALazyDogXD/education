@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.validation.constraints.Size;
+import javax.validation.groups.Default;
 import java.util.Arrays;
 import java.util.List;
 
@@ -39,7 +40,7 @@ public class TeacherController extends BaseController {
 
     @PostMapping
     @ApiOperation("新增教师接口")
-    public ResponseMsg create(@Validated(CreateDataTransferObject.class) EduTeacherDTO teacher) {
+    public ResponseMsg create(@Validated({CreateDataTransferObject.class, Default.class}) EduTeacherDTO teacher) {
         LOGGER.debug("教师入参: [{}]", teacher);
         eduTeacherService.insert(teacher, teacher.getAvatar());
         return ResponseMsg.success("添加成功");
@@ -58,7 +59,7 @@ public class TeacherController extends BaseController {
 
     @PutMapping
     @ApiOperation("根据 id 修改一名教师的信息")
-    public ResponseMsg update(@Validated(UpdateDataTransferObject.class) EduTeacherDTO teacher) {
+    public ResponseMsg update(@Validated({UpdateDataTransferObject.class, Default.class}) EduTeacherDTO teacher) {
         LOGGER.debug("教师入参: [{}]", teacher);
         eduTeacherService.update(teacher);
         return ResponseMsg.success("修改成功");

@@ -16,6 +16,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.math.BigDecimal;
 
 import static com.education.service.edu.constant.EduConstant.M2_TO_BYTE;
@@ -47,6 +48,7 @@ public class EduCourseDTO extends ObjectConvert<EduCourseDO> {
     private String subjectParentId;
 
     @NotBlank(message = "课程名称不可为空", groups = CreateDataTransferObject.class)
+    @Size(max = 40, message = "课程名称不可超过 40 字符")
     @ApiModelProperty("课程名称")
     private String title;
 

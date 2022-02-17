@@ -23,7 +23,7 @@ public class EduSubjectDO extends ObjectConvert<EduSubjectVO> implements Seriali
     private static final long serialVersionUID = 1L;
 
     /**
-     * 课程类别ID
+     * 课程类别 ID
      */
     private String id;
 
@@ -33,7 +33,7 @@ public class EduSubjectDO extends ObjectConvert<EduSubjectVO> implements Seriali
     private String title;
 
     /**
-     * 父ID
+     * 父 ID
      */
     private String parentId;
 
@@ -45,14 +45,14 @@ public class EduSubjectDO extends ObjectConvert<EduSubjectVO> implements Seriali
     /**
      * 创建时间
      */
-    @TableField(value = "gmt_create", fill = FieldFill.INSERT)
-    private LocalDateTime gmtCreate;
+    @TableField(fill = FieldFill.INSERT)
+    private LocalDateTime createTime;
 
     /**
      * 更新时间
      */
-    @TableField(value = "gmt_modified", fill = FieldFill.INSERT_UPDATE)
-    private LocalDateTime gmtModified;
+    @TableField(fill = FieldFill.INSERT_UPDATE)
+    private LocalDateTime updateTime;
 
     public String getId() {
         return id;
@@ -90,21 +90,21 @@ public class EduSubjectDO extends ObjectConvert<EduSubjectVO> implements Seriali
         return this;
     }
 
-    public LocalDateTime getGmtCreate() {
-        return gmtCreate;
+    public LocalDateTime getCreateTime() {
+        return createTime;
     }
 
-    public EduSubjectDO setGmtCreate(LocalDateTime gmtCreate) {
-        this.gmtCreate = gmtCreate;
+    public EduSubjectDO setCreateTime(LocalDateTime createTime) {
+        this.createTime = createTime;
         return this;
     }
 
-    public LocalDateTime getGmtModified() {
-        return gmtModified;
+    public LocalDateTime getUpdateTime() {
+        return updateTime;
     }
 
-    public EduSubjectDO setGmtModified(LocalDateTime gmtModified) {
-        this.gmtModified = gmtModified;
+    public EduSubjectDO setUpdateTime(LocalDateTime updateTime) {
+        this.updateTime = updateTime;
         return this;
     }
 
@@ -115,8 +115,8 @@ public class EduSubjectDO extends ObjectConvert<EduSubjectVO> implements Seriali
                 ", title=" + title +
                 ", parentId=" + parentId +
                 ", sort=" + sort +
-                ", gmtCreate=" + gmtCreate +
-                ", gmtModified=" + gmtModified +
+                ", gmtCreate=" + createTime +
+                ", gmtModified=" + updateTime +
                 "}";
     }
 }

@@ -21,7 +21,7 @@ public class EduCourseDescriptionDO implements Serializable {
     private static final long serialVersionUID = 1L;
 
     /**
-     * 课程ID
+     * 课程 ID
      */
     private String id;
 
@@ -33,8 +33,8 @@ public class EduCourseDescriptionDO implements Serializable {
     /**
      * 创建时间
      */
-    @TableField(value = "gmt_create", fill = FieldFill.INSERT)
-    private LocalDateTime gmtCreate;
+    @TableField(fill = FieldFill.INSERT)
+    private LocalDateTime createTime;
 
     /**
      * 更新时间
@@ -58,12 +58,12 @@ public class EduCourseDescriptionDO implements Serializable {
         this.description = description;
         return this;
     }
-    public LocalDateTime getGmtCreate() {
-        return gmtCreate;
+    public LocalDateTime getCreateTime() {
+        return createTime;
     }
 
-    public EduCourseDescriptionDO setGmtCreate(LocalDateTime gmtCreate) {
-        this.gmtCreate = gmtCreate;
+    public EduCourseDescriptionDO setCreateTime(LocalDateTime createTime) {
+        this.createTime = createTime;
         return this;
     }
     public LocalDateTime getGmtModified() {
@@ -80,7 +80,7 @@ public class EduCourseDescriptionDO implements Serializable {
         return "EduCourseDescriptionDO{" +
             "id=" + id +
             ", description=" + description +
-            ", gmtCreate=" + gmtCreate +
+            ", gmtCreate=" + createTime +
             ", gmtModified=" + gmtModified +
         "}";
     }

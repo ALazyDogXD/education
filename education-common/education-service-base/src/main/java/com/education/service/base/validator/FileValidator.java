@@ -16,8 +16,8 @@ public class FileValidator implements ConstraintValidator<FileNotEmpty, Multipar
 
     @Override
     public boolean isValid(MultipartFile value, ConstraintValidatorContext context) {
-        //检查文件是否为空
-        return Objects.nonNull(value) && !value.isEmpty();
+        // 检查文件是否为空(允许不传文件，不允许文件为空)
+        return Objects.isNull(value) || !value.isEmpty();
     }
 
 }

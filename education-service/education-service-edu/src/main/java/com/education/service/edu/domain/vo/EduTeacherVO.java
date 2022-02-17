@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
  * @date 2021-02-17 10:59
  */
 public class EduTeacherVO {
-    @ApiModelProperty(value = "讲师ID")
+    @ApiModelProperty(value = "讲师 ID")
     private String id;
 
     @ApiModelProperty(value = "讲师姓名")
@@ -22,7 +22,7 @@ public class EduTeacherVO {
     @ApiModelProperty(value = "讲师资历,一句话说明讲师")
     private String career;
 
-    @ApiModelProperty(value = "头衔 1高级讲师 2首席讲师")
+    @ApiModelProperty(value = "头衔 0 普通教师 1 高级讲师 2 首席讲师")
     private Integer level;
 
     @ApiModelProperty(value = "讲师头像")

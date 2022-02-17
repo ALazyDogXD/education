@@ -22,7 +22,10 @@ public class FileSizeValidator implements ConstraintValidator<FileSize, Multipar
 
     @Override
     public boolean isValid(MultipartFile value, ConstraintValidatorContext context) {
-        //检查文件大小
+        if (value == null) {
+            return true;
+        }
+        // 检查文件大小
         return value.getSize() <= max;
     }
 

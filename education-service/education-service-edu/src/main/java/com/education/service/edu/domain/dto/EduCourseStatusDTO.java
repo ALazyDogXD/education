@@ -4,6 +4,7 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.util.List;
 
 /**
@@ -14,11 +15,12 @@ import java.util.List;
 @ApiModel("课程状态 dto")
 public class EduCourseStatusDTO {
 
-    @ApiModelProperty(value = "课程 id 集合")
+    @ApiModelProperty(value = "课程 ID 集合")
+    @Size(min = 1, message = "请选择至少一门课程")
     private List<String> ids;
 
     @NotNull(message = "课程状态不可为空")
-    @ApiModelProperty(value = "课程状态 Draft未发布  Normal已发布")
+    @ApiModelProperty(value = "课程状态 Draft 未发布  Normal 已发布")
     private Boolean status;
 
     public List<String> getIds() {

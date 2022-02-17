@@ -12,6 +12,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import javax.validation.groups.Default;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -33,7 +34,7 @@ public class VideoController {
 
     @PostMapping
     @ApiOperation("新增视频接口")
-    public ResponseMsg create(@Validated(CreateDataTransferObject.class) EduVideoDTO video) {
+    public ResponseMsg create(@Validated({CreateDataTransferObject.class, Default.class}) EduVideoDTO video) {
         LOGGER.debug("视频入参: [{}]", video);
         videoService.uploadVideo(video.getVideo());
         return ResponseMsg.success("添加成功");

@@ -3,7 +3,6 @@ package com.education.service.edu.domain.entity;
 import com.baomidou.mybatisplus.annotation.*;
 import com.education.service.base.entity.ObjectConvert;
 import com.education.service.edu.domain.vo.EduCourseVO;
-import io.swagger.annotations.ApiModel;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -23,22 +22,22 @@ public class EduCourseDO extends ObjectConvert<EduCourseVO> implements Serializa
     private static final long serialVersionUID = 1L;
 
     /**
-     * 课程ID
+     * 课程 ID
      */
     private String id;
 
     /**
-     * 课程讲师ID
+     * 课程讲师 ID
      */
     private String teacherId;
 
     /**
-     * 课程专业ID
+     * 课程专业 ID
      */
     private String subjectId;
 
     /**
-     * 课程专业父级ID
+     * 课程专业父级 ID
      */
     private String subjectParentId;
 
@@ -48,7 +47,7 @@ public class EduCourseDO extends ObjectConvert<EduCourseVO> implements Serializa
     private String title;
 
     /**
-     * 课程销售价格，设置为0则可免费观看
+     * 课程销售价格，设置为 0 则可免费观看
      */
     private BigDecimal price;
 
@@ -79,7 +78,7 @@ public class EduCourseDO extends ObjectConvert<EduCourseVO> implements Serializa
     private Long version;
 
     /**
-     * 课程状态 Draft未发布  Normal已发布
+     * 课程状态 Draft 未发布 Normal 已发布
      */
     private String status;
 
@@ -92,14 +91,14 @@ public class EduCourseDO extends ObjectConvert<EduCourseVO> implements Serializa
     /**
      * 创建时间
      */
-    @TableField(value = "gmt_create", fill = FieldFill.INSERT)
-    private LocalDateTime gmtCreate;
+    @TableField(fill = FieldFill.INSERT)
+    private LocalDateTime createTime;
 
     /**
      * 更新时间
      */
-    @TableField(value = "gmt_modified", fill = FieldFill.INSERT_UPDATE)
-    private LocalDateTime gmtModified;
+    @TableField(fill = FieldFill.INSERT_UPDATE)
+    private LocalDateTime updateTime;
 
     public String getId() {
         return id;
@@ -205,20 +204,20 @@ public class EduCourseDO extends ObjectConvert<EduCourseVO> implements Serializa
         this.isDeleted = isDeleted;
         return this;
     }
-    public LocalDateTime getGmtCreate() {
-        return gmtCreate;
+    public LocalDateTime getCreateTime() {
+        return createTime;
     }
 
-    public EduCourseDO setGmtCreate(LocalDateTime gmtCreate) {
-        this.gmtCreate = gmtCreate;
+    public EduCourseDO setCreateTime(LocalDateTime createTime) {
+        this.createTime = createTime;
         return this;
     }
-    public LocalDateTime getGmtModified() {
-        return gmtModified;
+    public LocalDateTime getUpdateTime() {
+        return updateTime;
     }
 
-    public EduCourseDO setGmtModified(LocalDateTime gmtModified) {
-        this.gmtModified = gmtModified;
+    public EduCourseDO setUpdateTime(LocalDateTime updateTime) {
+        this.updateTime = updateTime;
         return this;
     }
 
@@ -238,8 +237,8 @@ public class EduCourseDO extends ObjectConvert<EduCourseVO> implements Serializa
             ", version=" + version +
             ", status=" + status +
             ", isDeleted=" + isDeleted +
-            ", gmtCreate=" + gmtCreate +
-            ", gmtModified=" + gmtModified +
+            ", gmtCreate=" + createTime +
+            ", gmtModified=" + updateTime +
         "}";
     }
 }

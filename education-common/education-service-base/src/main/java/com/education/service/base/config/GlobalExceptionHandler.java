@@ -4,6 +4,7 @@ import com.education.service.base.entity.ResponseMsg;
 import com.education.service.base.entity.ServiceException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.TypeMismatchException;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.BindException;
 import org.springframework.validation.BindingResult;
@@ -81,7 +82,8 @@ public class GlobalExceptionHandler {
 	@ResponseStatus(HttpStatus.BAD_REQUEST)
 	@ExceptionHandler(BindException.class)
 	public ResponseMsg handlerBindException(BindException e) {
-		if (e.getAllErrors().get(0) instanceof FieldError) {
+		// PropertyAccessException
+		if (e.getAllErrors().get(0).contains(TypeMismatchException.class)) {
 			LOGGER.error(((FieldError) e.getAllErrors().get(0)).getField() + " 字段类型错误", e);
 			return ResponseMsg.resp(ERROR, ((FieldError) e.getAllErrors().get(0)).getField() + " 字段类型错误");
 		} else {

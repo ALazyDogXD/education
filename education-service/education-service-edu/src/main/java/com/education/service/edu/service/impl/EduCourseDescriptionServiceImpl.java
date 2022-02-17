@@ -24,7 +24,7 @@ public class EduCourseDescriptionServiceImpl extends ServiceImpl<EduCourseDescri
         save(new EduCourseDescriptionDO() {{
             setId(courseId);
             setDescription(desc);
-            setGmtCreate(LocalDateTime.now());
+            setCreateTime(LocalDateTime.now());
             setGmtModified(LocalDateTime.now());
         }});
     }

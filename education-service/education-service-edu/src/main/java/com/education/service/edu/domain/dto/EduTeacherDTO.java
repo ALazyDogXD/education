@@ -12,7 +12,7 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.*;
 
 import static com.education.service.edu.constant.EduConstant.M2_TO_BYTE;
 
@@ -25,22 +25,27 @@ import static com.education.service.edu.constant.EduConstant.M2_TO_BYTE;
 public class EduTeacherDTO extends ObjectConvert<EduTeacherDO> {
 
     @SetNull(group = CreateDataTransferObject.class)
-    @NotBlank(message = "教师 id 不可为空", groups = UpdateDataTransferObject.class)
-    @ApiModelProperty("教师 id")
+    @NotBlank(message = "教师 ID 不可为空", groups = UpdateDataTransferObject.class)
+    @ApiModelProperty("教师 ID")
     private String id;
 
     @NotBlank(message = "教师姓名不可为空", groups = CreateDataTransferObject.class)
+    @Size(max = 30, message = "讲师姓名不可超过 30 字符")
     @ApiModelProperty(value = "讲师姓名")
     private String name;
 
     @ApiModelProperty(value = "讲师简介")
+    @Size(max = 200, message = "讲师简介不可超过 200 字符")
     private String intro;
 
-    @ApiModelProperty(value = "讲师资历,一句话说明讲师")
+    @ApiModelProperty(value = "讲师资历, 一句话说明讲师")
+    @Size(max = 200, message = "讲师资历不可超过 200 字符")
     private String career;
 
-    @NotBlank(message = "教师头衔不可为空", groups = CreateDataTransferObject.class)
-    @ApiModelProperty(value = "头衔 1高级讲师 2首席讲师")
+    @NotNull(message = "教师头衔不可为空", groups = CreateDataTransferObject.class)
+    @ApiModelProperty(value = "头衔 0 普通教师 1 高级讲师 2 首席讲师")
+    @Min(value = 0, message = "不存在的讲师头衔")
+    @Max(value = 2, message = "不存在的讲师头衔")
     private Integer level;
 
     @ApiModelProperty(value = "讲师头像")

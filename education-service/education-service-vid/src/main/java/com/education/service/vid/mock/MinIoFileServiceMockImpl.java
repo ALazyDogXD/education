@@ -1,4 +1,4 @@
-package com.education.service.vod.mock;
+package com.education.service.vid.mock;
 
 import com.education.rpc.minio.service.MinIoFileService;
 import com.education.service.base.entity.ServiceException;

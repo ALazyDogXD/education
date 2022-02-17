@@ -6,7 +6,7 @@ import io.swagger.annotations.ApiModelProperty;
 /**
  * @author Mr_W
  * @date 2021/2/16 19:04
- * @description: 子节点类目 vo
+ * @description 子节点类目 vo
  */
 @ApiModel(value = "二级科目")
 public class EduSubjectVO {

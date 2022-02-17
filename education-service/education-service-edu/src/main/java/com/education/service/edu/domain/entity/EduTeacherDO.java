@@ -24,7 +24,7 @@ public class EduTeacherDO extends ObjectConvert<EduTeacherVO> implements Seriali
     private static final long serialVersionUID = 1L;
 
     /**
-     * 讲师ID
+     * 讲师 ID
      */
     private String id;
 
@@ -44,7 +44,7 @@ public class EduTeacherDO extends ObjectConvert<EduTeacherVO> implements Seriali
     private String career;
 
     /**
-     * 头衔 1高级讲师 2首席讲师
+     * 头衔 0 普通教师 1 高级讲师 2 首席讲师
      */
     private Integer level;
 
@@ -67,14 +67,14 @@ public class EduTeacherDO extends ObjectConvert<EduTeacherVO> implements Seriali
     /**
      * 创建时间
      */
-    @TableField(value = "gmt_create", fill = FieldFill.INSERT)
-    private LocalDateTime gmtCreate;
+    @TableField(fill = FieldFill.INSERT)
+    private LocalDateTime createTime;
 
     /**
      * 更新时间
      */
-    @TableField(value = "gmt_modified", fill = FieldFill.INSERT_UPDATE)
-    private LocalDateTime gmtModified;
+    @TableField(fill = FieldFill.INSERT_UPDATE)
+    private LocalDateTime updateTime;
 
     public String getId() {
         return id;
@@ -140,20 +140,20 @@ public class EduTeacherDO extends ObjectConvert<EduTeacherVO> implements Seriali
         this.isDeleted = isDeleted;
         return this;
     }
-    public LocalDateTime getGmtCreate() {
-        return gmtCreate;
+    public LocalDateTime getCreateTime() {
+        return createTime;
     }
 
-    public EduTeacherDO setGmtCreate(LocalDateTime gmtCreate) {
-        this.gmtCreate = gmtCreate;
+    public EduTeacherDO setCreateTime(LocalDateTime createTime) {
+        this.createTime = createTime;
         return this;
     }
-    public LocalDateTime getGmtModified() {
-        return gmtModified;
+    public LocalDateTime getUpdateTime() {
+        return updateTime;
     }
 
-    public EduTeacherDO setGmtModified(LocalDateTime gmtModified) {
-        this.gmtModified = gmtModified;
+    public EduTeacherDO setUpdateTime(LocalDateTime updateTime) {
+        this.updateTime = updateTime;
         return this;
     }
 
@@ -168,8 +168,8 @@ public class EduTeacherDO extends ObjectConvert<EduTeacherVO> implements Seriali
             ", avatar=" + avatar +
             ", sort=" + sort +
             ", isDeleted=" + isDeleted +
-            ", gmtCreate=" + gmtCreate +
-            ", gmtModified=" + gmtModified +
+            ", gmtCreate=" + createTime +
+            ", gmtModified=" + updateTime +
         "}";
     }
 }

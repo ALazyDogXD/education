@@ -1,11 +1,11 @@
-package com.education.rpc.vod.service;
+package com.education.rpc.vid.service;
 
 /**
  * @author Mr_W
  * @date 2021/4/4 15:26
  * @description 视频服务
  */
-public interface VodService {
+public interface VidService {
 
     /**
      * 上传视频

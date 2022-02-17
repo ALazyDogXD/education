@@ -2,7 +2,7 @@ package com.education.service.edu.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.education.rpc.vod.service.VodService;
+import com.education.rpc.vid.service.VidService;
 import com.education.service.base.entity.ServiceException;
 import com.education.service.edu.domain.entity.EduVideoDO;
 import com.education.service.edu.mapper.EduVideoMapper;
@@ -38,8 +38,8 @@ public class EduVideoServiceImpl extends ServiceImpl<EduVideoMapper, EduVideoDO>
     @Value("${minio.path.video.course-video}")
     private String path;
 
-    @DubboReference(mock = "com.education.service.edu.mock.VodServiceMockImpl", timeout = 600000)
-    private VodService vodService;
+    @DubboReference(mock = "com.education.service.edu.mock.VidServiceMockImpl", timeout = 600000)
+    private VidService vidService;
 
     @Override
     public List<EduVideoDO> getByCourseId(String courseId) {
@@ -56,7 +56,7 @@ public class EduVideoServiceImpl extends ServiceImpl<EduVideoMapper, EduVideoDO>
         if (Objects.nonNull(video) && !video.isEmpty()) {
             // 上传视频
             try {
-                vodService.uploadVideo(bucketName, path, video.getOriginalFilename(), video.getBytes());
+                vidService.uploadVideo(bucketName, path, video.getOriginalFilename(), video.getBytes());
             } catch (IOException e) {
                 throw new ServiceException(VIDEO_UPLOAD_FAIL);
             }

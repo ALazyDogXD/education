@@ -10,7 +10,7 @@ import java.util.List;
 /**
  * @author Mr_W
  * @date 2021/2/16 18:56
- * @description: 父节点类目 vo
+ * @description 父节点类目 vo
  */
 @ApiModel(value = "一级科目")
 public class EduSubjectParentVO extends EduSubjectVO {

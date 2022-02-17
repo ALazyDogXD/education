@@ -22,6 +22,9 @@ public class ImageValidator implements ConstraintValidator<IsImage, MultipartFil
 
     @Override
     public boolean isValid(MultipartFile value, ConstraintValidatorContext context) {
+        if (value == null) {
+            return true;
+        }
         // 检查是否是图片
         try (InputStream in = value.getInputStream()) {
             if (Objects.isNull(ImageIO.read(in))) {

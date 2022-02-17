@@ -1,4 +1,4 @@
-package com.education.service.vod.util;
+package com.education.service.vid.util;
 
 import com.education.common.util.ProcessUtil;
 import com.education.service.base.entity.ServiceException;

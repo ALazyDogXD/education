@@ -1,9 +1,9 @@
-package com.education.service.vod.service.impl;
+package com.education.service.vid.service.impl;
 
 import com.education.rpc.minio.service.MinIoFileService;
-import com.education.rpc.vod.service.VodService;
+import com.education.rpc.vid.service.VidService;
 import com.education.service.base.entity.ServiceException;
-import com.education.service.vod.util.FfmpegUtil;
+import com.education.service.vid.util.FfmpegUtil;
 import org.apache.dubbo.config.annotation.DubboReference;
 import org.apache.dubbo.config.annotation.DubboService;
 import org.slf4j.Logger;
@@ -28,14 +28,14 @@ import static com.education.service.base.entity.enums.ResponseEnum.VIDEO_UPLOAD_
  * @description 视频服务
  */
 @DubboService
-public class VodServiceImpl implements VodService, CommandLineRunner {
+public class VidServiceImpl implements VidService, CommandLineRunner {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(VodServiceImpl.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(VidServiceImpl.class);
 
-    @Value("${vod.temp-file-path}")
+    @Value("${vid.temp-file-path}")
     private String path;
 
-    @DubboReference
+    @DubboReference(mock = "com.education.service.vid.mock.MinIoFileServiceMockImpl", timeout = 600000)
     private MinIoFileService minIoFileService;
 
     @Override

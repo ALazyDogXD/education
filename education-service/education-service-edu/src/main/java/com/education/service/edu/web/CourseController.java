@@ -18,6 +18,8 @@ import org.slf4j.Logger;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.constraints.Size;
+import javax.validation.groups.Default;
 import java.util.Arrays;
 import java.util.List;
 
@@ -43,7 +45,7 @@ public class CourseController extends BaseController {
 
     @PostMapping
     @ApiOperation("添加课程")
-    public ResponseMsg create(@Validated(CreateDataTransferObject.class) EduCourseDTO course) {
+    public ResponseMsg create(@Validated({CreateDataTransferObject.class, Default.class}) EduCourseDTO course) {
         LOGGER.debug("课程参数: [{}]", course);
         eduCourseService.add(course.getCover(), course);
         return ResponseMsg.success("课程添加成功");
@@ -71,7 +73,7 @@ public class CourseController extends BaseController {
 
     @PutMapping
     @ApiOperation("修改课程")
-    public ResponseMsg update(@Validated(UpdateDataTransferObject.class) EduCourseDTO course) {
+    public ResponseMsg update(@Validated({UpdateDataTransferObject.class, Default.class}) EduCourseDTO course) {
         LOGGER.debug("课程: [{}]", course);
         eduCourseService.update(course);
         return ResponseMsg.success("修改成功");
@@ -90,7 +92,7 @@ public class CourseController extends BaseController {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "ids", value = "id 数组", dataTypeClass = List.class)
     })
-    public ResponseMsg delete(@RequestParam("ids") List<String> ids) {
+    public ResponseMsg delete(@RequestParam("ids") @Validated @Size(min = 1, message = "请选择至少一门课程") List<String> ids) {
         LOGGER.debug("课程 id: [{}]", Arrays.toString(ids.toArray()));
         eduCourseService.remove(ids);
         return ResponseMsg.success("删除成功");

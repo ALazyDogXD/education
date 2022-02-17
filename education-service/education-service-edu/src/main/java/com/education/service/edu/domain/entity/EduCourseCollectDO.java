@@ -22,17 +22,17 @@ public class EduCourseCollectDO implements Serializable {
     private static final long serialVersionUID = 1L;
 
     /**
-     * 收藏ID
+     * 收藏 ID
      */
     private String id;
 
     /**
-     * 课程讲师ID
+     * 课程讲师 ID
      */
     private String courseId;
 
     /**
-     * 课程专业ID
+     * 课程专业 ID
      */
     private String memberId;
 
@@ -45,14 +45,14 @@ public class EduCourseCollectDO implements Serializable {
     /**
      * 创建时间
      */
-    @TableField(value = "gmt_create", fill = FieldFill.INSERT)
-    private LocalDateTime gmtCreate;
+    @TableField(fill = FieldFill.INSERT)
+    private LocalDateTime createTime;
 
     /**
      * 更新时间
      */
-    @TableField(value = "gmt_modified", fill = FieldFill.INSERT_UPDATE)
-    private LocalDateTime gmtModified;
+    @TableField(fill = FieldFill.INSERT_UPDATE)
+    private LocalDateTime updateTime;
 
     public String getId() {
         return id;
@@ -86,20 +86,20 @@ public class EduCourseCollectDO implements Serializable {
         this.isDeleted = isDeleted;
         return this;
     }
-    public LocalDateTime getGmtCreate() {
-        return gmtCreate;
+    public LocalDateTime getCreateTime() {
+        return createTime;
     }
 
-    public EduCourseCollectDO setGmtCreate(LocalDateTime gmtCreate) {
-        this.gmtCreate = gmtCreate;
+    public EduCourseCollectDO setCreateTime(LocalDateTime createTime) {
+        this.createTime = createTime;
         return this;
     }
-    public LocalDateTime getGmtModified() {
-        return gmtModified;
+    public LocalDateTime getUpdateTime() {
+        return updateTime;
     }
 
-    public EduCourseCollectDO setGmtModified(LocalDateTime gmtModified) {
-        this.gmtModified = gmtModified;
+    public EduCourseCollectDO setUpdateTime(LocalDateTime updateTime) {
+        this.updateTime = updateTime;
         return this;
     }
 
@@ -110,8 +110,8 @@ public class EduCourseCollectDO implements Serializable {
             ", courseId=" + courseId +
             ", memberId=" + memberId +
             ", isDeleted=" + isDeleted +
-            ", gmtCreate=" + gmtCreate +
-            ", gmtModified=" + gmtModified +
+            ", gmtCreate=" + createTime +
+            ", gmtModified=" + updateTime +
         "}";
     }
 }

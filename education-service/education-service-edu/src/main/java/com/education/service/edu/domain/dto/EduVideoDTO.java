@@ -12,6 +12,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 /**
  * @author Mr_W
@@ -22,23 +23,24 @@ import javax.validation.constraints.NotNull;
 public class EduVideoDTO extends ObjectConvert<EduVideoDO> {
 
     @SetNull(group = CreateDataTransferObject.class)
-    @NotBlank(message = "视频 id 不可为空", groups = UpdateDataTransferObject.class)
-    @ApiModelProperty(value = "视频ID")
+    @NotBlank(message = "视频 ID 不可为空", groups = UpdateDataTransferObject.class)
+    @ApiModelProperty(value = "视频 ID")
     private String id;
 
     @NotBlank(groups = CreateDataTransferObject.class,
-            message = "课程ID不可为空")
-    @ApiModelProperty(value = "课程ID")
+            message = "课程 ID 不可为空")
+    @ApiModelProperty(value = "课程 ID")
     private String courseId;
 
     @NotBlank(groups = CreateDataTransferObject.class,
-            message = "章节ID不可为空")
-    @ApiModelProperty(value = "章节ID")
+            message = "章节 ID 不可为空")
+    @ApiModelProperty(value = "章节 ID")
     private String chapterId;
 
     @NotBlank(groups = CreateDataTransferObject.class,
             message = "视频标题不可为空")
     @ApiModelProperty(value = "节点名称")
+    @Size(max = 40, message = "视频标题不可超过 40 字符")
     private String title;
 
     @NotNull(groups = CreateDataTransferObject.class,
@@ -49,7 +51,7 @@ public class EduVideoDTO extends ObjectConvert<EduVideoDO> {
 
     @NotNull(groups = CreateDataTransferObject.class,
             message = "是否免费不可为空")
-    @ApiModelProperty(value = "是否可以试听：0收费 1免费")
+    @ApiModelProperty(value = "是否可以试听：0 收费 1 免费")
     private Boolean isFree;
 
     public String getId() {

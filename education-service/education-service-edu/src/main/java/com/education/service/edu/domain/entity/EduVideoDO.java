@@ -22,17 +22,17 @@ public class EduVideoDO implements Serializable {
     private static final long serialVersionUID = 1L;
 
     /**
-     * 视频ID
+     * 视频 ID
      */
     private String id;
 
     /**
-     * 课程ID
+     * 课程 ID
      */
     private String courseId;
 
     /**
-     * 章节ID
+     * 章节 ID
      */
     private String chapterId;
 
@@ -62,7 +62,7 @@ public class EduVideoDO implements Serializable {
     private Long playCount;
 
     /**
-     * 是否可以试听：0收费 1免费
+     * 是否可以试听：0 收费 1 免费
      */
     private Boolean isFree;
 
@@ -72,7 +72,7 @@ public class EduVideoDO implements Serializable {
     private Float duration;
 
     /**
-     * Empty未上传 Transcoding转码中  Normal正常
+     * Empty 未上传 Transcoding 转码中  Normal 正常
      */
     private String status;
 
@@ -90,14 +90,14 @@ public class EduVideoDO implements Serializable {
     /**
      * 创建时间
      */
-    @TableField(value = "gmt_create", fill = FieldFill.INSERT)
-    private LocalDateTime gmtCreate;
+    @TableField(fill = FieldFill.INSERT)
+    private LocalDateTime createTime;
 
     /**
      * 更新时间
      */
-    @TableField(value = "gmt_modified", fill = FieldFill.INSERT_UPDATE)
-    private LocalDateTime gmtModified;
+    @TableField(fill = FieldFill.INSERT_UPDATE)
+    private LocalDateTime updateTime;
 
     public String getId() {
         return id;
@@ -203,20 +203,20 @@ public class EduVideoDO implements Serializable {
         this.version = version;
         return this;
     }
-    public LocalDateTime getGmtCreate() {
-        return gmtCreate;
+    public LocalDateTime getCreateTime() {
+        return createTime;
     }
 
-    public EduVideoDO setGmtCreate(LocalDateTime gmtCreate) {
-        this.gmtCreate = gmtCreate;
+    public EduVideoDO setCreateTime(LocalDateTime createTime) {
+        this.createTime = createTime;
         return this;
     }
-    public LocalDateTime getGmtModified() {
-        return gmtModified;
+    public LocalDateTime getUpdateTime() {
+        return updateTime;
     }
 
-    public EduVideoDO setGmtModified(LocalDateTime gmtModified) {
-        this.gmtModified = gmtModified;
+    public EduVideoDO setUpdateTime(LocalDateTime updateTime) {
+        this.updateTime = updateTime;
         return this;
     }
 
@@ -236,8 +236,8 @@ public class EduVideoDO implements Serializable {
             ", status=" + status +
             ", size=" + size +
             ", version=" + version +
-            ", gmtCreate=" + gmtCreate +
-            ", gmtModified=" + gmtModified +
+            ", gmtCreate=" + createTime +
+            ", gmtModified=" + updateTime +
         "}";
     }
 }

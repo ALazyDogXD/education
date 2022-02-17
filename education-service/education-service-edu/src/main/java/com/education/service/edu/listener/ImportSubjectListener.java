@@ -46,8 +46,8 @@ public class ImportSubjectListener extends AnalysisEventListener<ExcelSubjectDat
                     setTitle(excelSubjectData.getLevelOneSubjectName());
                     setParentId("0");
                     setSort(sort);
-                    setGmtCreate(LocalDateTime.now());
-                    setGmtModified(LocalDateTime.now());
+                    setCreateTime(LocalDateTime.now());
+                    setUpdateTime(LocalDateTime.now());
                 }};
                 eduSubjectService.save(parentEduSubject);
             }
@@ -66,8 +66,8 @@ public class ImportSubjectListener extends AnalysisEventListener<ExcelSubjectDat
                     setParentId(finalParentEduSubject.getId());
                     // 顺序为该一级学科下二级学科数量 + 1
                     setSort(finalParentEduSubject.getSort() + eduSubjectService.getLevelTwoCount(finalParentEduSubject.getId()));
-                    setGmtCreate(LocalDateTime.now());
-                    setGmtModified(LocalDateTime.now());
+                    setCreateTime(LocalDateTime.now());
+                    setUpdateTime(LocalDateTime.now());
                 }};
 
                 eduSubjectService.save(sonEduSubject);

@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 
 /**
  * <p>
- * 评论
+ * 课程
  * </p>
  *
  * @author Mr_W
@@ -22,22 +22,22 @@ public class EduCommentDO implements Serializable {
     private static final long serialVersionUID = 1L;
 
     /**
-     * 讲师ID
+     * 讲师 ID
      */
     private String id;
 
     /**
-     * 课程ID
+     * 课程 ID
      */
     private String courseId;
 
     /**
-     * 讲师ID
+     * 讲师 ID
      */
     private String teacherId;
 
     /**
-     * 会员ID
+     * 会员 ID
      */
     private String memberId;
 
@@ -65,14 +65,14 @@ public class EduCommentDO implements Serializable {
     /**
      * 创建时间
      */
-    @TableField(value = "gmt_create", fill = FieldFill.INSERT)
-    private LocalDateTime gmtCreate;
+    @TableField(fill = FieldFill.INSERT)
+    private LocalDateTime createTime;
 
     /**
      * 更新时间
      */
-    @TableField(value = "gmt_modified", fill = FieldFill.INSERT_UPDATE)
-    private LocalDateTime gmtModified;
+    @TableField(fill = FieldFill.INSERT_UPDATE)
+    private LocalDateTime updateTime;
 
     public String getId() {
         return id;
@@ -138,20 +138,20 @@ public class EduCommentDO implements Serializable {
         this.isDeleted = isDeleted;
         return this;
     }
-    public LocalDateTime getGmtCreate() {
-        return gmtCreate;
+    public LocalDateTime getCreateTime() {
+        return createTime;
     }
 
-    public EduCommentDO setGmtCreate(LocalDateTime gmtCreate) {
-        this.gmtCreate = gmtCreate;
+    public EduCommentDO setCreateTime(LocalDateTime createTime) {
+        this.createTime = createTime;
         return this;
     }
-    public LocalDateTime getGmtModified() {
-        return gmtModified;
+    public LocalDateTime getUpdateTime() {
+        return updateTime;
     }
 
-    public EduCommentDO setGmtModified(LocalDateTime gmtModified) {
-        this.gmtModified = gmtModified;
+    public EduCommentDO setUpdateTime(LocalDateTime updateTime) {
+        this.updateTime = updateTime;
         return this;
     }
 
@@ -166,8 +166,8 @@ public class EduCommentDO implements Serializable {
             ", avatar=" + avatar +
             ", content=" + content +
             ", isDeleted=" + isDeleted +
-            ", gmtCreate=" + gmtCreate +
-            ", gmtModified=" + gmtModified +
+            ", gmtCreate=" + createTime +
+            ", gmtModified=" + updateTime +
         "}";
     }
 }

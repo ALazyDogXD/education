@@ -14,7 +14,7 @@ spring:
 
 dubbo:
   scan:
-    base-packages: com.education.service.vod.service
+    base-packages: com.education.service.vid.service
   protocol:
     name: dubbo
     port: -1
