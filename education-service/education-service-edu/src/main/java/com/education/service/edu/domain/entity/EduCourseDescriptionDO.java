@@ -39,8 +39,8 @@ public class EduCourseDescriptionDO implements Serializable {
     /**
      * 更新时间
      */
-    @TableField(value = "gmt_modified", fill = FieldFill.INSERT_UPDATE)
-    private LocalDateTime gmtModified;
+    @TableField(fill = FieldFill.INSERT_UPDATE)
+    private LocalDateTime updateTime;
 
     public String getId() {
         return id;
@@ -66,12 +66,12 @@ public class EduCourseDescriptionDO implements Serializable {
         this.createTime = createTime;
         return this;
     }
-    public LocalDateTime getGmtModified() {
-        return gmtModified;
+    public LocalDateTime getUpdateTime() {
+        return updateTime;
     }
 
-    public EduCourseDescriptionDO setGmtModified(LocalDateTime gmtModified) {
-        this.gmtModified = gmtModified;
+    public EduCourseDescriptionDO setUpdateTime(LocalDateTime updateTime) {
+        this.updateTime = updateTime;
         return this;
     }
 
@@ -81,7 +81,7 @@ public class EduCourseDescriptionDO implements Serializable {
             "id=" + id +
             ", description=" + description +
             ", gmtCreate=" + createTime +
-            ", gmtModified=" + gmtModified +
+            ", gmtModified=" + updateTime +
         "}";
     }
 }

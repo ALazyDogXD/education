@@ -6,8 +6,6 @@ import com.education.service.edu.mapper.EduCourseDescriptionMapper;
 import com.education.service.edu.service.EduCourseDescriptionService;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
-
 /**
  * <p>
  * 课程简介 服务实现类
@@ -24,8 +22,6 @@ public class EduCourseDescriptionServiceImpl extends ServiceImpl<EduCourseDescri
         save(new EduCourseDescriptionDO() {{
             setId(courseId);
             setDescription(desc);
-            setCreateTime(LocalDateTime.now());
-            setGmtModified(LocalDateTime.now());
         }});
     }
 

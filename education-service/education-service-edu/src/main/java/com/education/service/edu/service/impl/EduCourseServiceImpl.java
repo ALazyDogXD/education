@@ -92,9 +92,7 @@ public class EduCourseServiceImpl extends ServiceImpl<EduCourseMapper, EduCourse
                 .setBuyCount(0L)
                 .setViewCount(0L)
                 .setVersion(0L)
-                .setIsDeleted(0)
-                .setCreateTime(LocalDateTime.now())
-                .setUpdateTime(LocalDateTime.now()));
+                .setIsDeleted(0));
         // 添加课程简介
         eduCourseDescriptionService.add(courseConverted.getId(), course.getDescription());
 
@@ -206,7 +204,7 @@ public class EduCourseServiceImpl extends ServiceImpl<EduCourseMapper, EduCourse
             eduCourseDescriptionService.updateById(new EduCourseDescriptionDO() {{
                 setId(course.getId());
                 setDescription(course.getDescription());
-                setGmtModified(LocalDateTime.now());
+                setUpdateTime(LocalDateTime.now());
             }});
         }
         // 更新课程信息

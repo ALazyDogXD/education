@@ -57,9 +57,7 @@ public class EduTeacherServiceImpl extends ServiceImpl<EduTeacherMapper, EduTeac
     public void insert(EduTeacherDTO teacher, MultipartFile file) {
         LOGGER.debug("教师: [{}]", teacher.convert());
         EduTeacherDO teacherDO = teacher.convert()
-                .setDeleted(false)
-                .setCreateTime(LocalDateTime.now())
-                .setUpdateTime(LocalDateTime.now());
+                .setDeleted(false);
         addCoverPath(teacherDO, file, true);
     }
 
