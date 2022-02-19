@@ -12,6 +12,12 @@
     <artifactId>education-service-minio</artifactId>
 
     <dependencies>
+        <!-- base -->
+        <dependency>
+            <groupId>com.education</groupId>
+            <artifactId>education-service-base</artifactId>
+            <version>${revision}</version>
+        </dependency>
 
         <!-- minio 接口 -->
         <dependency>

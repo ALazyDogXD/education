@@ -15,15 +15,8 @@
         <module>education-service-edu</module>
         <module>education-service-minio</module>
         <module>education-service-vid</module>
+        <module>education-service-rbac</module>
+        <module>education-service-gateway</module>
     </modules>
-
-    <dependencies>
-        <dependency>
-            <groupId>com.education</groupId>
-            <artifactId>education-service-base</artifactId>
-            <version>${revision}</version>
-        </dependency>
-    </dependencies>
-
 
 </project>
