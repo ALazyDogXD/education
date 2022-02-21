@@ -20,7 +20,7 @@
     <!--输出到文件-->
     <appender name="file" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <fileNamePattern>./logs/service-edu-%d{yyyy-MM-dd}.log</fileNamePattern>
+            <fileNamePattern>./logs/service-gateway-%d{yyyy-MM-dd}.log</fileNamePattern>
             <fileNamePattern>/home/education/log/service-gateway-%d{yyyy-MM-dd}.log</fileNamePattern>
             <maxHistory>90</maxHistory>
         </rollingPolicy>

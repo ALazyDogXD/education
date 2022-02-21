@@ -54,6 +54,18 @@ public class EduCourseCollectDO implements Serializable {
     @TableField(fill = FieldFill.INSERT_UPDATE)
     private LocalDateTime updateTime;
 
+    /**
+     * 创建人
+     */
+    @TableField(fill = FieldFill.INSERT)
+    private String createBy;
+
+    /**
+     * 修改人
+     */
+    @TableField(fill = FieldFill.INSERT_UPDATE)
+    private String updateBy;
+
     public String getId() {
         return id;
     }
@@ -103,15 +115,33 @@ public class EduCourseCollectDO implements Serializable {
         return this;
     }
 
+    public String getCreateBy() {
+        return createBy;
+    }
+
+    public void setCreateBy(String createBy) {
+        this.createBy = createBy;
+    }
+
+    public String getUpdateBy() {
+        return updateBy;
+    }
+
+    public void setUpdateBy(String updateBy) {
+        this.updateBy = updateBy;
+    }
+
     @Override
     public String toString() {
         return "EduCourseCollectDO{" +
-            "id=" + id +
-            ", courseId=" + courseId +
-            ", memberId=" + memberId +
-            ", isDeleted=" + isDeleted +
-            ", gmtCreate=" + createTime +
-            ", gmtModified=" + updateTime +
-        "}";
+                "id='" + id + '\'' +
+                ", courseId='" + courseId + '\'' +
+                ", memberId='" + memberId + '\'' +
+                ", isDeleted=" + isDeleted +
+                ", createTime=" + createTime +
+                ", updateTime=" + updateTime +
+                ", createBy='" + createBy + '\'' +
+                ", updateBy='" + updateBy + '\'' +
+                '}';
     }
 }

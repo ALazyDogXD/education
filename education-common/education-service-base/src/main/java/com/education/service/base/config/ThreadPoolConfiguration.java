@@ -7,7 +7,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
 /**
- * 覆盖spring 默认线程池
+ * 覆盖 spring 默认线程池
  *
  * @author Mr_W
  */

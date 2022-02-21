@@ -2,7 +2,6 @@ package com.education.service.vid;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 
 /**
  * @author Mr_W
@@ -10,7 +9,6 @@ import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
  * @description 视频服务主类
  */
 @SpringBootApplication
-@EnableDiscoveryClient
 public class ServiceVidApplication {
 
     public static void main(String[] args) {

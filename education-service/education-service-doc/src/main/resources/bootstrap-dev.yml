@@ -1,0 +1,13 @@
+spring:
+  application:
+    name: doc-service
+  cloud:
+    nacos:
+      server-addr: 192.168.1.166:8848
+      discovery:
+        group: EDUCATION_GROUP
+        namespace: c5147a9f-5a24-484d-a40c-ef5e3ea0cad8
+      config:
+        file-extension: yml
+        group: EDUCATION_GROUP
+        namespace: c5147a9f-5a24-484d-a40c-ef5e3ea0cad8

@@ -17,6 +17,8 @@
         <module>education-service-vid</module>
         <module>education-service-rbac</module>
         <module>education-service-gateway</module>
+        <module>education-service-doc</module>
+        <module>education-service-sms</module>
     </modules>
 
 </project>

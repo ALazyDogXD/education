@@ -7,6 +7,7 @@ import org.springframework.cloud.client.SpringCloudApplication;
  * @author Mr_W
  * @date 2021/2/16 11:46
  */
+
 @SpringCloudApplication
 public class ServiceEduApplication {
 

@@ -99,6 +99,18 @@ public class EduVideoDO implements Serializable {
     @TableField(fill = FieldFill.INSERT_UPDATE)
     private LocalDateTime updateTime;
 
+    /**
+     * 创建人
+     */
+    @TableField(fill = FieldFill.INSERT)
+    private String createBy;
+
+    /**
+     * 修改人
+     */
+    @TableField(fill = FieldFill.INSERT_UPDATE)
+    private String updateBy;
+
     public String getId() {
         return id;
     }
@@ -220,24 +232,42 @@ public class EduVideoDO implements Serializable {
         return this;
     }
 
+    public String getCreateBy() {
+        return createBy;
+    }
+
+    public void setCreateBy(String createBy) {
+        this.createBy = createBy;
+    }
+
+    public String getUpdateBy() {
+        return updateBy;
+    }
+
+    public void setUpdateBy(String updateBy) {
+        this.updateBy = updateBy;
+    }
+
     @Override
     public String toString() {
         return "EduVideoDO{" +
-            "id=" + id +
-            ", courseId=" + courseId +
-            ", chapterId=" + chapterId +
-            ", title=" + title +
-            ", videoSourceId=" + videoSourceId +
-            ", videoOriginalName=" + videoOriginalName +
-            ", sort=" + sort +
-            ", playCount=" + playCount +
-            ", isFree=" + isFree +
-            ", duration=" + duration +
-            ", status=" + status +
-            ", size=" + size +
-            ", version=" + version +
-            ", gmtCreate=" + createTime +
-            ", gmtModified=" + updateTime +
-        "}";
+                "id='" + id + '\'' +
+                ", courseId='" + courseId + '\'' +
+                ", chapterId='" + chapterId + '\'' +
+                ", title='" + title + '\'' +
+                ", videoSourceId='" + videoSourceId + '\'' +
+                ", videoOriginalName='" + videoOriginalName + '\'' +
+                ", sort=" + sort +
+                ", playCount=" + playCount +
+                ", isFree=" + isFree +
+                ", duration=" + duration +
+                ", status='" + status + '\'' +
+                ", size=" + size +
+                ", version=" + version +
+                ", createTime=" + createTime +
+                ", updateTime=" + updateTime +
+                ", createBy='" + createBy + '\'' +
+                ", updateBy='" + updateBy + '\'' +
+                '}';
     }
 }

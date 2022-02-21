@@ -30,7 +30,7 @@ public class Knife4jConfiguration {
                         .version("1.0")
                         .build())
                 //分组名称
-                .groupName("1.X版本")
+                .groupName("1.0.0")
                 .select()
                 //这里指定Controller扫描包路径
                 .apis(RequestHandlerSelectors.basePackage("com.education.service"))

@@ -39,7 +39,9 @@ public enum ResponseEnum implements Response {
     FILE_NOT_FIND_FAIL(1202, "未查询到文件"),
     // ============== VID:1300 ==============
     VIDEO_UPLOAD_FAIL(1300, "视频上传失败"),
-    VIDEO_IS_NULL(1301, "请选择要上传的视频");
+    VIDEO_IS_NULL(1301, "请选择要上传的视频"),
+    // ============== SMS:1400 ==============
+    SEND_AUTH_CODE_FAIL(1400, "服务器异常, 验证码获取失败");
 
     private final int code;
 

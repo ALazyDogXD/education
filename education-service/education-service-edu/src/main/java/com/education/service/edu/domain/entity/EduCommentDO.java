@@ -34,7 +34,7 @@ public class EduCommentDO implements Serializable {
     /**
      * 讲师 ID
      */
-    private String teacherId;
+    private String chapterId;
 
     /**
      * 会员 ID
@@ -69,10 +69,16 @@ public class EduCommentDO implements Serializable {
     private LocalDateTime createTime;
 
     /**
-     * 更新时间
+     * 创建人
+     */
+    @TableField(fill = FieldFill.INSERT)
+    private String createBy;
+
+    /**
+     * 修改人
      */
     @TableField(fill = FieldFill.INSERT_UPDATE)
-    private LocalDateTime updateTime;
+    private String updateBy;
 
     public String getId() {
         return id;
@@ -90,12 +96,12 @@ public class EduCommentDO implements Serializable {
         this.courseId = courseId;
         return this;
     }
-    public String getTeacherId() {
-        return teacherId;
+    public String getChapterId() {
+        return chapterId;
     }
 
-    public EduCommentDO setTeacherId(String teacherId) {
-        this.teacherId = teacherId;
+    public EduCommentDO setChapterId(String chapterId) {
+        this.chapterId = chapterId;
         return this;
     }
     public String getMemberId() {
@@ -146,28 +152,37 @@ public class EduCommentDO implements Serializable {
         this.createTime = createTime;
         return this;
     }
-    public LocalDateTime getUpdateTime() {
-        return updateTime;
+
+    public String getCreateBy() {
+        return createBy;
     }
 
-    public EduCommentDO setUpdateTime(LocalDateTime updateTime) {
-        this.updateTime = updateTime;
-        return this;
+    public void setCreateBy(String createBy) {
+        this.createBy = createBy;
+    }
+
+    public String getUpdateBy() {
+        return updateBy;
+    }
+
+    public void setUpdateBy(String updateBy) {
+        this.updateBy = updateBy;
     }
 
     @Override
     public String toString() {
         return "EduCommentDO{" +
-            "id=" + id +
-            ", courseId=" + courseId +
-            ", teacherId=" + teacherId +
-            ", memberId=" + memberId +
-            ", nickname=" + nickname +
-            ", avatar=" + avatar +
-            ", content=" + content +
-            ", isDeleted=" + isDeleted +
-            ", gmtCreate=" + createTime +
-            ", gmtModified=" + updateTime +
-        "}";
+                "id='" + id + '\'' +
+                ", courseId='" + courseId + '\'' +
+                ", chapterId='" + chapterId + '\'' +
+                ", memberId='" + memberId + '\'' +
+                ", nickname='" + nickname + '\'' +
+                ", avatar='" + avatar + '\'' +
+                ", content='" + content + '\'' +
+                ", isDeleted=" + isDeleted +
+                ", createTime=" + createTime +
+                ", createBy='" + createBy + '\'' +
+                ", updateBy='" + updateBy + '\'' +
+                '}';
     }
 }

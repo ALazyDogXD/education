@@ -76,6 +76,18 @@ public class EduTeacherDO extends ObjectConvert<EduTeacherVO> implements Seriali
     @TableField(fill = FieldFill.INSERT_UPDATE)
     private LocalDateTime updateTime;
 
+    /**
+     * 创建人
+     */
+    @TableField(fill = FieldFill.INSERT)
+    private String createBy;
+
+    /**
+     * 修改人
+     */
+    @TableField(fill = FieldFill.INSERT_UPDATE)
+    private String updateBy;
+
     public String getId() {
         return id;
     }
@@ -157,19 +169,37 @@ public class EduTeacherDO extends ObjectConvert<EduTeacherVO> implements Seriali
         return this;
     }
 
+    public String getCreateBy() {
+        return createBy;
+    }
+
+    public void setCreateBy(String createBy) {
+        this.createBy = createBy;
+    }
+
+    public String getUpdateBy() {
+        return updateBy;
+    }
+
+    public void setUpdateBy(String updateBy) {
+        this.updateBy = updateBy;
+    }
+
     @Override
     public String toString() {
         return "EduTeacherDO{" +
-            "id=" + id +
-            ", name=" + name +
-            ", intro=" + intro +
-            ", career=" + career +
-            ", level=" + level +
-            ", avatar=" + avatar +
-            ", sort=" + sort +
-            ", isDeleted=" + isDeleted +
-            ", gmtCreate=" + createTime +
-            ", gmtModified=" + updateTime +
-        "}";
+                "id='" + id + '\'' +
+                ", name='" + name + '\'' +
+                ", intro='" + intro + '\'' +
+                ", career='" + career + '\'' +
+                ", level=" + level +
+                ", avatar='" + avatar + '\'' +
+                ", sort=" + sort +
+                ", isDeleted=" + isDeleted +
+                ", createTime=" + createTime +
+                ", updateTime=" + updateTime +
+                ", createBy='" + createBy + '\'' +
+                ", updateBy='" + updateBy + '\'' +
+                '}';
     }
 }
