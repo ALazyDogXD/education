@@ -9,6 +9,7 @@ import com.education.service.sms.service.SmsService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
@@ -55,6 +56,7 @@ public class SmsServiceImpl implements SmsService {
     @Value("${redis.key.auth-code.length}")
     private int redisKeyAuthCodeLength;
 
+    @Lazy
     @Resource
     private RedisService redisService;
 
@@ -105,7 +107,6 @@ public class SmsServiceImpl implements SmsService {
         Config config = new Config()
                 .setAccessKeyId(accessKeyId)
                 .setAccessKeySecret(accessKeySecret);
-        // dysmsapi.aliyuncs.com
         config.endpoint = endpoint;
         return new Client(config);
     }
